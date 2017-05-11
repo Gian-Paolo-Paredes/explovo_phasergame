@@ -126,8 +126,9 @@ GameContainer.stGame.prototype = {
        building2.body.immovable = true;
 
 
-      particleBuildingOnCollision = function(emitter, building){
-         l("Particle-Building-Collision");
+      particleBuildingOnCollision = function(building, particle){
+         particle.kill();
+
       };
 
    },//end_create
