@@ -1,8 +1,3 @@
-<<<<<<< HEAD:js/Main.js
-<<<<<<< HEAD
-=======
->>>>>>> 19d04dc74f896163e91861b7fbb8fce89b0c0e9b
-=======
 //Main this.game State
 var stGame = function(game) {
       var waterStreamMaxDistance;
@@ -160,4 +155,3 @@ player.body.velocity.y = 0;
       this.game.debug.text('FPS: ' + this.game.time.fps, 20, 580, 'yellow');
    }
 };//end_s1Game
->>>>>>> feature-water_particles:js/states/stGame.js

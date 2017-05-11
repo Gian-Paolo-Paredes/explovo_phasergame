@@ -1,8 +1,8 @@
 // Preloader state
 // Loads assets
-var stPreloader = function(game) {
+var stPreload = function(game) {
 };
-stPreloader.prototype = {
+stPreload.prototype = {
    preload: function(){
       l("preloader_preload");
       //---/ load all assets
