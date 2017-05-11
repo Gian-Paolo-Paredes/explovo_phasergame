@@ -80,6 +80,19 @@ stGame.prototype = {
        building2.enableBody = true;
        building2.body.immovable = true;
 
+   //--/ UI implementation
+      this.Fires = this.game.add.image(765,335,'FireLevel');
+      this.Fires.anchor.set(0.5,1);
+      this.add.image(724,50,'FireBar');
+      //water bar // will conect to clicks
+      this.Waters = this.game.add.image(70,60,'WaterLevel');	
+      this.add.image(20,20,'WaterBar');
+      this.Waters.anchor.set(0,0.5);
+
+      //test input
+      waterDrain = this.game.input.keyboard.addKey(Phaser.Keyboard.LEFT);
+      waterRefill = this.game.input.keyboard.addKey(Phaser.Keyboard.RIGHT);
+      FireFall = this.game.input.keyboard.addKey(Phaser.Keyboard.DOWN);
 
       particleBuildingOnCollision = function(building, particle){
          particle.kill();
@@ -146,6 +159,32 @@ player.body.velocity.y = 0;
    }else if(cursors.down.isDown){
       player.body.velocity.y = 150;
    }
+
+
+//TEST UI Functionality
+   if (waterDrain.isDown){
+      this.Waters.scale.x -= 0.005;		
+   }
+   if(this.Waters.scale.x<0){
+      this.Waters.scale.x=0;
+   }	
+
+   if(waterRefill.isDown){
+      this.Waters.scale.x += 0.005;
+   }
+   if(this.Waters.scale.x>1){
+      this.Waters.scale.x=1;
+   }
+
+   //scaling the fire level
+   if (FireFall.isDown){
+      this.Fires.scale.y -= 0.005;		
+   }
+   if(this.Fires.scale.y<0){
+      this.Fires.scale.y=0;
+      //console.log('Gameover');
+   }
+
 
 
 
