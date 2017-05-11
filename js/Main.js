@@ -54,6 +54,9 @@ GameContainer.stGame = function() {
       var distMouseCursorToEmitter;
       var waterParticleLifetimeConstant;
 
+
+      var particleBuildingOnCollision;
+
 };
 GameContainer.stGame.prototype = {
    preload: function(){
@@ -61,6 +64,8 @@ GameContainer.stGame.prototype = {
 
    },//end_preload
    create: function() {
+
+      game.physics.startSystem(Phaser.Physics.ARCADE);
 
    //--/ variable assignments
       //--/ water particle emitter variables
@@ -92,16 +97,38 @@ GameContainer.stGame.prototype = {
 
       player.rotation = game.physics.arcade.angleToPointer(player);
 
+      cursors = game.input.keyboard.createCursorKeys();
 
       //--/ creating the water particle emitter
-      emitter = game.add.emitter(0, 0, 1200, true, false); //positionx, positiony, numberparticles, collide arcade, collide world
+      emitter = game.add.emitter(game, 0, 0);
+
       this.world.moveDown(emitter);
 
-      emitter.makeParticles('Particle');
+      //(String or array of strings for particles to be used, frames the sprite uses, number of particles to generate, arcade collision, world bounds collision)
+      emitter.makeParticles('Particle', 0, 1000, true, false);
 
       emitter.forEach(function(particle) {
+         particle.enableBody = true;
          particle.body.allowGravity = false;
       }, this);
+
+      // test particle collision functionality, building added here
+       building = this.add.sprite(game.world.centerX/2, game.world.centerY, "Test_Building1");
+       building.anchor.set(0.5);
+       game.physics.arcade.enable(building);
+       building.enableBody = true;
+       building.body.immovable = true;
+
+       building2 = this.add.sprite(game.world.centerX*1.5, game.world.centerY, "Test_Building1");
+       building2.anchor.set(0.5);
+       game.physics.arcade.enable(building2);
+       building2.enableBody = true;
+       building2.body.immovable = true;
+
+
+      particleBuildingOnCollision = function(emitter, building){
+         l("Particle-Building-Collision");
+      };
 
    },//end_create
    update: function(){
@@ -123,8 +150,6 @@ GameContainer.stGame.prototype = {
       }
       particleVelocityOffset = particleVelocityOffsetNarrowing*(particleVelocityOffsetMax-particleVelocityOffset) + particleVelocityOffsetNoise;
 
-      //l("particleVelocityOffset: " + particleVelocityOffset);
-
       emitter.lifespan = waterStreamMaxDistance*waterParticleLifetimeConstant;
 
       if(distMouseCursorToEmitter > waterStreamMaxDistance){
@@ -140,7 +165,33 @@ GameContainer.stGame.prototype = {
       emitter.minParticleSpeed = new Phaser.Point(emitterToMouseDistanceX-particleVelocityOffset,emitterToMouseDistanceY-particleVelocityOffset);
 
       emitter.emitParticle();
+
    }
+
+   game.physics.arcade.collide(emitter, building, particleBuildingOnCollision);
+   game.physics.arcade.collide(player, building);
+
+   game.physics.arcade.collide(emitter, building2, particleBuildingOnCollision);
+   game.physics.arcade.collide(player, building2);
+
+
+
+//TEST player movement functionality
+//every frame reset player velocity in the x direction
+player.body.velocity.x = 0;
+player.body.velocity.y = 0;
+//if the left arrow key is pressed change player velocity to 150 left
+   if(cursors.left.isDown){
+      player.body.velocity.x = -150;
+   }else if(cursors.right.isDown){
+      player.body.velocity.x = 150;
+   }else if(cursors.up.isDown){
+      player.body.velocity.y = -150;
+   }else if(cursors.down.isDown){
+      player.body.velocity.y = 150;
+   }
+
+
 
    },//end_update
    render: function() {
