@@ -23,6 +23,7 @@ stGame.prototype = {
       this.game.physics.startSystem(Phaser.Physics.ARCADE);
 
    //--/ variable assignments
+
       //--/ water particle emitter variables
          //Max distance the stream of water reaches
          waterStreamMaxDistance = 250; //250 seems optimal for a 600 by 800 screen
@@ -41,6 +42,15 @@ stGame.prototype = {
          //    positioned to achieve a certain distance with the particles. Phaser does not seem
          //    to have particle limiting by distance so keep this value at 4 for now.
          waterParticleLifetimeConstant = 4;
+
+      //--/ tilemap variable
+         this.game.stage.backgroundColor = "#facade";
+         this.map = this.game.add.tilemap('tilemap');
+         this.map.addTilesetImage('asd', 'TileAtlas');
+         this.backgroundlayer = this.map.createLayer('BackgroundLayer');
+         this.groundLayer = this.map.createLayer('GroundLayer');
+         this.map.setCollisionBetween(1, 1000, true, 'GroundLayer');
+         this.groundLayer.resizeWorld();
 
       //test sprite functionality, player added here
       player = this.add.sprite(this.game.world.centerX, this.game.world.centerY, "Player");
@@ -68,6 +78,7 @@ stGame.prototype = {
       }, this);
 
       // test particle collision functionality, building added here
+      /*
        building = this.add.sprite(this.game.world.centerX/2, this.game.world.centerY, "Test_Building1");
        building.anchor.set(0.5);
        this.game.physics.arcade.enable(building);
@@ -79,13 +90,14 @@ stGame.prototype = {
        this.game.physics.arcade.enable(building2);
        building2.enableBody = true;
        building2.body.immovable = true;
+      */
 
    //--/ UI implementation
       this.Fires = this.game.add.image(765,335,'FireLevel');
       this.Fires.anchor.set(0.5,1);
       this.add.image(724,50,'FireBar');
       //water bar // will conect to clicks
-      this.Waters = this.game.add.image(70,60,'WaterLevel');	
+      this.Waters = this.game.add.image(70,60,'WaterLevel');
       this.add.image(20,20,'WaterBar');
       this.Waters.anchor.set(0,0.5);
 
@@ -94,9 +106,8 @@ stGame.prototype = {
       waterRefill = this.game.input.keyboard.addKey(Phaser.Keyboard.RIGHT);
       FireFall = this.game.input.keyboard.addKey(Phaser.Keyboard.DOWN);
 
-      particleBuildingOnCollision = function(building, particle){
+      particleBuildingOnCollision = function(particle, building){ //for "not a function" errors, try swapping the arguments
          particle.kill();
-
       };
 
    },//end_create
@@ -137,11 +148,16 @@ stGame.prototype = {
 
    }
 
+   /*
    this.game.physics.arcade.collide(emitter, building, particleBuildingOnCollision);
    this.game.physics.arcade.collide(player, building);
 
    this.game.physics.arcade.collide(emitter, building2, particleBuildingOnCollision);
    this.game.physics.arcade.collide(player, building2);
+   */
+
+   this.game.physics.arcade.collide(emitter, this.groundLayer, particleBuildingOnCollision);
+   this.game.physics.arcade.collide(player, this.groundLayer);
 
 
 
@@ -163,11 +179,11 @@ player.body.velocity.y = 0;
 
 //TEST UI Functionality
    if (waterDrain.isDown){
-      this.Waters.scale.x -= 0.005;		
+      this.Waters.scale.x -= 0.005;
    }
    if(this.Waters.scale.x<0){
       this.Waters.scale.x=0;
-   }	
+   }
 
    if(waterRefill.isDown){
       this.Waters.scale.x += 0.005;
@@ -178,7 +194,7 @@ player.body.velocity.y = 0;
 
    //scaling the fire level
    if (FireFall.isDown){
-      this.Fires.scale.y -= 0.005;		
+      this.Fires.scale.y -= 0.005;
    }
    if(this.Fires.scale.y<0){
       this.Fires.scale.y=0;
