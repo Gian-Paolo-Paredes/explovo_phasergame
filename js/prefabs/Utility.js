@@ -8,17 +8,24 @@ if(true){
       }
    }
 }
+// distance between
+function distanceBetween(x1, y1, x2, y2){
+   return Math.sqrt(Math.pow(x1-x2, 2)+Math.pow(y1-y2, 2));
+}
 
-function transformOverAngle(angle, x, y){
-   //angle given in radians
-   cosine = Math.cos(angle);
-   sine = Math.sin(angle);
+//calculates rotational transformation of X and Y spaces away from rotational origin (0, 0) 
+function transformOverAngle(angleInRadians, x, y){
+   cosine = Math.cos(angleInRadians);
+   sine = Math.sin(angleInRadians);
    xprime = (cosine*x)+(-1*(sine*y));
    yprime = (sine*x)+(cosine*y);
-   l("xprime: " + xprime);
-   l("yprime: " + yprime);
    var returnObj = {x: xprime, y: yprime};
    return returnObj;
+}
+
+//calculates distance between 2 points by pythagorean distance formula
+function distanceBetween(x1, y1, x2, y2){
+   return Math.sqrt(Math.pow(x1-x2, 2)+Math.pow(y1-y2, 2));
 }
 
 //timer functionality
