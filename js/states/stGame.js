@@ -9,8 +9,9 @@ stGame.prototype = {
    //--/ variable assignments
 	console.log('game bg');
       //--/ tilemap variable
-		this.game.world.setBounds(0,0,1600,1200); // initialize world bounds
+		this.game.world.setBounds(0,0,1200,912); // initialize world bounds
         this.game.stage.backgroundColor = "#228B22";
+		this.game.add.tileSprite(0,0,1200,912,'bg');
       /*  this.map = this.game.add.tilemap('tilemap');
         this.map.addTilesetImage('asd', 'TileAtlas');
         this.backgroundlayer = this.map.createLayer('BackgroundLayer');
@@ -28,23 +29,23 @@ stGame.prototype = {
    // Create new buildings
    // manual creation for this test
    this.buildingGroup = this.game.add.group(); // generate building group
-   this.building1 = new Building(this.game,400,400,200,1,'building');
-   this.buildingGroup.add(this.building1);
-   this.building2 = new Building(this.game,400,800,300,2,'building');
+   //this.building1 = new Building(this.game,400,400,200,1,'building');
+   //this.buildingGroup.add(this.building1);
+   this.building2 = new Building(this.game,1000,676,300,2,'building');
    this.buildingGroup.add(this.building2); 
-   this.hydrant1 = new Hydrant(this.game,200,1000,this.player);
+   //this.hydrant1 = new Hydrant(this.game,300,1000,this.player);
    
-   this.building3 = new Building(this.game,1000,500,200,3,'building');
+   this.building3 = new Building(this.game,165,217,600,3,'building');
    this.buildingGroup.add(this.building3);
-   this.building4 = new Building(this.game,1000,1000,300,4,'building');
+   this.building4 = new Building(this.game,1000,107,600,4,'building');
    this.buildingGroup.add(this.building4);
-   this.hydrant2 = new Hydrant(this.game,750,700,this.player);
+   this.hydrant2 = new Hydrant(this.game,830,700,this.player);
    
-   this.building5 = new Building(this.game,1300,500,200,5,'building');
+   this.building5 = new Building(this.game,386,249,600,5,'building');
    this.buildingGroup.add(this.building5); 
-   this.building6 = new Building(this.game,30,500,300,6,'building');
+   this.building6 = new Building(this.game,418,591,600,6,'building');
    this.buildingGroup.add(this.building6);
-   this.hydrant3 = new Hydrant(this.game,500,700,this.player);
+   this.hydrant3 = new Hydrant(this.game,615,100,this.player);
    
    
       // Create UI
@@ -59,7 +60,6 @@ stGame.prototype = {
 	
    },//end_create
    update: function(){
-
    // start UI update functions
 	this.waterUI.update();
 	this.fireUI.update();
