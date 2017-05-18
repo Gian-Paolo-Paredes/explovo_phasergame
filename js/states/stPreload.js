@@ -22,6 +22,8 @@ stPreload.prototype = {
         
         this.game.load.tilemap('tilemap', 'tiles/MapTile.json', null, Phaser.Tilemap.TILED_JSON);
         this.game.load.image('TileAtlas', 'tiles/TileAtlas.png');
+		this.load.path="assets/tilemap/";
+		this.game.load.image('bg','tiledmap.png');
       
         //load assets from atlas (if applicable)
 
