@@ -10,20 +10,20 @@ var Player = function(game, x, y, key, src) {
 	this.anchor.set(0.5,0.5); // set anchor to center
 	this.waterLevel = 100;
 	this.waterLevelTotal = 100;
-	
+
 	// set parameters
 	this.body.collideWorldBounds = true;
 	this.body.drag.set(100); // drag property
-	this.body.maxVelocity.set(300); // max velocity
-	
+	this.body.maxVelocity.set(200); // max velocity
+
 	// create WASD keys
 	this.w = game.input.keyboard.addKey(Phaser.Keyboard.W);
 	this.a = game.input.keyboard.addKey(Phaser.Keyboard.A);
 	this.s = game.input.keyboard.addKey(Phaser.Keyboard.S);
 	this.d = game.input.keyboard.addKey(Phaser.Keyboard.D);
-	
+
 	// add this object to the game
-	this.game.add.existing(this);  
+	this.game.add.existing(this);
 };
 
 Player.prototype = Object.create(Phaser.Sprite.prototype);

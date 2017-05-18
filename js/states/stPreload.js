@@ -13,9 +13,13 @@ stPreload.prototype = {
       this.load.image('FireBar','(FireBar-81X360).png');
       this.load.image('FireLevel','(FireLevel-29X277).png');
 
+      //Rioter_
+      this.load.image('rioter','rioterTestImg.png');
+      //_Rioter
+
       this.game.load.tilemap('tilemap', 'tiles/MapTile.json', null, Phaser.Tilemap.TILED_JSON);
       this.game.load.image('TileAtlas', 'tiles/TileAtlas.png');
-      
+
       //load assets from atlas (if applicable)
 
    },//end_preload

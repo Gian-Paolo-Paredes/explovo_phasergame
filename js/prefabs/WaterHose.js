@@ -1,37 +1,37 @@
 // WaterHose
 // Creates and attaches an emitter that generates water particles
-// Extends Phaser.Emitter and takes 
+// Extends Phaser.Emitter and takes
 var WaterHose = function(game,attachments,x,y){
 	console.log('create hose');
 	// Create emitter
 	Phaser.Particles.Arcade.Emitter.call(this, game, x, y); // create emitter
 	this.game.physics.enable(this, Phaser.Physics.ARCADE); // enable physics
-	
+
 	// Initialize variables
     this.waterStreamMaxDistance = 250; // Max distance of water
     this.particleVelocityOffsetMax = 200; // distance of player to mouse cursor
     this.particleVelocityOffsetMin = 80;
     this.particleVelocityOffsetNarrowing = 0.5; // particle narrowing
     this.particleVelocityOffsetNoise = 10; // adds variation to water particles
-	
+
 	// Attachment variabless
     this.emitterSpriteOffsetX = x; // offset from the sprite
     this.emitterSpriteOffsetY = y;
 	this.attachment = attachments;
 
 	this.waterParticleLifetimeConstant = 4; // lifetime of the particle from creation
-	
+
 	// Declaring some variables
     this.particleVelocityOffset;
     this.distMouseCursorToEmitter;
-	
+
 	// Create particles
-	this.makeParticles('Particle',0,1000,true,true);
+	this.makeParticles('Particle',0,1000,true,false);
 	this.forEach(function(particle){
 		particle.enableBody = true;
 		particle.body.allowGravity = false;
 	}, this);
-	
+
 };
 
 // Update the prototype
@@ -56,7 +56,7 @@ WaterHose.prototype.update = function() {
 		this.particleVelocityOffset = this.particleVelocityOffsetNarrowing*(this.particleVelocityOffsetMax-this.particleVelocityOffset) + this.particleVelocityOffsetNoise;
 	// whatever the hell this is
 		this.lifespan = this.waterStreamMaxDistance*this.waterParticleLifetimeConstant;
-		
+
 		if(this.distMouseCursorToEmitter > this.waterStreamMaxDistance){
 			var similarTriangleProportion = this.waterStreamMaxDistance/this.distMouseCursorToEmitter;
 			this.emitterToMouseDistanceX = similarTriangleProportion*(this.game.input.mousePointer.x-this.x);
@@ -73,7 +73,6 @@ WaterHose.prototype.update = function() {
 		if(this.attachment.waterLevel > 0){
 			this.emitParticle();
 			this.attachment.waterLevel -= 0.1; // water flow rate, needs changing soon
-			console.log('emit');
 		}
    }
 };
