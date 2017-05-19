@@ -8,6 +8,8 @@ var Player = function(game, x, y, key, src) {
 	Phaser.Sprite.call(this, game, x, y, key, src); // call sprite
 	this.game.physics.enable(this, Phaser.Physics.ARCADE); // enable physics
 	this.anchor.set(0.5,0.5); // set anchor to center
+	this.body.setCircle(25); // circular hitbox
+	
 	this.waterLevel = 100;
 	this.waterLevelTotal = 100;
 	
@@ -53,5 +55,11 @@ Player.prototype.update = function() {
 	} // stationary
 	else{
 		this.body.velocity.x = 0;
+	}
+};
+
+Player.prototype.waterUp = function(){
+	if (this.waterLevel < 100){
+		this.waterLevel += 0.5;
 	}
 };
