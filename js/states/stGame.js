@@ -9,7 +9,7 @@ stGame.prototype = {
    preload: function(){
       this.game.time.advancedTiming = true;
       //Rioter_
-      MM = new MobManager(100, 50, 100, 1, 2, 0.25);
+      MM = new MobManager(100, 40, 100, 1, 1.3, 1);
       //_Rioter
    },//end_preload
    create: function() {

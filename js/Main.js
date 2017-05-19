@@ -5,4 +5,4 @@ window.onload = function() {
 	game.state.add("stGame", stGame);
 	//start the first state
 	game.state.start("stBoot");
-}
+};

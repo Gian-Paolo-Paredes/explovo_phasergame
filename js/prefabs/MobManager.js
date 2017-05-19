@@ -78,6 +78,8 @@ MobManager.prototype.update = function(){//(goalPoint, goalWeight)
       separationNeighbors = [];
       headingNeighbors = [];
 
+      seperationVectorMultiplier = 1;
+
       //l("DEBUG: moblist: " + mobList); Works
       //l(sourceMob);
 
@@ -92,13 +94,26 @@ MobManager.prototype.update = function(){//(goalPoint, goalWeight)
             }
             if(dist <= sDist){
                separationNeighbors.push(mob);
+               if(dist <= sDist/4){
+                  mob.velocityOverride("random");
+               }
+               /*
+               if(dist <= sDist/2){
+                  l("doubling effect of seperation");
+                  seperationVectorMultiplier = 2;
+                  if(dist <= sDist/4){
+                     l("quadrupling effect of separationPointration");
+                     seperationVectorMultiplier = 4;
+                  }
+               }
+               */
             }
             if(dist <= hDist){
                headingNeighbors.push(mob);
             }
          }
       }
-      return{cN: cohesionNeighbors, sN: separationNeighbors, hN: headingNeighbors};
+      return{cN: cohesionNeighbors, sN: separationNeighbors, hN: headingNeighbors};//, sVM: seperationVectorMultiplier
    }
 
    function updateFlocking(mob, neighbors){
@@ -235,6 +250,7 @@ MobManager.prototype.update = function(){//(goalPoint, goalWeight)
             //l("neighbor.y: "+ neighbor.y+ ", mob.y: "+ mob.y);
             sPositionX = sPositionX+ (neighbor.x - mob.x); //test, unsure about this calculation
             sPositionY = sPositionY +  (neighbor.y - mob.y);
+            
             //l("sPosX: " + sPositionX + ", sPosY: " + sPositionY);
          }
          sPositionX /= separationNeighbors.length;
