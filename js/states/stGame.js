@@ -9,7 +9,7 @@ stGame.prototype = {
    preload: function(){
       this.game.time.advancedTiming = true;
       //Rioter_
-      MM = new MobManager(100, 40, 100, 1, 1.3, 1);
+      MM = new MobManager(100, 50, 100, 1, 1.5, 1);
       //_Rioter
    },//end_preload
    create: function() {
@@ -30,8 +30,8 @@ stGame.prototype = {
       this.world.moveDown(this.emitter);
 
       //Rioter_
-      for(i=0; i<30; i++){
-         rioter = new Rioter(this.game, {key: "rioter", frame: 0}, this.game.rnd.integerInRange(0, this.game.width), this.game.rnd.integerInRange(0, this.game.height));
+      for(i=0; i<60; i++){
+         rioter = new Rioter(this.game, {key: "rioter", frame: 0}, this.game.rnd.integerInRange(0, this.game.width), this.game.rnd.integerInRange(0, this.game.height), this.game.world.centerX, this.game.world.centerY);
          MM.addMob(rioter);
          this.game.add.existing(rioter);
       }
@@ -49,7 +49,8 @@ stGame.prototype = {
    update: function(){
 
 	this.waterUI.update();
-   MM.update();
+   MM.collideWithEach(this.game, this.player);
+   MM.update(this.game);
 
    /*
    this.game.physics.arcade.collide(emitter, building, particleBuildingOnCollision);

@@ -8,7 +8,7 @@ function Rioter(game, spriteObject, positionX, positionY, mainTravelGoalX, mainT
    //l("velocityx = " + this.body.velocity.x);
    //l("velocityy = " + this.body.velocity.y);
    //
-   this.maxVelocity = 10;
+   this.maxVelocity = 40;
 
    this.cohesionWeight = null;
    this.cohesionDistance = null;
@@ -18,11 +18,16 @@ function Rioter(game, spriteObject, positionX, positionY, mainTravelGoalX, mainT
    this.headingDistance = null;
    this.flockingVector = {x: 0, y: 0};
 
-   this.velocityOverridden = false;
-   this.vOverrideType = 0;
+   //this.velocityOverridden = false;
+   //this.vOverrideType = 0;
 
    this.primaryGoalX = mainTravelGoalX;
-   this.primaryGoalX = mainTravelGoalY;
+   this.primaryGoalY = mainTravelGoalY;
+   this.headToGoal = true;
+   this.goalWeight = 1;
+
+   this.body.collideWorldBounds = true;
+
 }
 Rioter.prototype = Object.create(Phaser.Sprite.prototype);
 Rioter.prototype.constructor = Rioter;
@@ -39,8 +44,8 @@ Rioter.prototype.getVelocities = function(){
    //l("getVelocities Called");
    return {x: this.body.velocity.x, y: this.body.velocity.y};
 };
-Rioter.prototype.velocityOverride = function(type){
-   this.velocityOverriden = true;
+Rioter.prototype.moveRandomly = function(duration){
+   /*this.velocityOverriden = true;
    if(type == "directToGoal"){
       this.vOverrideType = 1;
    }
@@ -49,7 +54,9 @@ Rioter.prototype.velocityOverride = function(type){
    }
    if(type == "freeze"){
       this.vOverrideType = 3;
-   }
+   }*/
+   this.actionDuration = duration;
+   this.moveRandomly = true;
 };
 Rioter.prototype.setFlockingWeights = function(cWeight, sWeight, hWeight){
    this.cohesionWeight = cWeight;
@@ -103,8 +110,13 @@ Rioter.prototype.update = function(){
       }
       resetOverride();
    }else{*/
-      velX += DEBUGTEMPCurrentVelocity*this.flockingVector.x; //changed to +=
-      velY += DEBUGTEMPCurrentVelocity*this.flockingVector.y;
+
+   velocityVectorX = this.flockingVector.x;
+   velocityVectorY = this.flockingVector.y;
+
+
+      velX += this.flockingVector.x; //changed to +=, also multiplies by 1 now
+      velY += this.flockingVector.y;
       //l("velocityX: " + this.body.velocity.x + ", velocityY: " + this.body.velocity.y);
    //}
 

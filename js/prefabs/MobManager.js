@@ -6,6 +6,8 @@ function MobManager(defaultCohesionDistance, defaultSeparationDistance, defaultH
    this.defaultCohesionWeight = defaultCohesionWeight;
    this.defaultSeparationWeight = defaultSeparationWeight;
    this.defaultHeadingWeight = defaultHeadingWeight;
+
+   this.doCollideMobs = true;
 /*
    this.mobJointHeadingX = ;
    this.mobJointHeadingY = ;
@@ -39,6 +41,15 @@ MobManager.prototype.addMob = function(mob){
 MobManager.prototype.removeMob = function(mobToRemove){
 
 };
+MobManager.prototype.collideWithEach = function(game, objectToCollideWith, callbackFunction){
+      mobList = this.mobList;
+
+   for(var x in mobList){
+      mob = mobList[x];
+      game.physics.arcade.collide(mob, objectToCollideWith, callbackFunction, null, this);
+
+   }
+};
 MobManager.prototype.getRandomSubset = function(minQuantity, maxQuntity){
    maxQuantity = typeof maxQuantity !== 'undefined' ? maxQuantity : minQuantity;
    mobList = this.mobList;
@@ -57,7 +68,7 @@ MobManager.prototype.getRandomSubset = function(minQuantity, maxQuntity){
    }
    return returnList;
 };
-MobManager.prototype.update = function(){//(goalPoint, goalWeight)
+MobManager.prototype.update = function(game){//(goalPoint, goalWeight)
    //l("DEBUG: MM Update Called");
    var mobList = this.mobList;
    //l(mobList); works
@@ -65,6 +76,12 @@ MobManager.prototype.update = function(){//(goalPoint, goalWeight)
    mobList.forEach(function(mob){
       //mob.setGoalVector(goalPoint, goalWeight);
       updateFlocking(mob, getNeighbors(mob, mobList));
+      for(var x in mobList){
+         checkedMob = mobList[x];
+         if(distanceBetween(mob.x, mob.y, checkedMob.x, checkedMob.y)<50){ //10 is collisionCheckingDistanceConstant
+            game.physics.arcade.collide(mob, checkedMob);
+         }
+      }
    });
 
 
@@ -94,9 +111,9 @@ MobManager.prototype.update = function(){//(goalPoint, goalWeight)
             }
             if(dist <= sDist){
                separationNeighbors.push(mob);
-               if(dist <= sDist/4){
+               /*if(dist <= sDist/4){
                   mob.velocityOverride("random");
-               }
+               }*/
                /*
                if(dist <= sDist/2){
                   l("doubling effect of seperation");
@@ -250,7 +267,7 @@ MobManager.prototype.update = function(){//(goalPoint, goalWeight)
             //l("neighbor.y: "+ neighbor.y+ ", mob.y: "+ mob.y);
             sPositionX = sPositionX+ (neighbor.x - mob.x); //test, unsure about this calculation
             sPositionY = sPositionY +  (neighbor.y - mob.y);
-            
+
             //l("sPosX: " + sPositionX + ", sPosY: " + sPositionY);
          }
          sPositionX /= separationNeighbors.length;
