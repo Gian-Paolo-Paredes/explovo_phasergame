@@ -62,8 +62,4 @@ Player.prototype.waterUp = function(){
 	if (this.waterLevel < 100){
 		this.waterLevel += 0.5;
 	}
-<<<<<<< HEAD
 };
-=======
-};
->>>>>>> 133e13944222c7a7e08463462e14b6f7f4ae7da1

@@ -32,10 +32,6 @@ stGame.prototype = {
       this.emitter = new WaterHose(this.game, this.player, 30,15);
       this.world.moveDown(this.emitter);
 
-<<<<<<< HEAD
-=======
-
->>>>>>> 133e13944222c7a7e08463462e14b6f7f4ae7da1
    // Create new buildings
    // manual creation for this test
    this.buildingGroup = this.game.add.group(); // generate building group
