@@ -17,14 +17,28 @@ stPreload.prototype = {
 		this.load.image('buildingDestroyed','proto_Build2.png');
 		this.load.image('fire','FireSprite1.png');
 		this.load.image('hydrant','FireHydrant.png');
+
+        this.load.image('DirectPage','DirectionsPage.png');
+        this.load.image('News1', "News1.png");
+        this.load.image('News2', "News2.png");
+        this.load.image('News3', "News3.png");
+        
+      //  this.load.atlas('StartButtons', 'buttonsheet.png', 'buttonsheet.json');
+
+        this.load.image('GameOverPage',"GameOverScreen.png");
         
         this.load.atlas('StartButtons', 'buttonsheet.png', 'buttonsheet.json');
+
+        this.load.atlas('NextButtons', 'ContinueButtons.png', 'ContinueButtons.json');
+        this.game.load.audio("whirling", 'audio/newstransition.mp3');
         
         this.game.load.tilemap('tilemap', 'tiles/MapTile.json', null, Phaser.Tilemap.TILED_JSON);
         this.game.load.image('TileAtlas', 'tiles/TileAtlas.png');
 		this.load.path="assets/tilemap/";
 		this.game.load.image('bg','tiledmap.png');
-      
+
+        
+          
         //load assets from atlas (if applicable)
 
    },//end_preload

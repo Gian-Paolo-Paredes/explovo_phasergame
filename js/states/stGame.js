@@ -47,10 +47,13 @@ stGame.prototype = {
    this.buildingGroup.add(this.building6);
    this.hydrant3 = new Hydrant(this.game,615,100,this.player);
    
+   this.G = this.game.input.keyboard.addKey(Phaser.Keyboard.G);
    
       // Create UI
 	this.waterUI = new WaterUI(this.game,this.player,70,60);
 	this.fireUI = new FireUI(this.game,this.buildingGroup,765,355);
+
+this.end = 
 	
 	// Damage Fire Function
 	damageFire = function(particle,building){
@@ -60,6 +63,10 @@ stGame.prototype = {
 	
    },//end_create
    update: function(){
+
+   if (this.G.isDown){
+      this.state.start("stGameOver");
+   }
    // start UI update functions
 	this.waterUI.update();
 	this.fireUI.update();
