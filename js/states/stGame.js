@@ -30,11 +30,21 @@ stGame.prototype = {
       this.world.moveDown(this.emitter);
 
       //Rioter_
-      for(i=0; i<60; i++){
-         rioter = new Rioter(this.game, {key: "rioter", frame: 0}, this.game.rnd.integerInRange(0, this.game.width), this.game.rnd.integerInRange(0, this.game.height), this.game.world.centerX, this.game.world.centerY);
+      for(i=0; i<30; i++){
+         rioter = new Rioter(this.game, {key: "rioter", frame: 0}, this.game.rnd.integerInRange(0, this.game.width), this.game.rnd.integerInRange(0, this.game.height));
          MM.addMob(rioter);
          this.game.add.existing(rioter);
       }
+
+      var testFreeze = function(mob){
+         mob.freeze();
+      };
+
+      MM.addAllTriggerOnEntry(0, 0, 175, 175, testFreeze); // rectangle from 0, 0 of width and height 175
+      MM.addAllTriggerOnCollision(this.emitter, null, false); // test collision set
+      MM.addAllTriggerOnCollision(this.player);
+      //MM.setAllGoal(200, 200, 0.4);
+
       //_Rioter
 
    // Create UI
@@ -49,8 +59,9 @@ stGame.prototype = {
    update: function(){
 
 	this.waterUI.update();
-   MM.collideWithEach(this.game, this.player);
    MM.update(this.game);
+   MM.killAllOutOfView(this.game);
+
 
    /*
    this.game.physics.arcade.collide(emitter, building, particleBuildingOnCollision);
@@ -61,6 +72,7 @@ stGame.prototype = {
    */
 
    },//end_update
+
    render: function() {
    // display fps
       this.game.debug.text('FPS: ' + this.game.time.fps, 20, 580, 'yellow');

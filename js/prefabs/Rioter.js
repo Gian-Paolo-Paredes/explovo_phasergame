@@ -1,15 +1,26 @@
-function Rioter(game, spriteObject, positionX, positionY, mainTravelGoalX, mainTravelGoalY){
+function Rioter(game, spriteObject, positionX, positionY){
    Phaser.Sprite.call(this, game, positionX, positionY, spriteObject.key, spriteObject.frame);
+   this.spriteDiagonal = distanceBetween(this.x, this.y, this.x+this.width, this.y+this.height); //do this before setting anchor
    this.anchor.set(0.5);
    game.physics.enable(this);
-   //this.x = this.body.x; //check to see conflict
-   //this.y = this.body.y;
 
-   //l("velocityx = " + this.body.velocity.x);
-   //l("velocityy = " + this.body.velocity.y);
-   //
-   this.maxVelocity = 40;
 
+
+   // values which should be here but can be changed as required
+   this.maxVelocity = 60;
+   this.goalVectorWeightDefault = 0.4;
+   this.spriteAngleOffset = Math.PI/2; //(sprite normally faces... up: -Math.PI/2, down: Math.pi/2, left: Math.PI, right: 0)
+   this.rotationDefault = 0;
+
+
+
+   //--/ can change but beware of possible buggy behavior
+   // This value and the function that uses it prevents a situation between 2 sprites where
+   //    cohesion and separation vectors are the only two influences on the mob and cause
+   //    the mob's rotation to rapidly alternate between two polar opposites.
+   this.minVelocityForRotationToVelocity = 5;
+
+   // mob values, do not change
    this.cohesionWeight = null;
    this.cohesionDistance = null;
    this.separationWeight = null;
@@ -17,46 +28,53 @@ function Rioter(game, spriteObject, positionX, positionY, mainTravelGoalX, mainT
    this.headingWeight = null;
    this.headingDistance = null;
    this.flockingVector = {x: 0, y: 0};
+   this.primaryGoalX = null;
+   this.primaryGoalY = null;
+   this.headToGoal = false;
+   this.lastFrameRotation = this.rotationDefault;
+   // move according to the rules of MobManager
+   this.naturalMove = true;
 
-   //this.velocityOverridden = false;
-   //this.vOverrideType = 0;
-
-   this.primaryGoalX = mainTravelGoalX;
-   this.primaryGoalY = mainTravelGoalY;
-   this.headToGoal = true;
-   this.goalWeight = 1;
-
-   this.body.collideWorldBounds = true;
-
+   // used to store function callbacks
+   this.triggerEvents = [];
+   this.collideEvents = [];
 }
+// Rioter is a Sprite, its constructor is above
 Rioter.prototype = Object.create(Phaser.Sprite.prototype);
 Rioter.prototype.constructor = Rioter;
+
+//--/ The Following functions are used by MobManager to manage mobs, do not remove
 Rioter.prototype.setFlockingVector = function(xFlocking, yFlocking){
-   //l("DEBUG: xFlocking = " + xFlocking + ", yFlocking = " + yFlocking); //Works
    this.flockingVector.x = xFlocking;
    this.flockingVector.y = yFlocking;
 };
-Rioter.prototype.setGoalPoint = function(x, y){
-   this.primaryGoalX = x;
-   this.primaryGoalX = y;
+// can call seerately from Mob Manager to individually set goals for sprites
+Rioter.prototype.setGoalPoint = function(x, y, goalWeight){
+   if(x=="undefined" || y=="undefined"){
+      this.headToGoal = false;
+   }else{
+      this.headToGoal = true;
+      this.primaryGoalX = x;
+      this.primaryGoalY = y;
+   }
+   this.goalVectorWeight = typeof goalWeight !== 'undefined' ? goalWeight : this.goalVectorWeightDefault;
 };
+// returns a object containing the velocites of the mob
 Rioter.prototype.getVelocities = function(){
-   //l("getVelocities Called");
    return {x: this.body.velocity.x, y: this.body.velocity.y};
 };
-Rioter.prototype.moveRandomly = function(duration){
-   /*this.velocityOverriden = true;
-   if(type == "directToGoal"){
-      this.vOverrideType = 1;
+Rioter.prototype.triggerOnEntry = function(leftCornerX, leftCornerY, width, height, callbackFunction){
+   this.triggerEvents.push({leftX: leftCornerX, rightX: (leftCornerX+width), upY: leftCornerY, downY: (leftCornerY+height), cb: callbackFunction});
+};
+Rioter.prototype.triggerOnCollision = function(objectToCollideWith, callbackFunction, booleanIsEfficient){
+   this.collideEvents.push({collideWith: objectToCollideWith, cb: callbackFunction, efficient: booleanIsEfficient});
+};
+Rioter.prototype.reverseNatural = function(boolean){
+   if(typeof(boolean)!="boolean"){
+      this.reverseNatural = false;
+   }else{
+      this.reverseNatural = boolean;
    }
-   if(type == "random"){
-      this.vOverrideType = 2;
-   }
-   if(type == "freeze"){
-      this.vOverrideType = 3;
-   }*/
-   this.actionDuration = duration;
-   this.moveRandomly = true;
 };
 Rioter.prototype.setFlockingWeights = function(cWeight, sWeight, hWeight){
    this.cohesionWeight = cWeight;
@@ -72,74 +90,77 @@ Rioter.prototype.update = function(){
 
    velX = this.body.velocity.x;
    velY = this.body.velocity.y;
-   //l("DEBUG: RIOTER Update Called");//Works
 
-   //this.x = this.body.x; BAD
-   //this.y = this.body.y; BAD
-
-   //this.body.velocity.x = 0;
-   //this.body.velocity.y = 0;
-
-   //this.body.velocity.x = this.flockingVector.x;
-   //this.body.velocity.y = this.flockingVector.y;
-   //l("body.velocity.x is: "+ this.body.velocity.x);
-   //l("DEBUG: this.flockingVector = "); Returns NaN, NaN
-    //l(this.flockingVector);
-
-/*
-     this.body.acceleration.x = 20*this.flockingVector.x; //maybe not right method to add velocities
-     this.body.acceleration.y = 20*this.flockingVector.y;
-*/
-
-   DEBUGTEMPCurrentVelocity = 1; //changed to +=
-   //velocityLimit = 1;
-
-   //l("fvx: " + this.flockingVector.x + ", fvy: " + this.flockingVector.y);
-   /*
-   if(this.velocityOverridden === true){
-      if(this.vOverrideType == 1){
-         normalizedGoalVector = normalize((this.mainTravelGoalX-this.X),(this.mainTravelGoalY-this.Y));
-         this.body.velocity.x = DEBUGTEMPCurrentVelocity*normalizedGoalVector.x;
-         this.body.velocity.y = DEBUGTEMPCurrentVelocity*normalizedGoalVector.y;
-      }else if(this.vOverrideType == 2){ //random
-         this.body.velocityX = velocityLimit;//randInt(velocityLimit, (-1*velocityLimit));
-         this.body.velocityY = velocityLimit;//randInt(velocityLimit, (-1*velocityLimit));
-      }else if(this.vOverrideType == 3){
-         this.body.velocityX = 0;
-         this.body.velocityY = 0;
+   if(this.naturalMove === true){
+      if(this.headToGoal === true){
+         goalVectorX = this.primaryGoalX-this.x;
+         goalVectorY = this.primaryGoalY-this.y;
+         goal = normalize(goalVectorX, goalVectorY);
+         normal = normalize((this.flockingVector.x+(this.goalVectorWeight*goal.x)),(this.flockingVector.y+(this.goalVectorWeight*goal.y)));
+         velocityVectorX = normal.x;
+         velocityVectorY = normal.y;
+      }else{
+         velocityVectorX = this.flockingVector.x;
+         velocityVectorY = this.flockingVector.y;
       }
-      resetOverride();
-   }else{*/
+      velX += velocityVectorX;
+      velY += velocityVectorY;
+      velocityHyp = Math.sqrt((velX*velX)+(velY*velY));
+      if(velocityHyp > this.maxVelocity){
+         similarTriangleProportion = this.maxVelocity/velocityHyp;
+         velX*=similarTriangleProportion;
+         velY*=similarTriangleProportion;
+      }
+      if(this.reverseNatural === true){
+         this.body.velocity.x = (-1*velX);
+         this.body.velocity.y = (-1*velY);
+      }else{
+         this.body.velocity.x = velX;
+         this.body.velocity.y = velY;
+      }
 
-   velocityVectorX = this.flockingVector.x;
-   velocityVectorY = this.flockingVector.y;
-
-
-      velX += this.flockingVector.x; //changed to +=, also multiplies by 1 now
-      velY += this.flockingVector.y;
-      //l("velocityX: " + this.body.velocity.x + ", velocityY: " + this.body.velocity.y);
-   //}
-
-   //this.body.acceleration.x = this.maxVelocity*this.flockingVector.x; //maybe not right method to add velocities
-   //this.body.acceleration.y = this.maxVelocity*this.flockingVector.y;
-   //
-   //
-
-   velocityHyp = Math.sqrt((velX*velX)+(velY*velY));
-   if(velocityHyp > this.maxVelocity){
-      similarTriangleProportion = this.maxVelocity/velocityHyp;
-      velX*=similarTriangleProportion;
-      velY*=similarTriangleProportion;
+      // rotates sprite to face direction of velocity
+      if(this.headToGoal === false){
+         if(Math.abs(this.body.velocity.x) <= this.minVelocityForRotationToVelocity && Math.abs(this.body.velocity.y) <= this.minVelocityForRotationToVelocity){
+            this.rotation = this.lastFrameRotation;
+         }else{
+            this.rotation = this.lastFrameRotation = this.game.physics.arcade.angleToXY(this, (this.x + velX), (this.y + velY))-this.spriteAngleOffset;
+         }
+      }else{
+         this.rotation = this.game.physics.arcade.angleToXY(this, (this.x + velX), (this.y + velY))-this.spriteAngleOffset;
+      }
+   }else{
+      this.body.velocity.x = 0;
+      this.body.velocity.y = 0;
    }
 
-//l("velX: " + velX + ", velY: " + velY);
+   // perform callbacks for enttry and collision events
+   for(var x in this.triggerEvents){
+      event = this.triggerEvents[x];
+      if(this.x>event.leftX && this.x<event.rightX){
+         if(this.y>event.upY && this.y<event.downY){
+            event.cb(this); //calls callback and passes mob in as parameter
+         }
+      }
+   }
 
-   this.body.velocity.x = velX;
-   this.body.velocity.y = velY;
+   for(var y in this.collideEvents){
+      event = this.collideEvents[y];
+      if(event.efficient === false){
+         this.game.physics.arcade.collide(this, event.collideWith, event.cb);
+      }else{
+         if(distanceBetween(this.x, this.y, event.collideWith.x, event.collideWith.y)<Math.max(mob.spriteDiagonal, Math.sqrt(Math.pow(event.collideWith.width, 2)+Math.pow(event.collideWith.height, 2)))){
+            this.game.physics.arcade.collide(this, event.collideWith, event.cb);
+         }
+      }
+   }
+};
 
+//--/ functions not absolutely necessary for normal operation, do not call in MobManager if removed
 
-   function resetOverride(){
-      this.vOverrideType = 0;
-      this.velocityOverridden = false;
+Rioter.prototype.freeze = function(boolean){
+   this.naturalMove = false;
+   if(boolean === false){
+      this.naturalMove = true;
    }
 };

@@ -7,13 +7,12 @@ function MobManager(defaultCohesionDistance, defaultSeparationDistance, defaultH
    this.defaultSeparationWeight = defaultSeparationWeight;
    this.defaultHeadingWeight = defaultHeadingWeight;
 
+   // enable collisions between members of this MobManager. This should rarely, if ever, be changed during runtime
    this.doCollideMobs = true;
-/*
-   this.mobJointHeadingX = ;
-   this.mobJointHeadingY = ;
-*/
+
 }
 MobManager.prototype.constructor = MobManager;
+// adds an already existing mob to MobManager
 MobManager.prototype.addMob = function(mob){
    if(mob.cohesionDistance === null){
       mob.cohesionDistance = this.defaultCohesionDistance;
@@ -33,23 +32,200 @@ MobManager.prototype.addMob = function(mob){
    if(mob.headingWeight === null){
       mob.headingWeight = this.defaultHeadingWeight;
    }
+   /* If we ever get around to implementation give each mob a short random ID
    if(mob.id === null){
       mob.id = genID();
-   }
+   }*/
    this.mobList.push(mob);
 };
+// removes a mob passed into arguments, if it exists
 MobManager.prototype.removeMob = function(mobToRemove){
-
+   for(var x=mobList.length-1; x>=0; x--){ //from back to front, array is reindexed on removal due to destroy
+      mob = mobList[x];
+      if(mob == mobToRemove){
+         mob.destroy();
+         this.mobList.splice(x, 1);
+      }
+   }
 };
-MobManager.prototype.collideWithEach = function(game, objectToCollideWith, callbackFunction){
-      mobList = this.mobList;
-
+// destroys all mobs within this MobManager
+MobManager.prototype.killAll = function(mobToRemove){
+   mobList = this.mobList;
    for(var x in mobList){
       mob = mobList[x];
-      game.physics.arcade.collide(mob, objectToCollideWith, callbackFunction, null, this);
+      mob.destroy();
+   }
+   mobList = [];
+};
+// destroys the MobManager
+MobManager.prototype.killThis = function(mobToRemove){
+   this.destroy();
+};
+// sets the goal of all mobs within the manager to arguments. Impact on framerate possible with large numbers of mobs if called in update
+MobManager.prototype.setAllGoal = function(goalX, goalY, goalWeight){
+   this.mobList.forEach(function(mob){
+      mob.setGoalPoint(goalX, goalY, goalWeight);
+   });
+};
+// kills all mobs out of view of the camera, assumes anchor is at center
+MobManager.prototype.killAllOutOfView = function(game){
+   cameraX = game.camera.x;
+   cameraY = game.camera.y;
+   cameraW = game.camera.width;
+   cameraH = game.camera.height;
+   mobList = this.mobList;
+   for(var x=mobList.length-1; x>=0; x--){ //from back to front, array is reindexed on removal due to destroy
+      mob = mobList[x];
+      //assumption: sprite's anchor is 0.5, 0.5
+      if(((mob.x + mob.spriteDiagonal/2)<cameraX) || ((mob.x - mob.spriteDiagonal/2)>(cameraX+cameraW)) || ((mob.y + mob.spriteDiagonal/2)<cameraY) || ((mob.y - mob.spriteDiagonal/2)>(cameraY+cameraH))){
+            mob.destroy();
+            this.mobList.splice(x, 1);
+      }
+   }
+};
+// to each mob add a callback that occurs if it enters the area defined by the other parameters
+MobManager.prototype.addAllTriggerOnEntry = function(leftCornerX, leftCornerY, width, height, callback){
+   this.mobList.forEach(function(mob){
+      mob.triggerOnEntry(leftCornerX, leftCornerY, width, height, callback);
+   });
+};
+// to each mob add a callback that occurs if it collides with the object passed by parameter
+MobManager.prototype.addAllTriggerOnCollision = function(objectToCollideWith, callback, booleanIsEfficient){
+   /*
+   booleanIsEfficient maintains efficiency by only checking for collisions if objectToCollideWith
+   is close to each mob. For something like an emitter which has collisions checked by
+   referencing the emitter itself, rather than a particle, this produces unwanted behavior and
+   must implement collisions without checking distance prior.
+   */
+   this.mobList.forEach(function(mob){
+      mob.triggerOnCollision(objectToCollideWith, callback, booleanIsEfficient);
+   });
+};
+
+// update method for MobManager, since this is not a phaser object, this method MUST be called within the update loop of its state
+MobManager.prototype.update = function(game){
+   var mobList = this.mobList;
+   doCollideMobs = this.doCollideMobs;
+
+   mobList.forEach(function(mob){
+      updateFlocking(mob, getNeighbors(mob, mobList));
+      //update loop n^2 runtime individual mob check
+      if(doCollideMobs){
+         mobList.forEach(function(checkedMob){
+            if(distanceBetween(mob.x, mob.y, checkedMob.x, checkedMob.y)<Math.max(mob.spriteDiagonal, checkedMob.spriteDiagonal)){
+               game.physics.arcade.collide(mob, checkedMob);
+            }
+         });
+      }
+   });
+
+   //--/ functions used for update loop above
+
+   function getNeighbors(sourceMob, mobList){
+      cDist = sourceMob.cohesionDistance;
+      sDist = sourceMob.separationDistance;
+      hDist = sourceMob.headingDistance;
+
+      cohesionNeighbors = [];
+      separationNeighbors = [];
+      headingNeighbors = [];
+
+      for(var x in mobList){
+         mob = mobList[x];
+         if(mob!=sourceMob){ //prevents addition of self to neighbor group
+            dist = distanceBetween(mob.x, mob.y, sourceMob.x, sourceMob.y);
+            if(dist <= cDist){
+               cohesionNeighbors.push(mob);
+            }
+            if(dist <= sDist){
+               separationNeighbors.push(mob);
+            }
+            if(dist <= hDist){
+               headingNeighbors.push(mob);
+            }
+         }
+      }
+      return{cN: cohesionNeighbors, sN: separationNeighbors, hN: headingNeighbors};
+   }
+
+   function updateFlocking(mob, neighbors){
+      if(neighbors.cN.length>0){
+   }
+
+      calcHeading = averageHeading(mob, neighbors.hN);
+      calcCohesion = averageCohesion(mob, neighbors.cN);
+      calcSepraration = averageSeparation(mob, neighbors.sN);
+
+      newVectorX = calcCohesion.cX*mob.cohesionWeight + calcSepraration.sX*mob.separationWeight + calcHeading.hX*mob.headingWeight;
+      newVectorY = calcCohesion.cY*mob.cohesionWeight + calcSepraration.sY*mob.separationWeight + calcHeading.hY*mob.headingWeight;
+
+      combinedVector = normalize(newVectorX, newVectorY);
+      mob.setFlockingVector(combinedVector.x, combinedVector.y);
+
+
+
+      function averageHeading(mob, headingNeighbors){
+         if(headingNeighbors.length<=0){ //doublecheck
+            return {hX: 0, hY: 0};
+         }
+         headingPointX = 0;
+         headingPointY = 0;
+         headingNeighbors.forEach(function(neighbor){
+            neighborVelocities = neighbor.getVelocities();
+            headingPointX += (neighborVelocities.x);
+            headingPointY += (neighborVelocities.y);
+         });
+         headingPointX /= headingNeighbors.length;
+         headingPointY /= headingNeighbors.length;
+         headingPoint = normalize(headingPointX, headingPointY);
+         return {hX: headingPoint.x, hY: headingPoint.y};
+      }
+      function averageCohesion(mob, cohesionNeighbors){
+         cPositionX = 0;
+         cPositionY = 0;
+         if(cohesionNeighbors.length<=0){
+            return {cX: 0, cY: 0};
+         }
+         cohesionNeighbors.forEach(function(neighbor){
+            cPositionX += (neighbor.x - mob.x);
+            cPositionY += (neighbor.y - mob.y);
+         });
+         cPositionX /= cohesionNeighbors.length;
+         cPositionY /= cohesionNeighbors.length;
+         cohesionPoint = normalize(cPositionX, cPositionY);
+         return {cX: cohesionPoint.x, cY: cohesionPoint.y};
+      }
+      function averageSeparation(mob, separationNeighbors){
+         sPositionX = 0;
+         sPositionY = 0;
+         if(separationNeighbors.length<=0){
+            return {sX: 0, sY: 0};
+         }
+         separationNeighbors.forEach(function(neighbor){
+            sPositionX = sPositionX+ (neighbor.x - mob.x);
+            sPositionY = sPositionY +  (neighbor.y - mob.y);
+         });
+         sPositionX /= separationNeighbors.length;
+         sPositionY /= separationNeighbors.length;
+         sPositionX *= -1;
+         sPositionY *= -1;
+         separationPoint = normalize(sPositionX, sPositionY);
+         return {sX: separationPoint.x, sY: separationPoint.y};
+      }
 
    }
 };
+
+
+//--/ functions not absolutely necessary for normal operation
+
+// stops motion of mobs
+MobManager.prototype.freezeAll = function(){
+   this.mobList.forEach(function(mob){
+      mob.freeze();
+   });
+};
+// returns a random array of mobs
 MobManager.prototype.getRandomSubset = function(minQuantity, maxQuntity){
    maxQuantity = typeof maxQuantity !== 'undefined' ? maxQuantity : minQuantity;
    mobList = this.mobList;
@@ -67,220 +243,4 @@ MobManager.prototype.getRandomSubset = function(minQuantity, maxQuntity){
       returnList.push(tempList.splice(randomlyChosenIndex, 1));
    }
    return returnList;
-};
-MobManager.prototype.update = function(game){//(goalPoint, goalWeight)
-   //l("DEBUG: MM Update Called");
-   var mobList = this.mobList;
-   //l(mobList); works
-
-   mobList.forEach(function(mob){
-      //mob.setGoalVector(goalPoint, goalWeight);
-      updateFlocking(mob, getNeighbors(mob, mobList));
-      for(var x in mobList){
-         checkedMob = mobList[x];
-         if(distanceBetween(mob.x, mob.y, checkedMob.x, checkedMob.y)<50){ //10 is collisionCheckingDistanceConstant
-            game.physics.arcade.collide(mob, checkedMob);
-         }
-      }
-   });
-
-
-   function getNeighbors(sourceMob, mobList){
-      cDist = sourceMob.cohesionDistance;
-      sDist = sourceMob.separationDistance;
-      hDist = sourceMob.headingDistance;
-      //l("cDist: " + cDist + ", sDist: " + sDist + ", hDist: " + hDist); Works
-
-      cohesionNeighbors = [];
-      separationNeighbors = [];
-      headingNeighbors = [];
-
-      seperationVectorMultiplier = 1;
-
-      //l("DEBUG: moblist: " + mobList); Works
-      //l(sourceMob);
-
-      for(var x in mobList){
-         mob = mobList[x];
-         //l("mobx: " + mob.x + ", moby: " + mob.y + ", sourcex: " + sourceMob.x + ", sourcey: " + sourceMob.y);
-         if(mob!=sourceMob){ //prevents addition of self to neighbor group
-            dist = distanceBetween(mob.x, mob.y, sourceMob.x, sourceMob.y);
-            //l("distance: "  + dist); //Works
-            if(dist <= cDist){
-               cohesionNeighbors.push(mob);
-            }
-            if(dist <= sDist){
-               separationNeighbors.push(mob);
-               /*if(dist <= sDist/4){
-                  mob.velocityOverride("random");
-               }*/
-               /*
-               if(dist <= sDist/2){
-                  l("doubling effect of seperation");
-                  seperationVectorMultiplier = 2;
-                  if(dist <= sDist/4){
-                     l("quadrupling effect of separationPointration");
-                     seperationVectorMultiplier = 4;
-                  }
-               }
-               */
-            }
-            if(dist <= hDist){
-               headingNeighbors.push(mob);
-            }
-         }
-      }
-      return{cN: cohesionNeighbors, sN: separationNeighbors, hN: headingNeighbors};//, sVM: seperationVectorMultiplier
-   }
-
-   function updateFlocking(mob, neighbors){
-      if(neighbors.cN.length>0){
-      //l(neighbors);
-   }
-      //l("DEBUG: updateFlocking Called"); Works
-      cWeight = mob.cohesionWeight;
-      sWeight = mob.separationWeight;
-      hWeight = mob.headingWeight;
-
-      //movement = mob.getCurrentMovement();
-      //heading = mob.getCurrentHeading();
-      //
-      //l(cWeight + " , " + sWeight + " , " + hWeight); //1, 1, 1
-
-      calcHeading = averageHeading(mob, neighbors.hN);
-      calcCohesion = averageCohesion(mob, neighbors.cN);
-      calcSepraration = averageSeparation(mob, neighbors.sN);
-
-      //l(calcHeading); //Works (but perhaps not correctly)
-
-//NaN, NaN, NaN
-/*
-      l("calcH: ");
-       l(calcHeading);
-       l(", calcC: ");
-       l(calcCohesion);
-       l(", calcD: ") ;
-       l(calcSepraration);
-*/
-
-      newVectorX = calcCohesion.cX*cWeight + calcSepraration.sX*sWeight + calcHeading.hX*hWeight;
-      newVectorY = calcCohesion.cY*cWeight + calcSepraration.sY*sWeight + calcHeading.hY*hWeight;
-      //l("nVX: " + newVectorX + ", nVY: " + newVectorY);
-
-      //l("nVX: " + newVectorX + ", nVY: " + newVectorY); //NaN, NaN
-
-      combinedVector = normalize(newVectorX, newVectorY);
-      //l("cVX: " + combinedVector.x + ", cVY: " + combinedVector.y);
-
-/*
-      normalizationDistance = distanceBetween(0, 0, newVectorX, newVectorY);
-      newVectorX /= normalizationDistance;
-      newVectorY /= normalizationDistance;
-
-      //l("nVX: " + newVectorX + ", nVY: " + newVectorY); //NaN, NaN
-
-      mob.setFlockingVector(newVectorX, newVectorY);
-*/
-      mob.setFlockingVector(combinedVector.x, combinedVector.y);
-
-      function averageHeading(mob, headingNeighbors){
-
-         if(headingNeighbors.length<=0){ //doublecheck
-            return {hX: 0, hY: 0};
-         }
-         //l("in avgHeading"); //Works
-         headingPointX = 0;
-         headingPointY = 0;
-         // = mob.getHeadingPoint();
-         for(var x in headingNeighbors){
-            neighbor = headingNeighbors[x];
-            //l(neighbor.getVelocities());
-            neighborVelocities = neighbor.getVelocities();
-            headingPointX += (neighborVelocities.x);
-            headingPointY += (neighborVelocities.y);
-            //l("hpx: " + headingPointX);
-         //   l("hpy: " + headingPointY);
-
-            //headingPointX += (neighborHeading.x - mobHeading.x);
-            //headingPointY += (neighborHeading.y - mobHeading.y);
-         }
-         //returns the offset from a point (0, 0) of the new heading point
-      //   l("hNeighbors.length = " + headingNeighbors.length);
-         headingPointX /= headingNeighbors.length;
-         headingPointY /= headingNeighbors.length;
-         //test normalization code
-         /*
-         headingPointDistance = distanceBetween(headingPointX, headingPointY, 0, 0);
-         //l("hpdist: " + headingPointDistance);
-         if(headingPointDistance===0){
-            return {hX: 0, hY: 0}; //prevents division by 0
-         }
-         headingPointX /= headingPointDistance;
-         headingPointY /= headingPointDistance;
-         //test code
-         return {hX: headingPointX, hY: headingPointY};
-         */ //Altered with normalization code
-         headingPoint = normalize(headingPointX, headingPointY);
-         return {hX: headingPoint.x, hY: headingPoint.y};
-      }
-      function averageCohesion(mob, cohesionNeighbors){
-         cPositionX = 0;
-         cPositionY = 0;
-         if(cohesionNeighbors.length<=0){ //doublecheck
-            return {cX: 0, cY: 0};
-         }
-         for(var x in cohesionNeighbors){
-            neighbor = cohesionNeighbors[x];
-            //cPositionX += neighbor.x;
-            //cPositionY += neighbor.y;
-            cPositionX += (neighbor.x - mob.x);
-            cPositionY += (neighbor.y - mob.y);
-            //l("cPosX = " + cPositionX);
-            //l("cPosY = " + cPositionY);
-         }
-         cPositionX /= cohesionNeighbors.length;
-         cPositionY /= cohesionNeighbors.length;
-         /*cohesionPointDistance = distanceBetween(cPositionX, cPositionY, mob.x, mob.y);
-         cPositionX /= cohesionPointDistance;
-         cPositionY /= cohesionPointDistance;
-         return {cX: cPositionX, cY: cPositionY};
-         *///Altered with normalization code
-        cohesionPoint = normalize(cPositionX, cPositionY);
-        return {cX: cohesionPoint.x, cY: cohesionPoint.y};
-      }
-      function averageSeparation(mob, separationNeighbors){
-         sPositionX = 0;
-         sPositionY = 0;
-         //l("sN.length = "  + separationNeighbors.length);
-         if(separationNeighbors.length<=0){ //doublecheck
-            return {sX: 0, sY: 0};
-         }
-         /*
-         l("source: ");
-         l(mob);
-         l("neighbor");
-         l(separationNeighbors);
-         */
-         for(var x in separationNeighbors){
-            neighbor = separationNeighbors[x];
-            //l("neighbor.x: "+ neighbor.x+ ", mob.x: "+ mob.x);
-            //l("neighbor.y: "+ neighbor.y+ ", mob.y: "+ mob.y);
-            sPositionX = sPositionX+ (neighbor.x - mob.x); //test, unsure about this calculation
-            sPositionY = sPositionY +  (neighbor.y - mob.y);
-
-            //l("sPosX: " + sPositionX + ", sPosY: " + sPositionY);
-         }
-         sPositionX /= separationNeighbors.length;
-         sPositionY /= separationNeighbors.length;
-         sPositionX *= -1;
-         sPositionY *= -1;
-         //l("sPosX: " + sPositionX + ", sPosY: " + sPositionY);
-         separationPoint = normalize(sPositionX, sPositionY);
-         /*separationPointDistance = distanceBetween(sPositionX, sPositionY, mob.x, mob.y);
-         sPositionX /= separationPointDistance;
-         sPositionY /= separationPointDistance;*///Altered with normalization code
-         return {sX: separationPoint.x, sY: separationPoint.y};
-      }
-
-   }
 };
