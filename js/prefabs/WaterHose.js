@@ -18,7 +18,6 @@ var WaterHose = function(game,attachments,x,y){
     this.emitterSpriteOffsetX = x; // offset from the sprite
     this.emitterSpriteOffsetY = y;
 	this.attachment = attachments;
-
 	this.waterParticleLifetimeConstant = 4; // lifetime of the particle from creation
 
 	// Declaring some variables
@@ -44,7 +43,10 @@ WaterHose.prototype.update = function() {
 		this.y = this.attachment.y + transformOverAngle(this.attachment.rotation, this.emitterSpriteOffsetX, this.emitterSpriteOffsetY).y;
 		this.x = this.attachment.x + transformOverAngle(this.attachment.rotation, this.emitterSpriteOffsetX, this.emitterSpriteOffsetY).x;
 
-		this.distMouseCursorToEmitter = distanceBetween(this.game.input.mousePointer.x, this.game.input.mousePointer.y, this.x, this.y);
+		var adjustedMouseX = this.game.input.mousePointer.x + this.game.camera.x;
+		var adjustedMouseY = this.game.input.mousePointer.y + this.game.camera.y;
+		
+		this.distMouseCursorToEmitter = distanceBetween(adjustedMouseX, adjustedMouseY, this.x, this.y);
 
 		// handles the "spread" of water particles (the further you aim the narrower the stream)
 		this.particleVelocityOffset = this.distMouseCursorToEmitter ;
@@ -59,11 +61,11 @@ WaterHose.prototype.update = function() {
 
 		if(this.distMouseCursorToEmitter > this.waterStreamMaxDistance){
 			var similarTriangleProportion = this.waterStreamMaxDistance/this.distMouseCursorToEmitter;
-			this.emitterToMouseDistanceX = similarTriangleProportion*(this.game.input.mousePointer.x-this.x);
-			this.emitterToMouseDistanceY = similarTriangleProportion*(this.game.input.mousePointer.y-this.y);
+			this.emitterToMouseDistanceX = similarTriangleProportion*(adjustedMouseX-this.x);
+			this.emitterToMouseDistanceY = similarTriangleProportion*(adjustedMouseY-this.y);
 		}else{
-			this.emitterToMouseDistanceX = this.game.input.mousePointer.x-this.x;
-			this.emitterToMouseDistanceY = this.game.input.mousePointer.y-this.y;
+			this.emitterToMouseDistanceX = adjustedMouseX-this.x;
+			this.emitterToMouseDistanceY = adjustedMouseY-this.y;
 		}
 
 		this.maxParticleSpeed = new Phaser.Point(this.emitterToMouseDistanceX+this.particleVelocityOffset, this.emitterToMouseDistanceY+this.particleVelocityOffset);
@@ -72,7 +74,7 @@ WaterHose.prototype.update = function() {
 		// emit particles until out of water
 		if(this.attachment.waterLevel > 0){
 			this.emitParticle();
-			this.attachment.waterLevel -= 0.1; // water flow rate, needs changing soon
+			this.attachment.waterLevel -= 0.3; // water flow rate, needs changing soon
 		}
    }
 };
