@@ -15,7 +15,7 @@ stPreload.prototype = {
         this.load.image('TitleScreen', 'riotfighter-titlescreen.png');
 		this.load.image('building','proto_Build1.png');
 		this.load.image('buildingDestroyed','proto_Build2.png');
-		this.load.image('fire','FireSprite1.png');
+		this.load.image('fire','Fire3.png');
 		this.load.image('hydrant','FireHydrant.png');
         
         this.load.atlas('StartButtons', 'buttonsheet.png', 'buttonsheet.json');
