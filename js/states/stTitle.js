@@ -28,6 +28,10 @@ stTitle.prototype = {
         
     },//end_out
     startGame: function() {
-        this.state.start("stGame");
+<<<<<<< HEAD
+        this.state.start("stDirections");
+=======
+        this.state.start("stContext1");
+>>>>>>> 7e90a3ff816f80ae3b539655b64e5f9252f9e6f5
     }//end_startGame
 };
