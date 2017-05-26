@@ -28,6 +28,6 @@ stTitle.prototype = {
         
     },//end_out
     startGame: function() {
-        this.state.start("stGame");
+        this.state.start("stDirections");
     }//end_startGame
 };
