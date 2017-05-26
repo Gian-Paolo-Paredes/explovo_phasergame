@@ -1,11 +1,13 @@
 // -- Generic Fire
-var Fire = function(game, x, y){
+var Fire = function(game, x, y, angle, xanchor,yanchor){
 	
 	// Creation Code
 	Phaser.Sprite.call(this, game, x, y, 'fire'); // call sprite
-	game.physics.enable(this, Phaser.Physics.ARCADE); // enable physics
+	game.physics.enable(this, Phaser.Physics.ARCADE);	// enable physics
 	this.body.immovable = true; // dsable movement
-	this.body.moves = false;
+	this.angle = angle;
+	this.anchor.setTo(xanchor,yanchor);
+	//this.body.setTo(40,40,0,0);
 	this.game.add.existing(this);
 	
 	// Parameters

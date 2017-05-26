@@ -43,38 +43,35 @@ Building.prototype.startFire = function(){
 			case 0: // 0
 				var xpos = this.x + this.game.rnd.integerInRange(0,this.width-69);
 				var ypos = this.y;
-				var xanch = 0;
-				var yanch = 1;
+				var xanch = 0.5;
+				var yanch = 0.5;
 				var ang = 0;
 				break;
 			case 1: // 90
 				var xpos = this.x + this.width;
 				var ypos = this.y+this.game.rnd.integerInRange(0,this.height-69);
-				var xanch = 0;
-				var yanch = 1;
+				var xanch = 0.5;
+				var yanch = 0.5;
 				var ang = 90;
 				break;
 			case 2: // 180
 				var xpos = this.x + this.game.rnd.integerInRange(0,this.width-69);
 				var ypos = this.y + this.height;
-				var xanch = 1;
-				var yanch = 1;
+				var xanch = 0.5;
+				var yanch = 0.5;
 				var ang = 180;
 				break;
 			case 3: // 270
 				var xpos = this.x;
 				var ypos = this.y+this.game.rnd.integerInRange(0,this.height-69);
-				var xanch = 1;
-				var yanch = 1;
+				var xanch = 0.5;
+				var yanch = 0.5;
 				var ang = 270;
 				break;
 		}
 	
 	// create a fire and add to group based on parameters
-	var fire = new Fire(this.game,xpos,ypos);
-	fire.angle = ang;
-	fire.anchor.setTo(xanch,yanch);
-	fire.body.setSize(48,40,0,0);
+	var fire = new Fire(this.game,xpos,ypos, ang, xanch, yanch);
 	this.fireGroup.add(fire);
 };
 
