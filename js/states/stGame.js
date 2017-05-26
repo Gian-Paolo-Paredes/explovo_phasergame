@@ -1,9 +1,16 @@
 //Main this.game State
 var stGame = function(game) {
+
+   //Rioter_
+   var MM;
+   //_Rioter
 };
 stGame.prototype = {
    preload: function(){
       this.game.time.advancedTiming = true;
+      //Rioter_
+      MM = new MobManager(100, 50, 100, 1, 1.5, 1);
+      //_Rioter
    },//end_preload
    create: function() {
    //--/ variable assignments
@@ -22,7 +29,7 @@ stGame.prototype = {
      this.game.camera.follow(this.player,4,0.1,0.1);  // set camera to player
 	  
 	  // Attach hose to player object
-      this.emitter = new WaterHose(this.game, this.player, 25,15);
+      this.emitter = new WaterHose(this.game, this.player, 30,15);
       this.world.moveDown(this.emitter);
 
    // Create new buildings
@@ -74,6 +81,7 @@ stGame.prototype = {
 	this.game.physics.arcade.collide(this.player, this.buildingGroup);
 
    },//end_update
+
    render: function() {
 	   this.buildingGroup.forEach(function(building){
 		   building.fireGroup.forEach(function(fire){
