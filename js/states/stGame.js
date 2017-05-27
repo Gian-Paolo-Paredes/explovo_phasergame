@@ -87,7 +87,7 @@ stGame.prototype = {
 	
 	// Fires
 	this.buildingGroup.forEach(function(building){
-		this.game.physics.arcade.collide(this.emitter,building.fireGroup,building.damageFire); // emitter with fire
+		this.game.physics.arcade.overlap(this.emitter,building.fireGroup,building.damageFire); // emitter with fire
 	},this);
 
    },//end_update

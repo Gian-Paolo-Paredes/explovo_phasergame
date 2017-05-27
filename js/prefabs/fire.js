@@ -27,7 +27,7 @@ var Fire = function(game, x, y, angle){
 	this.game.add.existing(this);
 	
 	// Parameters
-	this.health = 100; // default hp set
+	this.health = 200; // default hp set
 };
 	
 Fire.prototype = Object.create(Phaser.Sprite.prototype);
