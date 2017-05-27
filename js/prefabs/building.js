@@ -69,15 +69,6 @@ Building.prototype.startFire = function(){
 Building.prototype.damageFire = function(particle,fire){
 	particle.kill();
 	fire.damage();
-	/*if(this.fireGroup.countLiving() > 0){
-		this.fireRed += 1; // increase fire decrease timer
-		if(this.fireRed > 100 ){ // if it hits a certain threshold
-			this.fireGroup.removeChild(this.fireGroup.getRandom()); // remove a fire
-			this.fireRed = 0; // reset counter
-			console.log(this.fireGroup.countLiving());
-		}/
-	}*/
-	console.log('print');
 }
 
 /*Building.prototype.render = function(){

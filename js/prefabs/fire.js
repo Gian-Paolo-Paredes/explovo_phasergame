@@ -38,5 +38,4 @@ Fire.prototype.damage = function(){
 	if (this.health < 0){
 		this.kill();
 	}
-	console.log(this.health);
 };
