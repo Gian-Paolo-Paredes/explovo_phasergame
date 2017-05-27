@@ -46,13 +46,13 @@ Building.prototype.startFire = function(){
 				var ang = 0;
 				break;
 			case 1: // 90
-				var xpos = this.x + this.width;
+				var xpos = this.x + this.width-4; // accounting for shadows
 				var ypos = this.y+this.game.rnd.integerInRange(0,this.height-69);
 				var ang = 90;
 				break;
 			case 2: // 180
 				var xpos = this.x + this.game.rnd.integerInRange(0,this.width-69);
-				var ypos = this.y + this.height;
+				var ypos = this.y + this.height - 4;
 				var ang = 180;
 				break;
 			case 3: // 270
@@ -63,6 +63,7 @@ Building.prototype.startFire = function(){
 		}
 	// create a fire and add to group based on parameters
 	var fire = new Fire(this.game, xpos, ypos, ang);
+	this.game.world.moveUp(fire);
 	this.fireGroup.add(fire);
 };
 

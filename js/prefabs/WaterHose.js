@@ -76,7 +76,7 @@ WaterHose.prototype.update = function() {
 		// emit particles until out of water
 		if(this.attachment.waterLevel > 0){
 			this.emitParticle();
-			this.attachment.waterLevel -= 0.3; // water flow rate, needs changing soon
+			this.attachment.waterLevel -= 0.1; // water flow rate, needs changing soon
 		}
    }
 };
