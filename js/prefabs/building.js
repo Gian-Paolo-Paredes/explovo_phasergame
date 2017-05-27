@@ -68,7 +68,6 @@ Building.prototype.startFire = function(){
 };
 
 Building.prototype.damageFire = function(particle,fire){
-	particle.kill();
 	fire.damage();
 }
 
