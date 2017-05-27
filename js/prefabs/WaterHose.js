@@ -3,6 +3,7 @@
 // Extends Phaser.Emitter and takes
 var WaterHose = function(game,attachments,x,y){
 	console.log('create hose');
+
 	// Create emitter
 	Phaser.Particles.Arcade.Emitter.call(this, game, x, y); // create emitter
 	this.game.physics.enable(this, Phaser.Physics.ARCADE); // enable physics
@@ -27,6 +28,7 @@ var WaterHose = function(game,attachments,x,y){
 	// Create particles
 	this.makeParticles('Particle',0,1000,true,false);
 	this.forEach(function(particle){
+		
 		particle.enableBody = true;
 		particle.body.allowGravity = false;
 	}, this);
