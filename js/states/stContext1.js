@@ -46,10 +46,8 @@ stContext1.prototype = {
         
     },//end_out
     startGame: function() {
-<<<<<<< HEAD
-        this.state.start("stGame");
-=======
-        this.state.start("stContext2");
->>>>>>> 7e90a3ff816f80ae3b539655b64e5f9252f9e6f5
+
+    this.state.start("stDirections");
+
     }//end_startGame
 };

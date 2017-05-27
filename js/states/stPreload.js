@@ -14,10 +14,9 @@ stPreload.prototype = {
         this.load.image('FireLevel','(FireLevel-29X277).png');
         this.load.image('TitleScreen', 'riotfighter-titlescreen.png');
 		this.load.image('building','proto_Build1.png');
+		this.load.image('fire','Fire3.png');
 		this.load.image('buildingDestroyed','Building1-FinalBurn.png');
-		this.load.image('fire','FireSprite1.png');
 		this.load.image('hydrant','FireHydrant.png');
-
         this.load.image('DirectPage','DirectionsPage.png');
         this.load.image('News1', "News1.png");
         this.load.image('News2', "News2.png");

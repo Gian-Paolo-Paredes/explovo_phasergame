@@ -38,6 +38,7 @@ stGame.prototype = {
    //this.buildingGroup.scale.setTo(0.8,0.8);
    //this.building1 = new Building(this.game,400,400,200,1,'building');
    //this.buildingGroup.add(this.building1);
+
    this.building2 = new Building(this.game,1000,676,300,2,'Test_Building1');
    this.buildingGroup.add(this.building2); 
    //this.hydrant1 = new Hydrant(this.game,300,1000,this.player);
@@ -52,6 +53,7 @@ stGame.prototype = {
    this.buildingGroup.add(this.building5); 
    this.building6 = new Building(this.game,418,591,600,6,'Test_Building1');
    this.buildingGroup.add(this.building6);
+
    this.hydrant3 = new Hydrant(this.game,615,100,this.player);
    
    this.G = this.game.input.keyboard.addKey(Phaser.Keyboard.G);
@@ -60,32 +62,43 @@ stGame.prototype = {
 	this.waterUI = new WaterUI(this.game,this.player,70,60);
 	this.fireUI = new FireUI(this.game,this.buildingGroup,765,355);
 
-this.end = 
 	
-	// Damage Fire Function
-	damageFire = function(particle,building){
+	// Kill particle function
+	hitBuilding = function(particle,building){
 		particle.kill();
-		building.damageFire();
 	}
-	
+
    },//end_create
+
    update: function(){
 
    if (this.G.isDown){
       this.state.start("stGameOver");
    }
+
    // start UI update functions
 	this.waterUI.update();
 	this.fireUI.update();
 	
-	// collisions
-	this.game.physics.arcade.collide(this.emitter, this.buildingGroup,damageFire);
-	this.game.physics.arcade.collide(this.player, this.buildingGroup);
+	// - Collisions -
+	// Buildings
+	this.game.physics.arcade.collide(this.emitter, this.buildingGroup,hitBuilding); // emitter with buildings
+	this.game.physics.arcade.collide(this.player, this.buildingGroup); // player with buildings
+	
+	// Fires
+	this.buildingGroup.forEach(function(building){
+		this.game.physics.arcade.collide(this.emitter,building.fireGroup,building.damageFire); // emitter with fire
+	},this);
 
    },//end_update
 
-   render: function() {
+ /*  render: function() {
+	   this.buildingGroup.forEach(function(building){
+		   building.fireGroup.forEach(function(fire){
+			   this.game.debug.body(fire);
+		   },this);
+	   },this);
    // display fps
     //  this.game.debug.text('FPS: ' + this.game.time.fps, 20, 580, 'yellow');
-   }
+   }*/
 };//end_s1Game
