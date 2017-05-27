@@ -43,52 +43,45 @@ Building.prototype.startFire = function(){
 			case 0: // 0
 				var xpos = this.x + this.game.rnd.integerInRange(0,this.width-69);
 				var ypos = this.y;
-				var xanch = 0.5;
-				var yanch = 0.5;
 				var ang = 0;
 				break;
 			case 1: // 90
 				var xpos = this.x + this.width;
 				var ypos = this.y+this.game.rnd.integerInRange(0,this.height-69);
-				var xanch = 0.5;
-				var yanch = 0.5;
 				var ang = 90;
 				break;
 			case 2: // 180
 				var xpos = this.x + this.game.rnd.integerInRange(0,this.width-69);
 				var ypos = this.y + this.height;
-				var xanch = 0.5;
-				var yanch = 0.5;
 				var ang = 180;
 				break;
 			case 3: // 270
 				var xpos = this.x;
 				var ypos = this.y+this.game.rnd.integerInRange(0,this.height-69);
-				var xanch = 0.5;
-				var yanch = 0.5;
 				var ang = 270;
 				break;
 		}
-	
 	// create a fire and add to group based on parameters
-	var fire = new Fire(this.game,xpos,ypos, ang, xanch, yanch);
+	var fire = new Fire(this.game, xpos, ypos, ang);
 	this.fireGroup.add(fire);
 };
 
-Building.prototype.damageFire = function(emitter,building){
-	// if the building has any fires
-	if(this.fireGroup.countLiving() > 0){
+Building.prototype.damageFire = function(particle,fire){
+	particle.kill();
+	fire.damage();
+	/*if(this.fireGroup.countLiving() > 0){
 		this.fireRed += 1; // increase fire decrease timer
 		if(this.fireRed > 100 ){ // if it hits a certain threshold
 			this.fireGroup.removeChild(this.fireGroup.getRandom()); // remove a fire
 			this.fireRed = 0; // reset counter
 			console.log(this.fireGroup.countLiving());
-		}
-	}
+		}/
+	}*/
+	console.log('print');
 }
 
-Building.prototype.render = function(){
+/*Building.prototype.render = function(){
 	this.fireGroup.forEach(function(fire){
 			this.game.debug.body(fire);
 		},this);
-};
+};*/

@@ -58,31 +58,30 @@ stGame.prototype = {
 	this.waterUI = new WaterUI(this.game,this.player,70,60);
 	this.fireUI = new FireUI(this.game,this.buildingGroup,765,355);
 	
-	// Damage Fire Function
-	damageFire = function(particle,building){
+	// Kill particle function
+	hitBuilding = function(particle,building){
 		particle.kill();
-		building.damageFire();
 	}
-	print = function(particle,fire){
-		console.log('print');
-	}
-	
+
    },//end_create
    update: function(){	
    // start UI update functions
 	this.waterUI.update();
 	this.fireUI.update();
 	
-	// collisions
-	this.game.physics.arcade.collide(this.emitter, this.buildingGroup);
+	// - Collisions -
+	// Buildings
+	this.game.physics.arcade.collide(this.emitter, this.buildingGroup,hitBuilding); // emitter with buildings
+	this.game.physics.arcade.collide(this.player, this.buildingGroup); // player with buildings
+	
+	// Fires
 	this.buildingGroup.forEach(function(building){
-		this.game.physics.arcade.collide(this.emitter,building.fireGroup,print);
+		this.game.physics.arcade.collide(this.emitter,building.fireGroup,building.damageFire); // emitter with fire
 	},this);
-	this.game.physics.arcade.collide(this.player, this.buildingGroup);
 
    },//end_update
 
-   render: function() {
+ /*  render: function() {
 	   this.buildingGroup.forEach(function(building){
 		   building.fireGroup.forEach(function(fire){
 			   this.game.debug.body(fire);
@@ -90,5 +89,5 @@ stGame.prototype = {
 	   },this);
    // display fps
     //  this.game.debug.text('FPS: ' + this.game.time.fps, 20, 580, 'yellow');
-   }
+   }*/
 };//end_s1Game
