@@ -9,8 +9,8 @@ var WaterHose = function(game,attachments,x,y){
 
 	// Initialize variables
     this.waterStreamMaxDistance = 250; // Max distance of water
-    this.particleVelocityOffsetMax = 200; // distance of player to mouse cursor
-    this.particleVelocityOffsetMin = 80;
+    this.particleVelocityOffsetMax = 10000; // distance of player to mouse cursor
+    this.particleVelocityOffsetMin = 9900;
     this.particleVelocityOffsetNarrowing = 0.5; // particle narrowing
     this.particleVelocityOffsetNoise = 10; // adds variation to water particles
 
