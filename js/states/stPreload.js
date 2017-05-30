@@ -21,6 +21,7 @@ stPreload.prototype = {
         this.load.image('News1', "News1.png");
         this.load.image('News2', "News2.png");
         this.load.image('News3', "News3.png");
+		this.load.image('indi', 'fireIndicator.png');
         
       //  this.load.atlas('StartButtons', 'buttonsheet.png', 'buttonsheet.json');
 
