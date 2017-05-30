@@ -2,12 +2,8 @@
 // Creates and attaches an emitter that generates water particles
 // Extends Phaser.Emitter and takes
 var WaterHose = function(game,attachments,x,y){
-<<<<<<< HEAD
-    console.log('create hose');
-=======
 	console.log('create hose');
 
->>>>>>> 7f2ee85a0e722db7a2bba2504a5630ed4150ae6d
 	// Create emitter
 	Phaser.Particles.Arcade.Emitter.call(this, game, x, y); // create emitter
 	this.game.physics.enable(this, Phaser.Physics.ARCADE); // enable physics
@@ -37,10 +33,6 @@ var WaterHose = function(game,attachments,x,y){
 		particle.body.allowGravity = false;
 	}, this);
     
-    this.water_spray = game.add.audio('water_spray');
-    this.water_end = game.add.audio('water_end');
-    this.water_out = game.add.audio('water_out');
-
 };
 
 // Update the prototype
@@ -87,16 +79,3 @@ WaterHose.prototype.update = function() {
 			this.attachment.waterLevel -= 0.1; // water flow rate, needs changing soon
         }
     }
-    
-    if (this.attachment.waterLevel > 0) {
-        this.game.input.onDown.add(playsound, this);
-        this.game.input.onUp.add(stopsound, this);
-    }
-};
-var playsound = function() {
-    this.water_spray.play('',0,0.75, true);
-};
-var stopsound = function() {
-    this.water_spray.stop();
-    this.water_end.play('',0,1,false);
-}
