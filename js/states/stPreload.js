@@ -26,6 +26,13 @@ stPreload.prototype = {
 		this.game.load.image('bg','tiledmap.png');
       
         //load assets from atlas (if applicable)
+        
+        //load audio assets
+        this.load.path = "assets/audio/"
+        this.load.audio('water_spray', 'water_spray.mp3');
+        this.load.audio('water_end', 'water_end.mp3');
+        this.load.audio('water_out', 'water_out.mp3');
+        
 
    },//end_preload
    create: function(){

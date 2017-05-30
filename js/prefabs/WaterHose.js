@@ -2,7 +2,7 @@
 // Creates and attaches an emitter that generates water particles
 // Extends Phaser.Emitter and takes
 var WaterHose = function(game,attachments,x,y){
-	console.log('create hose');
+    console.log('create hose');
 	// Create emitter
 	Phaser.Particles.Arcade.Emitter.call(this, game, x, y); // create emitter
 	this.game.physics.enable(this, Phaser.Physics.ARCADE); // enable physics
@@ -14,7 +14,7 @@ var WaterHose = function(game,attachments,x,y){
     this.particleVelocityOffsetNarrowing = 0.5; // particle narrowing
     this.particleVelocityOffsetNoise = 10; // adds variation to water particles
 
-	// Attachment variabless
+	// Attachment variables
     this.emitterSpriteOffsetX = x; // offset from the sprite
     this.emitterSpriteOffsetY = y;
 	this.attachment = attachments;
@@ -30,6 +30,10 @@ var WaterHose = function(game,attachments,x,y){
 		particle.enableBody = true;
 		particle.body.allowGravity = false;
 	}, this);
+    
+    this.water_spray = game.add.audio('water_spray');
+    this.water_end = game.add.audio('water_end');
+    this.water_out = game.add.audio('water_out');
 
 };
 
@@ -40,7 +44,7 @@ WaterHose.prototype.constructor = WaterHose; // creation call
 // Override Update Function
 WaterHose.prototype.update = function() {
 	if (this.game.input.mousePointer.isDown){
-		this.y = this.attachment.y + transformOverAngle(this.attachment.rotation, this.emitterSpriteOffsetX, this.emitterSpriteOffsetY).y;
+        this.y = this.attachment.y + transformOverAngle(this.attachment.rotation, this.emitterSpriteOffsetX, this.emitterSpriteOffsetY).y;
 		this.x = this.attachment.x + transformOverAngle(this.attachment.rotation, this.emitterSpriteOffsetX, this.emitterSpriteOffsetY).x;
 
 		var adjustedMouseX = this.game.input.mousePointer.x + this.game.camera.x;
@@ -74,7 +78,19 @@ WaterHose.prototype.update = function() {
 		// emit particles until out of water
 		if(this.attachment.waterLevel > 0){
 			this.emitParticle();
-			this.attachment.waterLevel -= 0.3; // water flow rate, needs changing soon
-		}
-   }
+			this.attachment.waterLevel -= 0.1; // water flow rate, needs changing soon
+        }
+    }
+    
+    if (this.attachment.waterLevel > 0) {
+        this.game.input.onDown.add(playsound, this);
+        this.game.input.onUp.add(stopsound, this);
+    }
 };
+var playsound = function() {
+    this.water_spray.play('',0,0.75, true);
+};
+var stopsound = function() {
+    this.water_spray.stop();
+    this.water_end.play('',0,1,false);
+}
