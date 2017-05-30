@@ -45,14 +45,14 @@ stGame.prototype = {
    
    this.building3 = new Building(this.game,165,217,600,3,'Test_Building1');
    this.buildingGroup.add(this.building3);
-   this.building4 = new Building(this.game,1000,107,600,4,'Test_Building1');
+  this.building4 = new Building(this.game,1000,107,600,4,'Test_Building1');
    this.buildingGroup.add(this.building4);
    this.hydrant2 = new Hydrant(this.game,830,700,this.player);
    
-   this.building5 = new Building(this.game,386,249,600,5,'Test_Building1');
-   this.buildingGroup.add(this.building5); 
-   this.building6 = new Building(this.game,418,591,600,6,'Test_Building1');
-   this.buildingGroup.add(this.building6);
+  // this.building5 = new Building(this.game,386,249,600,5,'Test_Building1');
+  // this.buildingGroup.add(this.building5); 
+   //this.building6 = new Building(this.game,418,591,600,6,'Test_Building1');
+   //this.buildingGroup.add(this.building6);
 
    this.hydrant3 = new Hydrant(this.game,615,100,this.player);
    
