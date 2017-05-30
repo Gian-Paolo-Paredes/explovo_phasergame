@@ -42,6 +42,11 @@ stPreload.prototype = {
         //load assets from atlas (if applicable)
         
         //load audio assets
+        this.load.path = "assets/audio/"
+        this.load.audio('water_spray', 'water_spray.mp3');
+        this.load.audio('water_end', 'water_end.mp3');
+        this.load.audio('water_out1', 'water_out1.mp3');
+        this.load.audio('water_out2', 'water_out2.mp3');
 
    },//end_preload
    create: function(){
