@@ -10,8 +10,8 @@ var WaterHose = function(game,attachments,x,y){
 
 	// Initialize variables
     this.waterStreamMaxDistance = 250; // Max distance of water
-    this.particleVelocityOffsetMax = 10000; // distance of player to mouse cursor
-    this.particleVelocityOffsetMin = 9900;
+    this.particleVelocityOffsetMax = 200; // distance of player to mouse cursor
+    this.particleVelocityOffsetMin = 80;
     this.particleVelocityOffsetNarrowing = 0.5; // particle narrowing
     this.particleVelocityOffsetNoise = 10; // adds variation to water particles
 
@@ -91,7 +91,7 @@ WaterHose.prototype.update = function() {
     this.game.input.onUp.add(stopSound, this);
     
     // stop water spray sound when waterLevel is 0
-    if (this.attachment.waterLevel == 0) {
+    if (this.attachment.waterLevel <= 0) {
         this.water_spray.stop();
     }
 };
