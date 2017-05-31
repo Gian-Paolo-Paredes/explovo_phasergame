@@ -3,6 +3,7 @@ var stGame = function(game) {
 
    //Rioter_
    var MM;
+   var MM2;
    //_Rioter
 };
 stGame.prototype = {
@@ -27,10 +28,16 @@ stGame.prototype = {
       // Create a new Player
       this.player = new Player(this.game,this.game.world.centerX, this.game.world.centerY, 'Player');
      this.game.camera.follow(this.player,4,0.1,0.1);  // set camera to player
-	  
+
 	  // Attach hose to player object
       this.emitter = new WaterHose(this.game, this.player, 30,15);
       this.world.moveDown(this.emitter);
+
+
+
+
+
+      //TEST CODE< REMOVE this.add.sprite(this.game.world.centerX, this.game.world.height - 100, "moltav");
 
    // Create new buildings
    // manual creation for this test
@@ -40,33 +47,69 @@ stGame.prototype = {
    //this.buildingGroup.add(this.building1);
 
    this.building2 = new Building(this.game,1000,676,300,2,'Test_Building1');
-   this.buildingGroup.add(this.building2); 
+   this.buildingGroup.add(this.building2);
    //this.hydrant1 = new Hydrant(this.game,300,1000,this.player);
-   
+
    this.building3 = new Building(this.game,165,217,600,3,'Test_Building1');
    this.buildingGroup.add(this.building3);
    this.building4 = new Building(this.game,1000,107,600,4,'Test_Building1');
    this.buildingGroup.add(this.building4);
    this.hydrant2 = new Hydrant(this.game,830,700,this.player);
-   
+
    this.building5 = new Building(this.game,386,249,600,5,'Test_Building1');
-   this.buildingGroup.add(this.building5); 
+   this.buildingGroup.add(this.building5);
    this.building6 = new Building(this.game,418,591,600,6,'Test_Building1');
    this.buildingGroup.add(this.building6);
 
+
+
+
+
+
+   this.hydrantGroup = this.game.add.group(); // generate building group
+
+
    this.hydrant3 = new Hydrant(this.game,615,100,this.player);
-   
+   this.hydrantGroup.add(this.hydrant3);
+
    this.G = this.game.input.keyboard.addKey(Phaser.Keyboard.G);
-   
+
       // Create UI
 	this.waterUI = new WaterUI(this.game,this.player,70,60);
 	this.fireUI = new FireUI(this.game,this.buildingGroup,765,355);
 
-	
+
+   //create rioters and add to MobManager
+   for(i=0; i<1; i++){
+      rioter = new Rioter(this.game, {key: "rioter", frame: 0}, this.game.rnd.integerInRange(0, this.game.width), this.game.rnd.integerInRange(0, this.game.height));
+      MM.addMob(rioter);
+      this.game.add.existing(rioter);
+   }
+   MM.positionAllOffscreenRandomly(this.game);
+
+   MM.setAllGoal(this.building2.centerX, this.building2.centerY, 0.4);
+
+
+building2 = this.building2;
+
+game = this.game; //temp solution until I can figure out a better way to refernce game
+   var throwAtBuilding2 = function(mob){
+      mob.freeze();
+      mob.fireAtBuilding(game, building2);
+      //tObject = new ThrownObject(game, {key: "moltav", frame: 0}, mob.centerX, mob.centerY);
+   };
+
+   //This is for centered handle --> MM.addAllTriggerOnEntry(building2.x-(building2.width/2)-20, building2.y - (building2.height/2)- 20, building2.width+40, building2.height + 20, throwAtBuilding1);
+   MM.addAllTriggerOnEntry(building2.x-60, building2.y - 60, building2.width+120, building2.height + 120, throwAtBuilding2);
+   MM.addAllTriggerOnCollision(this.buildingGroup, null, false);
+   MM.addAllTriggerOnCollision(this.player);
+   MM.addAllTriggerOnCollision(this.hydrantGroup);
+
+
 	// Kill particle function
 	hitBuilding = function(particle,building){
 		particle.kill();
-	}
+	};
 
    },//end_create
 
@@ -77,14 +120,15 @@ stGame.prototype = {
    }
 
    // start UI update functions
+   MM.update(this.game);
 	this.waterUI.update();
 	this.fireUI.update();
-	
+
 	// - Collisions -
 	// Buildings
 	this.game.physics.arcade.collide(this.emitter, this.buildingGroup,hitBuilding); // emitter with buildings
 	this.game.physics.arcade.collide(this.player, this.buildingGroup); // player with buildings
-	
+
 	// Fires
 	this.buildingGroup.forEach(function(building){
 		this.game.physics.arcade.overlap(this.emitter,building.fireGroup,building.damageFire); // emitter with fire

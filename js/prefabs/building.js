@@ -8,7 +8,7 @@ var Building = function(game, x, y, health, fires, key, src){
 	this.body.moves = false;
 	//this.anchor.set(0.5,0.5); // set anchor to center
 	this.game.add.existing(this);
-	
+
 	// Parameters
 	this.health = health; // default hp set
 	this.damageMult = 0.1; // damage multiplier
