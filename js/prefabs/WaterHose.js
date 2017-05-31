@@ -37,6 +37,9 @@ var WaterHose = function(game,attachments,x,y){
     this.water_end = game.add.audio('water_end');
     this.water_out1 = game.add.audio('water_out1');
     this.water_out2 = game.add.audio('water_out2');
+    
+    this.game.input.onDown.add(this.playSound, this);
+    this.game.input.onUp.add(this.stopSound, this);
 
 
 };
@@ -44,6 +47,12 @@ var WaterHose = function(game,attachments,x,y){
 // Update the prototype
 WaterHose.prototype = Object.create(Phaser.Particles.Arcade.Emitter.prototype);
 WaterHose.prototype.constructor = WaterHose; // creation call
+
+WaterHose.prototype.create = function() {
+    // add listeners to play audio on mouse pressed/released
+    //this.game.input.onDown.add(this.playSound, this);
+    //this.game.input.onUp.add(this.stopSound, this);
+}
 
 // Override Update Function
 WaterHose.prototype.update = function() {
@@ -86,17 +95,13 @@ WaterHose.prototype.update = function() {
         }
     }
     
-    // add listeners to play audio on mouse pressed/released
-    this.game.input.onDown.add(playSound, this);
-    this.game.input.onUp.add(stopSound, this);
-    
     // stop water spray sound when waterLevel is 0
     if (this.attachment.waterLevel <= 0) {
         this.water_spray.stop();
     }
 };
 
-var playSound = function() {
+WaterHose.prototype.playSound = function() {
     // Play spray sound on mouse press
     if (this.attachment.waterLevel > 0) {
         this.water_spray.play('', 0, 0.75, true);
@@ -106,13 +111,15 @@ var playSound = function() {
     }
 };
 
-var stopSound = function() {
+WaterHose.prototype.stopSound = function() {
     // Stop spray sound, play spray release sound on mouse release
     this.water_spray.stop();
-    if (this.attachment.waterLevel > 0) {
-        this.water_end.play('', 0, .75, false);
-    } else {
-        this.water_out2.play('', 0, 0.50, false);
+    if (this.game.input.activePointer.withinGame){
+        if (this.attachment.waterLevel > 0) {
+            this.water_end.play('', 0, .75, false);
+        } else {
+            this.water_out2.play('', 0, 0.50, false);
+        }
     }
 };
 
