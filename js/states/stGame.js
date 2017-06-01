@@ -33,12 +33,6 @@ stGame.prototype = {
       this.emitter = new WaterHose(this.game, this.player, 30,15);
       this.world.moveDown(this.emitter);
 
-
-
-
-
-      //TEST CODE< REMOVE this.add.sprite(this.game.world.centerX, this.game.world.height - 100, "moltav");
-
    // Create new buildings
    // manual creation for this test
    this.buildingGroup = this.game.add.group(); // generate building group
@@ -46,7 +40,7 @@ stGame.prototype = {
    //this.building1 = new Building(this.game,400,400,200,1,'building');
    //this.buildingGroup.add(this.building1);
 
-   this.building2 = new Building(this.game,1000,676,300,2,'Test_Building1');
+   this.building2 = new Building(this.game,1000,676,300,0,'Test_Building1');
    this.buildingGroup.add(this.building2);
    //this.hydrant1 = new Hydrant(this.game,300,1000,this.player);
 
@@ -54,33 +48,28 @@ stGame.prototype = {
    this.buildingGroup.add(this.building3);
    this.building4 = new Building(this.game,1000,107,600,4,'Test_Building1');
    this.buildingGroup.add(this.building4);
-   this.hydrant2 = new Hydrant(this.game,830,700,this.player);
+
+
 
    this.building5 = new Building(this.game,386,249,600,5,'Test_Building1');
    this.buildingGroup.add(this.building5);
    this.building6 = new Building(this.game,418,591,600,6,'Test_Building1');
    this.buildingGroup.add(this.building6);
 
-
-
-
-
-
    this.hydrantGroup = this.game.add.group(); // generate building group
 
-
+   this.hydrant2 = new Hydrant(this.game,830,700,this.player);
+   this.hydrantGroup.add(this.hydrant2);
    this.hydrant3 = new Hydrant(this.game,615,100,this.player);
    this.hydrantGroup.add(this.hydrant3);
 
    this.G = this.game.input.keyboard.addKey(Phaser.Keyboard.G);
 
-      // Create UI
-	this.waterUI = new WaterUI(this.game,this.player,70,60);
-	this.fireUI = new FireUI(this.game,this.buildingGroup,765,355);
+
 
 
    //create rioters and add to MobManager
-   for(i=0; i<1; i++){
+   for(i=0; i<19; i++){
       rioter = new Rioter(this.game, {key: "rioter", frame: 0}, this.game.rnd.integerInRange(0, this.game.width), this.game.rnd.integerInRange(0, this.game.height));
       MM.addMob(rioter);
       this.game.add.existing(rioter);
@@ -94,22 +83,31 @@ building2 = this.building2;
 
 game = this.game; //temp solution until I can figure out a better way to refernce game
    var throwAtBuilding2 = function(mob){
-      mob.freeze();
+      //mob.freeze();
       mob.fireAtBuilding(game, building2);
+      mob.setGoalPoint(game.world.centerX, game.world.centerY, 0.5);
       //tObject = new ThrownObject(game, {key: "moltav", frame: 0}, mob.centerX, mob.centerY);
    };
 
    //This is for centered handle --> MM.addAllTriggerOnEntry(building2.x-(building2.width/2)-20, building2.y - (building2.height/2)- 20, building2.width+40, building2.height + 20, throwAtBuilding1);
+   // The less movable an object is, the further down the list it should be
    MM.addAllTriggerOnEntry(building2.x-60, building2.y - 60, building2.width+120, building2.height + 120, throwAtBuilding2);
-   MM.addAllTriggerOnCollision(this.buildingGroup, null, false);
+   MM.addAllTriggerOnCollision(this.emitter, null, false);
    MM.addAllTriggerOnCollision(this.player);
-   MM.addAllTriggerOnCollision(this.hydrantGroup);
+   MM.addAllTriggerOnCollision(this.hydrantGroup, null, false);
+   MM.addAllTriggerOnCollision(this.buildingGroup, null, false);
 
+
+   // Create UI
+   this.waterUI = new WaterUI(this.game,this.player,70,60);
+   this.fireUI = new FireUI(this.game,this.buildingGroup,765,355);
 
 	// Kill particle function
 	hitBuilding = function(particle,building){
 		particle.kill();
 	};
+
+
 
    },//end_create
 
