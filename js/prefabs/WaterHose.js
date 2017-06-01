@@ -15,7 +15,7 @@ var WaterHose = function(game,attachments,x,y){
     this.particleVelocityOffsetNarrowing = 0.5; // particle narrowing
     this.particleVelocityOffsetNoise = 10; // adds variation to water particles
 
-	// Attachment variabless
+	// Attachment variables
     this.emitterSpriteOffsetX = x; // offset from the sprite
     this.emitterSpriteOffsetY = y;
 	this.attachment = attachments;
@@ -32,6 +32,12 @@ var WaterHose = function(game,attachments,x,y){
 		particle.enableBody = true;
 		particle.body.allowGravity = false;
 	}, this);
+    
+    this.water_spray = game.add.audio('water_spray');
+    this.water_end = game.add.audio('water_end');
+    this.water_out1 = game.add.audio('water_out1');
+    this.water_out2 = game.add.audio('water_out2');
+
 
 };
 
@@ -42,7 +48,7 @@ WaterHose.prototype.constructor = WaterHose; // creation call
 // Override Update Function
 WaterHose.prototype.update = function() {
 	if (this.game.input.mousePointer.isDown){
-		this.y = this.attachment.y + transformOverAngle(this.attachment.rotation, this.emitterSpriteOffsetX, this.emitterSpriteOffsetY).y;
+        this.y = this.attachment.y + transformOverAngle(this.attachment.rotation, this.emitterSpriteOffsetX, this.emitterSpriteOffsetY).y;
 		this.x = this.attachment.x + transformOverAngle(this.attachment.rotation, this.emitterSpriteOffsetX, this.emitterSpriteOffsetY).x;
 
 		var adjustedMouseX = this.game.input.mousePointer.x + this.game.camera.x;
@@ -76,7 +82,37 @@ WaterHose.prototype.update = function() {
 		// emit particles until out of water
 		if(this.attachment.waterLevel > 0){
 			this.emitParticle();
-			this.attachment.waterLevel -= 0.1; // water flow rate, needs changing soon
-		}
-   }
+			this.attachment.waterLevel -= 0.2; // water flow rate, needs changing soon  
+        }
+    }
+    
+    // add listeners to play audio on mouse pressed/released
+    this.game.input.onDown.add(playSound, this);
+    this.game.input.onUp.add(stopSound, this);
+    
+    // stop water spray sound when waterLevel is 0
+    if (this.attachment.waterLevel <= 0) {
+        this.water_spray.stop();
+    }
 };
+
+var playSound = function() {
+    // Play spray sound on mouse press
+    if (this.attachment.waterLevel > 0) {
+        this.water_spray.play('', 0, 0.75, true);
+    } else {
+        this.water_spray.stop();
+        this.water_out1.play('', 0, 0.75, false);
+    }
+};
+
+var stopSound = function() {
+    // Stop spray sound, play spray release sound on mouse release
+    this.water_spray.stop();
+    if (this.attachment.waterLevel > 0) {
+        this.water_end.play('', 0, .75, false);
+    } else {
+        this.water_out2.play('', 0, 0.50, false);
+    }
+};
+

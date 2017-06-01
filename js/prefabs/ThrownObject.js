@@ -12,7 +12,6 @@ var ThrownObject = function(game, spriteObject, positionX, positionY, sounds) {
 	this.inProgress = false;
 	this.building = null;
 
-	game.debug.body(this);
 };
 
 ThrownObject.prototype = Object.create(Phaser.Sprite.prototype);

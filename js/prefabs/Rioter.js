@@ -30,6 +30,7 @@ function Rioter(game, spriteObject, positionX, positionY){
    this.flockingVector = {x: 0, y: 0};
    this.primaryGoalX = null;
    this.primaryGoalY = null;
+   this.goalVectorWeight = null;
    this.headToGoal = false;
    this.lastFrameRotation = this.rotationDefault;
    // move according to the rules of MobManager

@@ -46,15 +46,13 @@ stGame.prototype = {
 
    this.building3 = new Building(this.game,165,217,600,3,'Test_Building1');
    this.buildingGroup.add(this.building3);
-   this.building4 = new Building(this.game,1000,107,600,4,'Test_Building1');
+  this.building4 = new Building(this.game,1000,107,600,4,'Test_Building1');
    this.buildingGroup.add(this.building4);
 
-
-
-   this.building5 = new Building(this.game,386,249,600,5,'Test_Building1');
-   this.buildingGroup.add(this.building5);
-   this.building6 = new Building(this.game,418,591,600,6,'Test_Building1');
-   this.buildingGroup.add(this.building6);
+  // this.building5 = new Building(this.game,386,249,600,5,'Test_Building1');
+  // this.buildingGroup.add(this.building5);
+   //this.building6 = new Building(this.game,418,591,600,6,'Test_Building1');
+   //this.buildingGroup.add(this.building6);
 
    this.hydrantGroup = this.game.add.group(); // generate building group
 
@@ -89,10 +87,16 @@ game = this.game; //temp solution until I can figure out a better way to refernc
       //tObject = new ThrownObject(game, {key: "moltav", frame: 0}, mob.centerX, mob.centerY);
    };
 
-   //This is for centered handle --> MM.addAllTriggerOnEntry(building2.x-(building2.width/2)-20, building2.y - (building2.height/2)- 20, building2.width+40, building2.height + 20, throwAtBuilding1);
+   var onSprayIncreaseGoalweight = function(mob){
+      //mob.freeze();
+      mob.setGoalPoint(mob.primaryGoalX, mob.primaryGoalY, (mob.goalVectorWeight + 0.02));
+      //tObject = new ThrownObject(game, {key: "moltav", frame: 0}, mob.centerX, mob.centerY);
+   };
+
+   MM.addAllTriggerOnEntry(building2.x-(building2.width/2)-60, building2.y - (building2.height/2)- 60, building2.width+120, building2.height + 120, throwAtBuilding2);
+   //This is for top left corner handle --> MM.addAllTriggerOnEntry(building2.x-60, building2.y - 60, building2.width+120, building2.height + 120, throwAtBuilding2);
    // The less movable an object is, the further down the list it should be
-   MM.addAllTriggerOnEntry(building2.x-60, building2.y - 60, building2.width+120, building2.height + 120, throwAtBuilding2);
-   MM.addAllTriggerOnCollision(this.emitter, null, false);
+   MM.addAllTriggerOnCollision(this.emitter, onSprayIncreaseGoalweight, false);
    MM.addAllTriggerOnCollision(this.player);
    MM.addAllTriggerOnCollision(this.hydrantGroup, null, false);
    MM.addAllTriggerOnCollision(this.buildingGroup, null, false);
