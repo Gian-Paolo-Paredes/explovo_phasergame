@@ -8,7 +8,7 @@ var Building = function(game, x, y, health, fires, key, src){
 	this.body.moves = false;
 	this.anchor.set(0.5,0.5); // set anchor to center
 	this.game.add.existing(this);
-	
+
 	// Parameters
 	this.health = health; // default hp set
 	this.damageMult = 0.1; // damage multiplier
@@ -29,7 +29,7 @@ Building.prototype.update = function(){
 		console.log('fire started');
 		this.startFire();
 	}*/
-	
+
 	if (this.fireGroup.countLiving() > 0){
 		// movement of the fire indicator
 		this.indicator.rotation = this.saved.physics.arcade.angleBetween(this,this.indicator);
@@ -37,7 +37,9 @@ Building.prototype.update = function(){
 		this.indicator.y = this.saved.camera.target.y;
 	}
 	else{
-		this.indicator.kill();
+		if(this.indicator!==undefined){
+			this.indicator.kill();
+		}
 	}
 	if(this.health > 0){
 		this.health -= this.fireGroup.countLiving() * this.damageMult;
