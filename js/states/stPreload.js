@@ -30,6 +30,7 @@ stPreload.prototype = {
         this.load.atlas('StartButtons', 'buttonsheet.png', 'buttonsheet.json');
 
         this.load.atlas('NextButtons', 'ContinueButtons.png', 'ContinueButtons.json');
+        this.game.load.audio("whirling", 'audio/newstransition.mp3');
         
         this.game.load.tilemap('tilemap', 'tiles/MapTile.json', null, Phaser.Tilemap.TILED_JSON);
         this.game.load.image('TileAtlas', 'tiles/TileAtlas.png');
@@ -42,7 +43,6 @@ stPreload.prototype = {
         
         //load audio assets
         this.load.path = "assets/audio/"
-        this.game.load.audio("whirling", 'newstransition.mp3');
         this.load.audio('water_spray', 'water_spray.mp3');
         this.load.audio('water_end', 'water_end.mp3');
         this.load.audio('water_out1', 'water_out1.mp3');
