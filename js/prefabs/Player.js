@@ -12,7 +12,6 @@ var Player = function(game, x, y, key, src) {
 	
 	this.waterLevel = 100;
 	this.waterLevelTotal = 100;
-    this.isRefilling = false;
 
 	// set parameters
 	this.body.collideWorldBounds = true;
@@ -63,5 +62,4 @@ Player.prototype.waterUp = function(){
 	if (this.waterLevel < 100){
 		this.waterLevel += 0.5;
 	}
-
 };
