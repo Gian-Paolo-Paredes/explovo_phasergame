@@ -1,4 +1,3 @@
-
 // WaterHose
 // Creates and attaches an emitter that generates water particles
 // Extends Phaser.Emitter and takes
