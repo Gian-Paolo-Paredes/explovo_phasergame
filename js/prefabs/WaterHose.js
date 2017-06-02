@@ -3,8 +3,7 @@
 // Extends Phaser.Emitter and takes
 var WaterHose = function(game,attachments,x,y){
 	console.log('create hose');
-
-	// Create emitter
+// Create emitter
 	Phaser.Particles.Arcade.Emitter.call(this, game, x, y); // create emitter
 	this.game.physics.enable(this, Phaser.Physics.ARCADE); // enable physics
 
@@ -24,6 +23,8 @@ var WaterHose = function(game,attachments,x,y){
 	// Declaring some variables
     this.particleVelocityOffset;
     this.distMouseCursorToEmitter;
+    //this.isEmitting = false;
+    this.onEmit = new Phaser.Signal();
 
 	// Create particles
 	this.makeParticles('Particle',0,1000,true,false);
@@ -37,13 +38,20 @@ var WaterHose = function(game,attachments,x,y){
     this.water_end = game.add.audio('water_end');
     this.water_out1 = game.add.audio('water_out1');
     this.water_out2 = game.add.audio('water_out2');
-
-
+    
+    //this.water_spray.allowMultiple = true;
+    
+    this.game.input.onDown.add(this.playSound, this);
+    this.game.input.onUp.add(this.stopSound, this);
 };
 
 // Update the prototype
 WaterHose.prototype = Object.create(Phaser.Particles.Arcade.Emitter.prototype);
 WaterHose.prototype.constructor = WaterHose; // creation call
+
+WaterHose.prototype.create = function() {
+
+};
 
 // Override Update Function
 WaterHose.prototype.update = function() {
@@ -80,39 +88,41 @@ WaterHose.prototype.update = function() {
 		this.minParticleSpeed = new Phaser.Point(this.emitterToMouseDistanceX-this.particleVelocityOffset, this.emitterToMouseDistanceY-this.particleVelocityOffset);
 
 		// emit particles until out of water
-		if(this.attachment.waterLevel > 0){
+		if(this.attachment.waterLevel > 0) {
 			this.emitParticle();
-			this.attachment.waterLevel -= 0.2; // water flow rate, needs changing soon  
+			this.attachment.waterLevel -= 0.2; // water flow rate, needs changing soon 
+            //this.isEmitting = true;
         }
     }
-    
-    // add listeners to play audio on mouse pressed/released
-    this.game.input.onDown.add(playSound, this);
-    this.game.input.onUp.add(stopSound, this);
-    
-    // stop water spray sound when waterLevel is 0
-    if (this.attachment.waterLevel <= 0) {
+    // stop water spray sound and play water end sound when waterLevel is 0
+    if (this.attachment.waterLevel <= 0 && this.water_spray.isPlaying) {
         this.water_spray.stop();
+        this.water_out1.play('', 0, 0.75, false);
+    }
+    // start playing water spray sound if refilling from 0 and mouse button was held down
+    if (this.attachment.waterLevel > 0 && this.attachment.waterLevel < .3 && !this.water_spray.isPLaying && this.game.input.mousePointer.isDown) {
+        this.water_spray.play('', 0, 0.75, true);
     }
 };
 
-var playSound = function() {
+WaterHose.prototype.playSound = function() {
     // Play spray sound on mouse press
     if (this.attachment.waterLevel > 0) {
         this.water_spray.play('', 0, 0.75, true);
     } else {
-        this.water_spray.stop();
         this.water_out1.play('', 0, 0.75, false);
     }
 };
 
-var stopSound = function() {
+WaterHose.prototype.stopSound = function() {
     // Stop spray sound, play spray release sound on mouse release
     this.water_spray.stop();
-    if (this.attachment.waterLevel > 0) {
-        this.water_end.play('', 0, .75, false);
-    } else {
-        this.water_out2.play('', 0, 0.50, false);
+    if (this.game.input.activePointer.withinGame) {
+        if (this.attachment.waterLevel > 0) {
+            this.water_end.play('', 0, .75, false);
+        } else {
+            this.water_out2.play('', 0, 0.50, false);
+        }
     }
 };
 
