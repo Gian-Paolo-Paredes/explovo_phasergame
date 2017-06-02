@@ -40,6 +40,8 @@ var WaterHose = function(game,attachments,x,y){
     this.water_out1 = game.add.audio('water_out1');
     this.water_out2 = game.add.audio('water_out2');
     
+    //this.water_spray.allowMultiple = true;
+    
     this.game.input.onDown.add(this.playSound, this);
     this.game.input.onUp.add(this.stopSound, this);
 };
@@ -93,14 +95,13 @@ WaterHose.prototype.update = function() {
             //this.isEmitting = true;
         }
     }
-    
     // stop water spray sound when waterLevel is 0
     if (this.attachment.waterLevel <= 0 && this.water_spray.isPlaying) {
         this.water_spray.stop();
         this.water_out1.play('', 0, 0.75, false);
     }
-    
-    if (this.attachment.isRefilling && this.attachment.waterLevel > 0 && !this.water_spray.isPLaying && this.game.input.mousePointer.isDown) {
+    // start playing water spray sound if refilling from 0 and mouse button was held down
+    if (this.attachment.isRefilling && this.attachment.waterLevel > 0 && this.attachment.waterLevel < 1 && !this.water_spray.isPLaying && this.game.input.mousePointer.isDown) {
         this.water_spray.play('', 0, 0.75, true);
     }
     
