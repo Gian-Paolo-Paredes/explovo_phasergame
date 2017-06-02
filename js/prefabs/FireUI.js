@@ -5,7 +5,16 @@ var FireUI = function(game, buildings, x, y){
 	this.total = 0;
 	this.fires = 0;
 	
+
 	// create UI and fix to camera
+	this.counter= game.add.image(700,50,'fireCount');
+	this.counter.anchor.set(0.5,0.5);
+	this.counter.scale.setTo(0.5,0.5);
+	this.counter.fixedToCamera=true;
+	//this.count = game.add.text(740,35, 'X ' + this.fires,{fontSize: '25px',fill:'yellow'});
+	//this.count.fixedToCamera=true;
+   	//this.add.text(500, 50, 'X', {fontSize: '15px', fill: 'white'});
+
 	this.uiInner = game.add.image(x,y,'FireLevel');
 	this.uiInner.anchor.set(0.5,1);
 	this.uiInner.fixedToCamera = true;

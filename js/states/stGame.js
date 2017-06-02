@@ -7,11 +7,11 @@ stGame.prototype = {
    },//end_preload
    create: function() {
    //--/ variable assignments
-	console.log('game bg');
+   console.log('game bg');
       //--/ tilemap variable
-		this.game.world.setBounds(0,0,1200,912); // initialize world bounds
+      this.game.world.setBounds(0,0,1200,912); // initialize world bounds
         this.game.stage.backgroundColor = "#228B22";
-		this.game.add.tileSprite(0,0,1200,912,'bg');
+      this.game.add.tileSprite(0,0,1200,912,'bg');
       /*  this.map = this.game.add.tilemap('tilemap');
         this.map.addTilesetImage('asd', 'TileAtlas');
         this.backgroundlayer = this.map.createLayer('BackgroundLayer');
@@ -20,8 +20,8 @@ stGame.prototype = {
       // Create a new Player
       this.player = new Player(this.game,this.game.world.centerX, this.game.world.centerY, 'Player');
      this.game.camera.follow(this.player,4,0.1,0.1);  // set camera to player
-	  
-	  // Attach hose to player object
+     
+     // Attach hose to player object
       this.emitter = new WaterHose(this.game, this.player, 25,15);
       this.world.moveDown(this.emitter);
 
@@ -29,44 +29,61 @@ stGame.prototype = {
    // Create new buildings
    // manual creation for this test
    this.buildingGroup = this.game.add.group(); // generate building group
+   //this.buildingGroup.scale.setTo(0.8,0.8);
    //this.building1 = new Building(this.game,400,400,200,1,'building');
    //this.buildingGroup.add(this.building1);
-   this.building2 = new Building(this.game,1000,676,300,2,'building');
+   this.building2 = new Building(this.game,1000,676,300,2,'Test_Building1');
    this.buildingGroup.add(this.building2); 
    //this.hydrant1 = new Hydrant(this.game,300,1000,this.player);
    
-   this.building3 = new Building(this.game,165,217,600,3,'building');
+   this.building3 = new Building(this.game,165,217,600,3,'Test_Building1');
    this.buildingGroup.add(this.building3);
-   this.building4 = new Building(this.game,1000,107,600,4,'building');
+   this.building4 = new Building(this.game,1000,107,600,4,'Test_Building1');
    this.buildingGroup.add(this.building4);
    this.hydrant2 = new Hydrant(this.game,830,700,this.player);
    
-   this.building5 = new Building(this.game,386,249,600,5,'building');
+   this.building5 = new Building(this.game,386,249,600,5,'Test_Building1');
    this.buildingGroup.add(this.building5); 
-   this.building6 = new Building(this.game,418,591,600,6,'building');
+   this.building6 = new Building(this.game,418,591,600,6,'Test_Building1');
    this.buildingGroup.add(this.building6);
    this.hydrant3 = new Hydrant(this.game,615,100,this.player);
+   //this.waterarrow = new WaterArrow(this.game,615,100,this.player);
+
+
    
+
+
+   
+   this.G = this.game.input.keyboard.addKey(Phaser.Keyboard.G);
    
       // Create UI
-	this.waterUI = new WaterUI(this.game,this.player,70,60);
-	this.fireUI = new FireUI(this.game,this.buildingGroup,765,355);
-	
-	// Damage Fire Function
-	damageFire = function(particle,building){
-		particle.kill();
-		building.damageFire();
-	}
-	
+   this.waterUI = new WaterUI(this.game,this.player,70,60);
+   this.fireUI = new FireUI(this.game,this.buildingGroup,765,355);
+
+
+this.end = 
+   
+   // Damage Fire Function
+   damageFire = function(particle,building){
+      particle.kill();
+      building.damageFire();
+   }
+   
    },//end_create
    update: function(){
+
+   if (this.G.isDown){
+      this.state.start("stGameOver");
+ 
+   }
+
    // start UI update functions
-	this.waterUI.update();
-	this.fireUI.update();
-	
-	// collisions
-	this.game.physics.arcade.collide(this.emitter, this.buildingGroup,damageFire);
-	this.game.physics.arcade.collide(this.player, this.buildingGroup);
+   this.waterUI.update();
+   this.fireUI.update();
+   
+   // collisions
+   this.game.physics.arcade.collide(this.emitter, this.buildingGroup,damageFire);
+   this.game.physics.arcade.collide(this.player, this.buildingGroup);
 
    },//end_update
    render: function() {

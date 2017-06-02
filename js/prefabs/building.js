@@ -1,6 +1,20 @@
 // -- Generic Building
 var Building = function(game, x, y, health, fires, key, src){
-	
+
+	//var onFire = game.add.sprite(game.world.centerX, 300,'Flame');
+   	//this.onFIre.animations.add('FlameOn', Phaser.Animation.generateFrameNames('FlameOn', 1, 6), 5, true);
+	//onFire.animations.add('FlameOn');
+
+   // onFire.animations.play('FlameOn', 24, true);
+
+    //  Bob the octopus up and down with a tween
+   // game.add.tween(octopus).to({ y: 300 }, 2000, Phaser.Easing.Quadratic.InOut, true, 0, 1000, true);
+
+
+
+    //var octopus = game.add.sprite(300, 200, 'octopus');
+
+	this.onFireCount=0;
 	// Creation Code
 	Phaser.Sprite.call(this, game, x, y, key, src); // call sprite
 	game.physics.enable(this, Phaser.Physics.ARCADE); // enable physics
@@ -8,7 +22,9 @@ var Building = function(game, x, y, health, fires, key, src){
 	this.body.moves = false;
 	//this.anchor.set(0.5,0.5); // set anchor to center
 	this.game.add.existing(this);
-	
+
+	//this.count = game.add.text(740,35, 'X ' + this.fireCount,{fontSize: '25px',fill:'yellow'});
+	//this.count.fixedToCamera=true;
 	// Parameters
 	this.health = health; // default hp set
 	this.fireCount = 0;
@@ -38,7 +54,18 @@ Building.prototype.update = function(){
 // Starts a fire on this building
 Building.prototype.startFire = function(){
 	// generate fire randomly over this sprite and add to fire group
-	var fire = this.game.add.sprite(this.x + this.game.rnd.integerInRange(0,this.width-100),this.y + this.game.rnd.integerInRange(0,this.height-100),'fire');
+	//var boom = this.game.add.sprite(this.x + this.game.rnd.integerInRange(0,this.width-100),this.y + this.game.rnd.integerInRange(0,this.height-100),'Explosion');
+	//boom.scale.setTo(0.5,0.5);
+	//boom.animations.add('BOOM');
+	//boom.animations.play('Boom',5,true);
+
+	var fire = this.game.add.sprite(this.x + this.game.rnd.integerInRange(0,this.width-100),this.y + this.game.rnd.integerInRange(0,this.height-100),'Explosion');
+	this.onFireCount =+1;
+	fire.scale.setTo(0.5,0.5);
+	fire.animations.add('FlameOn');
+
+    fire.animations.play('FlameOn', 10, true);
+
 	//fire.anchor.setTo(0.5,0.5);
 	this.game.add.existing(fire);
 	this.fireGroup.add(fire);
