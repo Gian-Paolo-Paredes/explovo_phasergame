@@ -18,5 +18,8 @@ Hydrant.prototype.update = function(){
 	
 	if (this.game.math.distance(this.x, this.y, this.player.x, this.player.y) < 75){
 		this.player.waterUp();
-	}
+        this.player.isRefilling = true;
+	} else {
+        this.player.isRefilling = false;
+    }
 };

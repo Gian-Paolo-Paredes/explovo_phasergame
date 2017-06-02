@@ -89,7 +89,7 @@ WaterHose.prototype.update = function() {
 		// emit particles until out of water
 		if(this.attachment.waterLevel > 0) {
 			this.emitParticle();
-			this.attachment.waterLevel -= 0.8; // water flow rate, needs changing soon 
+			this.attachment.waterLevel -= 0.2; // water flow rate, needs changing soon 
             //this.isEmitting = true;
         }
     }
@@ -98,6 +98,10 @@ WaterHose.prototype.update = function() {
     if (this.attachment.waterLevel <= 0 && this.water_spray.isPlaying) {
         this.water_spray.stop();
         this.water_out1.play('', 0, 0.75, false);
+    }
+    
+    if (this.attachment.isRefilling && this.attachment.waterLevel > 0 && !this.water_spray.isPLaying && this.game.input.mousePointer.isDown) {
+        this.water_spray.play('', 0, 0.75, true);
     }
     
    /* if (this.isEmitting) {
@@ -109,12 +113,12 @@ WaterHose.prototype.update = function() {
 
 WaterHose.prototype.playSound = function() {
     // Play spray sound on mouse press
-        if (this.attachment.waterLevel > 0) {
-            this.water_spray.play('', 0, 0.75, true);
-        } else {
-            this.water_spray.stop();
-            this.water_out1.play('', 0, 0.75, false);
-        }
+    if (this.attachment.waterLevel > 0) {
+        this.water_spray.play('', 0, 0.75, true);
+    } else {
+        this.water_spray.stop();
+        this.water_out1.play('', 0, 0.75, false);
+    }
 };
 
 WaterHose.prototype.stopSound = function() {
