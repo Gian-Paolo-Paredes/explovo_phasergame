@@ -34,6 +34,14 @@ stDirections.prototype = {
         
     },//end_out
     startGame: function() {
+<<<<<<< HEAD
         this.state.start("stContext1");
+=======
+<<<<<<< HEAD
+        this.state.start("stContext1");
+=======
+        this.state.start("stGame");
+>>>>>>> 7e90a3ff816f80ae3b539655b64e5f9252f9e6f5
+>>>>>>> 4ad041e41fe90ba58d37c72f4c324b7c20f5c02d
     }//end_startGame
 };
