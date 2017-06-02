@@ -107,7 +107,6 @@ WaterHose.prototype.update = function() {
 };
 
 WaterHose.prototype.playSound = function() {
-    console.log(this.attachment.isRefilling);
     // Play spray sound on mouse press
     if (this.attachment.waterLevel > 0) {
         this.water_spray.play('', 0, 0.75, true);
