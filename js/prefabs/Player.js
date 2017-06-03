@@ -25,8 +25,8 @@ var Player = function(game, x, y, key, src) {
 	this.d = game.input.keyboard.addKey(Phaser.Keyboard.D);
     
     // add in audio
-    this.refill = game.add.audio('refill');
-    this.refill_done = game.addaudio('refill_done');
+    //this.refill = game.add.audio('refill');
+    //this.refill_done = game.add.audio('refill_done');
 
 	// add this object to the game
 	this.game.add.existing(this);
@@ -65,5 +65,5 @@ Player.prototype.update = function() {
 Player.prototype.waterUp = function(){
 	if (this.waterLevel < 100){
 		this.waterLevel += 0.5;
-	}
+    }
 };

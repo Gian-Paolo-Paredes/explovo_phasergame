@@ -98,7 +98,7 @@ WaterHose.prototype.update = function() {
         this.water_out1.play('', 0, 0.75, false);
     }
     // start playing water spray sound if refilling from 0 and mouse button was held down
-    if (this.attachment.waterLevel > 0 && this.attachment.waterLevel < .3 && !this.water_spray.isPLaying && this.game.input.mousePointer.isDown) {
+    if (this.attachment.waterLevel > 0 && this.attachment.waterLevel < .3 && !this.water_spray.isPlaying && this.game.input.mousePointer.isDown) {
         this.water_spray.play('', 0, 0.75, true);
     }
 };
