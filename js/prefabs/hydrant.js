@@ -26,7 +26,7 @@ Hydrant.prototype.update = function(){
         
         // play refill sound if player stands near hydrant with less than max water Level
         if (!this.refill.isPlaying && this.player.waterLevel < 100) {
-            this.refill.play('', 0, .75, true);
+            this.refill.play('', 0, 1, true);
         } else if (this.player.waterLevel >= 100 && this.refill.isPlaying) { //stop refill sound and play refill done sound once water level max
             this.refill.stop();
             this.refill_done.play('', 0, .75, false);
