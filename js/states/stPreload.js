@@ -50,6 +50,7 @@ stPreload.prototype = {
         //load audio assets
         this.load.path = "assets/audio/"
         this.load.audio('title_screen', 'title screen.mp3');
+        this.load.audio('game_music', 'game music.mp3');
         this.load.audio('water_spray', 'water_spray.mp3');
         this.load.audio('water_end', 'water_end.mp3');
         this.load.audio('water_out1', 'water_out1.mp3');
@@ -62,7 +63,7 @@ stPreload.prototype = {
     },//end_preload
     create: function(){
         l("PreloadAssets_create");
-        this.game.sound.setDecodedCallback(['title_screen'], this.start, this);
+        this.game.sound.setDecodedCallback(['title_screen', 'game_music'], this.start, this);
     },//end_create
     start: function(){
          this.state.start("stTitle");
