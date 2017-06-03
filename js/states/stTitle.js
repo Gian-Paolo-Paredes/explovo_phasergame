@@ -19,7 +19,7 @@ stTitle.prototype = {
         button.onInputOut.add(this.out, this);  
         button.onInputUp.add(this.stopMusic, this);
         
-        // play music
+        // add and play music
         this.title_music = this.game.add.audio('title_screen');
         this.title_music.play('', 0, 1, true);
         
