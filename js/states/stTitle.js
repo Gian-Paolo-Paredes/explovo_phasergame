@@ -17,6 +17,11 @@ stTitle.prototype = {
         
         button.onInputOver.add(this.over, this);
         button.onInputOut.add(this.out, this);  
+        button.onInputUp.add(this.stopMusic, this);
+        
+        // add and play music
+        this.title_music = this.game.add.audio('title_screen');
+        this.title_music.play('', 0, 1, true);
         
     },//end_create
     over: function() {
@@ -27,8 +32,10 @@ stTitle.prototype = {
         l("out");
         
     },//end_out
+    stopMusic: function() {
+        this.title_music.stop();
+    },
     startGame: function() {
-
         this.state.start("stContext1");
 
     }//end_startGame
