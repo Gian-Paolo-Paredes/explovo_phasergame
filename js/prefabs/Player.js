@@ -23,6 +23,10 @@ var Player = function(game, x, y, key, src) {
 	this.a = game.input.keyboard.addKey(Phaser.Keyboard.A);
 	this.s = game.input.keyboard.addKey(Phaser.Keyboard.S);
 	this.d = game.input.keyboard.addKey(Phaser.Keyboard.D);
+    
+    // add in audio
+    this.refill = game.add.audio('refill');
+    this.refill_done = game.addaudio('refill_done');
 
 	// add this object to the game
 	this.game.add.existing(this);
