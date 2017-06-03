@@ -55,6 +55,7 @@ stPreload.prototype = {
         this.load.audio('water_out2', 'water_out2.mp3');
         this.load.audio('refill', 'refill.mp3');
         this.load.audio('refill_done', 'refill_done.mp3');
+        this.load.audio('refill_notdone', 'refill_notdone.mp3');
 
    },//end_preload
    create: function(){
