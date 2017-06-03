@@ -13,10 +13,10 @@ stPreload.prototype = {
         this.load.image('FireBar','(FireBar-81X360).png');
         this.load.image('FireLevel','(FireLevel-29X277).png');
         this.load.image('TitleScreen', 'riotfighter-titlescreen.png');
-		this.load.image('building','proto_Build1.png');
-		this.load.image('fire','Fire3.png');
-		this.load.image('buildingDestroyed','Building1-FinalBurn.png');
-		this.load.image('hydrant','FireHydrant.png');
+        this.load.image('building','proto_Build1.png');
+        this.load.image('fire','Fire3.png');
+        this.load.image('buildingDestroyed','Building1-FinalBurn.png');
+        this.load.image('hydrant','FireHydrant.png');
         this.load.image('DirectPage','DirectionsPage.png');
         this.load.image('News1', "News1.png");
         this.load.image('News2', "News2.png");
@@ -27,9 +27,9 @@ stPreload.prototype = {
 
 
 
-		this.load.image('indi', 'fireIndicator.png');
-        
-      //  this.load.atlas('StartButtons', 'buttonsheet.png', 'buttonsheet.json');
+        this.load.image('indi', 'fireIndicator.png');
+
+        //  this.load.atlas('StartButtons', 'buttonsheet.png', 'buttonsheet.json');
 
         this.load.image('GameOverPage',"GameOverScreen.png");
 
@@ -40,15 +40,16 @@ stPreload.prototype = {
 
         this.game.load.tilemap('tilemap', 'tiles/MapTile.json', null, Phaser.Tilemap.TILED_JSON);
         this.game.load.image('TileAtlas', 'tiles/TileAtlas.png');
-		this.load.path="assets/tilemap/";
-		this.game.load.image('bg','tiledmap.png');
+        this.load.path="assets/tilemap/";
+        this.game.load.image('bg','tiledmap.png');
 
 
 
         //load assets from atlas (if applicable)
-        
+
         //load audio assets
         this.load.path = "assets/audio/"
+        this.load.audio('title_screen', 'title screen.mp3');
         this.load.audio('water_spray', 'water_spray.mp3');
         this.load.audio('water_end', 'water_end.mp3');
         this.load.audio('water_out1', 'water_out1.mp3');
@@ -57,10 +58,13 @@ stPreload.prototype = {
         this.load.audio('refill', 'refill.mp3');
         this.load.audio('refill_done', 'refill_done.mp3');
         this.load.audio('refill_notdone', 'refill_notdone.mp3');
-
-   },//end_preload
-   create: function(){
+    
+    },//end_preload
+    create: function(){
         l("PreloadAssets_create");
-        this.state.start("stTitle");
-   },//end_create
+        this.game.sound.setDecodedCallback(['title_screen'], this.start, this);
+    },//end_create
+    start: function(){
+         this.state.start("stTitle");
+    }, //end_start
 };
