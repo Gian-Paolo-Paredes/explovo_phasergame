@@ -15,7 +15,7 @@ var ThrownObject = function(game, spriteObject, positionX, positionY, sounds) {
     
     // add audio
     this.molotov = game.add.audio('molotov');
-    this.molotov.allowMultiple = true;
+    this.molotov.allowMultiple = true; //so you can hear all the molotovs shatter yay
 };
 
 ThrownObject.prototype = Object.create(Phaser.Sprite.prototype);

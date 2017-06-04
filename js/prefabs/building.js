@@ -50,6 +50,7 @@ Building.prototype.update = function(){
 		this.isDead = true;
 		this.fireGroup.removeAll(true);
 		this.loadTexture('buildingDestroyed',0);
+        
 	}
 	// Debug code
 	/*this.fireGroup.forEach(function(fire){
@@ -60,7 +61,7 @@ Building.prototype.update = function(){
 // startFire
 // Starts a fire on this building
 // Accepts a side in radians and generates a random fire
-Building.prototype.startFire = function(side){
+Building.prototype.startFire = function(side){    
 	// Get the side of the building that was lit
 	var angle = rToA(side);
 	if (angle >= -45 && angle <= 45){ // left
@@ -94,6 +95,9 @@ Building.prototype.startFire = function(side){
 		this.indicator.anchor.setTo(0.5,0.5);
 	}
 	// sound goes here
+    if (!fire.fire_sound.isPlaying) {
+        fire.fire_sound.play('', 0, .07, true);
+    }
 };
 
 Building.prototype.damageFire = function(particle,fire){

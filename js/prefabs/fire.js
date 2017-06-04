@@ -39,15 +39,18 @@ var Fire = function(game, x, y, angle){
 	// Parameters
 	this.health = 200; // default hp set
 	this.sizzle = game.add.audio('fireSizzle');
+    this.fire_sound = game.add.audio('fire');
+    this.fire_sound.allowMultiple = true;
 };
 	
 Fire.prototype = Object.create(Phaser.Sprite.prototype);
 Fire.prototype.constructor = Fire; // creation call
 
 Fire.prototype.damage = function(){
-	this.sizzle.play('',0,1,false,false);
+	this.sizzle.play('', 0, 1, false, false);
 	this.health -= 1;
 	if (this.health < 0){
+        this.fire_sound.stop();
 		this.kill();
 	}
 };
