@@ -37,20 +37,20 @@ stGame.prototype = {
    // manual creation for this test
    this.buildingGroup = this.game.add.group(); // generate building group
    //this.buildingGroup.scale.setTo(0.8,0.8);
-   //this.building1 = new Building(this.game,400,400,200,1,'building');
-   //this.buildingGroup.add(this.building1);
+   this.building1 = new Building(this.game,400,400,200,1,'building');
+   this.buildingGroup.add(this.building1);
 
-   this.building2 = new Building(this.game,1000,676,300,0,'Test_Building1');
+   this.building2 = new Building(this.game,1000,676,300,2,'Test_Building1');
    this.buildingGroup.add(this.building2);
-   //this.hydrant1 = new Hydrant(this.game,300,1000,this.player);
+   this.hydrant1 = new Hydrant(this.game,300,1000,this.player);
 
    this.building3 = new Building(this.game,165,217,600,3,'Test_Building1');
    this.buildingGroup.add(this.building3);
-  this.building4 = new Building(this.game,1000,107,600,4,'Test_Building1');
+ this.building4 = new Building(this.game,1000,107,600,4,'Test_Building1');
    this.buildingGroup.add(this.building4);
 
-  // this.building5 = new Building(this.game,386,249,600,5,'Test_Building1');
-  // this.buildingGroup.add(this.building5);
+   this.building5 = new Building(this.game,386,249,600,5,'Test_Building1');
+   this.buildingGroup.add(this.building5);
    //this.building6 = new Building(this.game,418,591,600,6,'Test_Building1');
    //this.buildingGroup.add(this.building6);
 
@@ -107,13 +107,6 @@ game = this.game; //temp solution until I can figure out a better way to refernc
    this.waterUI = new WaterUI(this.game,this.player,70,60);
    this.fireUI = new FireUI(this.game,this.buildingGroup,765,355);
 
-	// Kill particle function
-	hitBuilding = function(particle,building){
-		particle.kill();
-	};
-
-
-
    },//end_create
 
    update: function(){
@@ -122,6 +115,7 @@ game = this.game; //temp solution until I can figure out a better way to refernc
       this.state.start("stGameOver");
    }
 
+  //console.log(rToA(this.game.physics.arcade.angleBetweenCenters(this.player,this.building2)));
    // start UI update functions
    MM.update(this.game);
 	this.waterUI.update();
@@ -129,7 +123,7 @@ game = this.game; //temp solution until I can figure out a better way to refernc
 
 	// - Collisions -
 	// Buildings
-	this.game.physics.arcade.collide(this.emitter, this.buildingGroup,hitBuilding); // emitter with buildings
+	this.game.physics.arcade.collide(this.emitter, this.buildingGroup,this.emitter.buildingCollision); // emitter with buildings
 	this.game.physics.arcade.collide(this.player, this.buildingGroup); // player with buildings
 
 	// Fires

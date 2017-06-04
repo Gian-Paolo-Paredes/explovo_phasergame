@@ -23,6 +23,16 @@ function randInt(max, min){
    return Math.floor(Math.random() * (max - min)) + min;
 }
 
+// converts radians to degrees
+function rToA(radians){
+    return radians * (180/Math.PI);
+}
+
+// converts degrees to radians
+function aToR(degrees){
+    return degrees * (Math.PI/180);
+}
+
 //calculates rotational transformation of X and Y spaces away from rotational origin (0, 0)
 function transformOverAngle(angleInRadians, x, y){
    cosine = Math.cos(angleInRadians);
