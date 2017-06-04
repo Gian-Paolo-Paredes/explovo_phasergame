@@ -1,11 +1,9 @@
 // WaterHose
 // Creates and attaches an emitter that generates water particles
-<<<<<<< HEAD
+
 // Extends Phaser.Emitter and takes 
 var ArrowOn=false;
-=======
-// Extends Phaser.Emitter and takes
->>>>>>> 4ad041e41fe90ba58d37c72f4c324b7c20f5c02d
+
 var WaterHose = function(game,attachments,x,y){
 	console.log('create hose');
 

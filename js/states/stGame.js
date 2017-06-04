@@ -25,17 +25,12 @@ stGame.prototype = {
         this.groundLayer = this.map.createLayer('GroundLayer');*/
 
       // Create a new Player
-      this.player = new Player(this.game,this.game.world.centerX, this.game.world.centerY, 'Player');
+     this.player = new Player(this.game,this.game.world.centerX, this.game.world.centerY, 'Player');
      this.game.camera.follow(this.player,4,0.1,0.1);  // set camera to player
-<<<<<<< HEAD
-     
-     // Attach hose to player object
-      this.emitter = new WaterHose(this.game, this.player, 25,15);
-=======
 	  
 	  // Attach hose to player object
       this.emitter = new WaterHose(this.game, this.player, 30,15);
->>>>>>> 4ad041e41fe90ba58d37c72f4c324b7c20f5c02d
+
       this.world.moveDown(this.emitter);
 
    // Create new buildings
@@ -61,12 +56,6 @@ stGame.prototype = {
    this.hydrant3 = new Hydrant(this.game,615,100,this.player);
    //this.waterarrow = new WaterArrow(this.game,615,100,this.player);
 
-
-   
-<<<<<<< HEAD
-
-
-   
    this.G = this.game.input.keyboard.addKey(Phaser.Keyboard.G);
    
       // Create UI
@@ -82,34 +71,17 @@ this.end =
       building.damageFire();
    }
    
-=======
-   this.G = this.game.input.keyboard.addKey(Phaser.Keyboard.G);
-   
-      // Create UI
-	this.waterUI = new WaterUI(this.game,this.player,70,60);
-	this.fireUI = new FireUI(this.game,this.buildingGroup,765,355);
 
-this.end = 
-	
-	// Damage Fire Function
-	damageFire = function(particle,building){
-		particle.kill();
-		building.damageFire();
-	}
-	
->>>>>>> 4ad041e41fe90ba58d37c72f4c324b7c20f5c02d
    },//end_create
    update: function(){
 
    if (this.G.isDown){
       this.state.start("stGameOver");
-<<<<<<< HEAD
+
  
    }
 
-=======
-   }
->>>>>>> 4ad041e41fe90ba58d37c72f4c324b7c20f5c02d
+
    // start UI update functions
    this.waterUI.update();
    this.fireUI.update();
