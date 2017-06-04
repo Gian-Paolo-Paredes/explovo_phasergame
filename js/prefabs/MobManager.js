@@ -108,6 +108,8 @@ MobManager.prototype.update = function(game){
    doCollideMobs = this.doCollideMobs;
 
    mobList.forEach(function(mob){
+      //game.debug.body(mob);
+
       updateFlocking(mob, getNeighbors(mob, mobList));
       //update loop n^2 runtime individual mob check
       if(doCollideMobs){

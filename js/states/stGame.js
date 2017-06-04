@@ -62,7 +62,7 @@ stGame.prototype = {
    this.hydrantGroup.add(this.hydrant3);
 
    this.G = this.game.input.keyboard.addKey(Phaser.Keyboard.G);
-   
+
    // add and play music
    this.bg_music = this.game.add.audio('game_music');
    this.bg_music.play('', 0, 1, true);

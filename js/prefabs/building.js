@@ -9,6 +9,8 @@ var Building = function(game, x, y, health, fires, key, src){
 	this.body.moves = false;
 	this.anchor.set(0.5,0.5); // set anchor to center
 	this.game.add.existing(this);
+	this.isDead = false;
+
 
 	// Parameters
 	this.health = health; // default hp set
@@ -45,6 +47,7 @@ Building.prototype.update = function(){
 		this.health -= this.fireGroup.countLiving() * this.damageMult;
 	}
 	else{
+		this.isDead = true;
 		this.fireGroup.removeAll(true);
 		this.loadTexture('buildingDestroyed',0);
 	}

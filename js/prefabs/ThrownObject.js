@@ -11,6 +11,7 @@ var ThrownObject = function(game, spriteObject, positionX, positionY, sounds) {
 	this.collideWithBuildingEnable = false;
 	this.inProgress = false;
 	this.building = null;
+	this.maxVelocity = 4;
 
 };
 
@@ -38,6 +39,6 @@ ThrownObject.prototype.throwAtBuilding = function(building, velocity){
 		this.inProgress = true;
 	}
 	n = normalize(dX, dY);
-	this.body.velocity.x = n.x*velocity;
-	this.body.velocity.y = n.y*velocity;
+	this.body.velocity.x = this.maxVelocity*n.x*velocity;
+	this.body.velocity.y = this.maxVelocity*n.y*velocity;
 };
