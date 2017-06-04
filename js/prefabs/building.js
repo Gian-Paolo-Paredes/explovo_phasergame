@@ -16,7 +16,7 @@ var Building = function(game, x, y, health, fires, key, src){
 	this.fireGroup = this.game.add.group(); // generate fire group
 	// start # of fires
 	for( let i = 0; i < fires; i++){
-		let j = game.rnd.integerInRange(4,4);
+		let j = game.rnd.integerInRange(-2,3);
 		this.startFire(j);
 	}
 	// debug
@@ -49,9 +49,9 @@ Building.prototype.update = function(){
 		this.loadTexture('buildingDestroyed',0);
 	}
 	// Debug code
-	this.fireGroup.forEach(function(fire){
+	/*this.fireGroup.forEach(function(fire){
 		this.saved.debug.body(fire);
-	},this);
+	},this);*/
 };
 
 // startFire
