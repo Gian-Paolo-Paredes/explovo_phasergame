@@ -1,4 +1,4 @@
-//logging functionality
+// logging functionality
 function l(itemToLog){
 if(true){
       if(typeof(itemToLog)==Object){
@@ -9,6 +9,7 @@ if(true){
    }
 }
 
+// returns unit vector from x and y
 function normalize(x, y){
    if(x!==0 && y!==0){
       pointMagnitude = Math.sqrt((x*x)+(y*y));
@@ -18,9 +19,25 @@ function normalize(x, y){
    }
 }
 
+// returns random integer between max and min, between max and 0 if min is not defined
 function randInt(max, min){
    min = typeof min !== 'undefined' ? min : 0;
    return Math.floor(Math.random() * (max - min)) + min;
+}
+
+// takes in array and returns numberOfElementsToGet elements from it
+// to use with a group, first argument should be group.children
+function randomOfArray(array, numberOfElementsToGet){
+   if(numberOfElementsToGet > array.length){
+      return array.slice(array);
+   }
+   tempArray = array.slice(array); // creates copy
+   returnArray = [];
+   for(i = 0; i<numberOfElementsToGet; i++){
+      randomlyChosenIndex = Math.floor(Math.random()*tempArray.length);
+      returnArray.push(tempArray.splice(randomlyChosenIndex, 1));
+   }
+   return returnArray;
 }
 
 // converts radians to degrees
@@ -33,7 +50,7 @@ function aToR(degrees){
     return degrees * (Math.PI/180);
 }
 
-//calculates rotational transformation of X and Y spaces away from rotational origin (0, 0)
+// calculates rotational transformation of X and Y spaces away from rotational origin (0, 0)
 function transformOverAngle(angleInRadians, x, y){
    cosine = Math.cos(angleInRadians);
    sine = Math.sin(angleInRadians);
@@ -43,12 +60,12 @@ function transformOverAngle(angleInRadians, x, y){
    return returnObj;
 }
 
-//calculates distance between 2 points by pythagorean distance formula
+// calculates distance between 2 points by pythagorean distance formula
 function distanceBetween(x1, y1, x2, y2){
    return Math.sqrt(Math.pow(x1-x2, 2)+Math.pow(y1-y2, 2));
 }
 
-//timer functionality
+// timer functionality
 function UtilTime(phaserGameObject){
    this.gameTime = game.time;
    this.initTime = this.gameTime.totalElapsedSeconds();
@@ -78,7 +95,7 @@ UtilTime.prototype.clearLaps = function(lapIndex){
     this.lapList = [];
 };
 
-//keyboard manager
+// keyboard manager
 function KeyManager(phaserGameObject){
    this.keyboard = phaserGameObject.input.keyboard;
    this.keyList = [];
