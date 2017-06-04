@@ -40,7 +40,7 @@ stGame.prototype = {
    //this.building1 = new Building(this.game,400,400,200,1,'building');
    //this.buildingGroup.add(this.building1);
 
-   this.building2 = new Building(this.game,1000,676,300,0,'Test_Building1');
+   this.building2 = new Building(this.game,1000,676,300,2,'Test_Building1');
    this.buildingGroup.add(this.building2);
    //this.hydrant1 = new Hydrant(this.game,300,1000,this.player);
 

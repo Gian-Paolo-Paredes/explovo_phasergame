@@ -1,4 +1,5 @@
 // -- Generic Building
+
 var Building = function(game, x, y, health, fires, key, src){
 	this.saved = game;
 	// Creation Code
@@ -15,7 +16,8 @@ var Building = function(game, x, y, health, fires, key, src){
 	this.fireGroup = this.game.add.group(); // generate fire group
 	// start # of fires
 	for( let i = 0; i < fires; i++){
-		this.startFire();
+		let j = game.rnd.integerInRange(4,4);
+		this.startFire(j);
 	}
 	// debug
 	// this.starterFire = game.input.keyboard.addKey(Phaser.Keyboard.T);
@@ -25,6 +27,7 @@ Building.prototype = Object.create(Phaser.Sprite.prototype);
 Building.prototype.constructor = Building; // creation call
 
 Building.prototype.update = function(){
+	// Indicator management
 	if (this.fireGroup.countLiving() > 0){
 		// movement of the fire indicator
 		this.indicator.rotation = this.saved.physics.arcade.angleBetween(this,this.indicator);
@@ -36,6 +39,8 @@ Building.prototype.update = function(){
 			this.indicator.kill();
 		}
 	}
+
+	// Building health damage
 	if(this.health > 0){
 		this.health -= this.fireGroup.countLiving() * this.damageMult;
 	}
@@ -43,6 +48,10 @@ Building.prototype.update = function(){
 		this.fireGroup.removeAll(true);
 		this.loadTexture('buildingDestroyed',0);
 	}
+	// Debug code
+	this.fireGroup.forEach(function(fire){
+		this.saved.debug.body(fire);
+	},this);
 };
 
 // startFire
