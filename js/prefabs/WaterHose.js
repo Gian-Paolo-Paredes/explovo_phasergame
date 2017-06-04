@@ -26,9 +26,8 @@ var WaterHose = function(game,attachments,x,y){
     this.onEmit = new Phaser.Signal();
 
 	// Create particles
-	this.makeParticles('Particle',0,1000,true,false);
+	this.makeParticles('Particle',0,250,true,false);
 	this.forEach(function(particle){
-		
 		particle.enableBody = true;
 		particle.body.allowGravity = false;
 	}, this);
@@ -126,6 +125,16 @@ WaterHose.prototype.stopSound = function() {
 };
 
 // Collision function
+// Creates 'foam' over the collision target
 WaterHose.prototype.buildingCollision = function(particle,building){
-    particle.kill();
+    // Generate a new emitter
+    var foamEmitter = game.add.emitter(particle.x,particle.y,3);
+    foamEmitter.makeParticles('foam'); // create foam particle
+    foamEmitter.forEach(function(particle){ // disable gravity for each
+        particle.body.allowGravity = false;
+    },this);
+    foamEmitter.setXSpeed(-15,15); // adjust the distance they 'burst' out
+    foamEmitter.setYSpeed(-15,15);
+    foamEmitter.start(true,500,null,3); // explode
+    particle.kill(); // destroy water particle
 }
