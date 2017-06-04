@@ -24,9 +24,7 @@ stPreload.prototype = {
 
         this.load.image('moltav','Moltav.png');
         this.load.image('rioter','Rioter.png');
-
-
-
+        this.load.image('foam','WFParticle.png')
         this.load.image('indi', 'fireIndicator.png');
 
         //  this.load.atlas('StartButtons', 'buttonsheet.png', 'buttonsheet.json');
@@ -34,6 +32,8 @@ stPreload.prototype = {
         this.load.image('GameOverPage',"GameOverScreen.png");
 
         this.load.atlas('StartButtons', 'buttonsheet.png', 'buttonsheet.json');
+
+        this.load.atlas('fires','Fires.png','FiresAtlas.json')
 
         this.load.atlas('NextButtons', 'ContinueButtons.png', 'ContinueButtons.json');
         this.game.load.audio("whirling", 'audio/newstransition.mp3');
@@ -59,6 +59,7 @@ stPreload.prototype = {
         this.load.audio('refill', 'refill.mp3');
         this.load.audio('refill_done', 'refill_done.mp3');
         this.load.audio('refill_notdone', 'refill_notdone.mp3');
+        this.load.audio('fireSizzle','sizzle.wav')
     
     },//end_preload
     create: function(){

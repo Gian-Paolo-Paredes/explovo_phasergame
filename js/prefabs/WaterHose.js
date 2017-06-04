@@ -1,6 +1,6 @@
 // WaterHose
 // Creates and attaches an emitter that generates water particles
-// Extends Phaser.Emitter and takes
+// WaterHose(game, object to attach to, x offset, y offset)
 var WaterHose = function(game,attachments,x,y){
 	console.log('create hose');
 // Create emitter
@@ -26,9 +26,8 @@ var WaterHose = function(game,attachments,x,y){
     this.onEmit = new Phaser.Signal();
 
 	// Create particles
-	this.makeParticles('Particle',0,1000,true,false);
+	this.makeParticles('Particle',0,250,true,false);
 	this.forEach(function(particle){
-		
 		particle.enableBody = true;
 		particle.body.allowGravity = false;
 	}, this);
@@ -103,6 +102,7 @@ WaterHose.prototype.update = function() {
     }
 };
 
+// Sound functions
 WaterHose.prototype.playSound = function() {
     // Play spray sound on mouse press
     if (this.attachment.waterLevel > 0) {
@@ -124,3 +124,17 @@ WaterHose.prototype.stopSound = function() {
     }
 };
 
+// Collision function
+// Creates 'foam' over the collision target
+WaterHose.prototype.buildingCollision = function(particle,building){
+    // Generate a new emitter
+    var foamEmitter = game.add.emitter(particle.x,particle.y,3);
+    foamEmitter.makeParticles('foam'); // create foam particle
+    foamEmitter.forEach(function(particle){ // disable gravity for each
+        particle.body.allowGravity = false;
+    },this);
+    foamEmitter.setXSpeed(-15,15); // adjust the distance they 'burst' out
+    foamEmitter.setYSpeed(-15,15);
+    foamEmitter.start(true,500,null,3); // explode
+    particle.kill(); // destroy water particle
+}
