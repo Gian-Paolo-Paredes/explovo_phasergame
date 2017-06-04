@@ -6,9 +6,9 @@ var Hydrant = function(game,x,y,player){
 	this.body.immovable = true;
 	this.body.moves = false;
 	this.anchor.set(0.5,0.5);
-	this.body.setCircle(10);
+	//this.body.setCircle(10);
 	this.game.add.existing(this);
-    
+
     // add in audio
     this.refill_start = game.add.audio('refill_start');
     this.refill = game.add.audio('refill');
@@ -21,10 +21,10 @@ Hydrant.prototype.constructor = Hydrant;
 
 Hydrant.prototype.update = function(){
 	this.game.physics.arcade.collide(this,this.player);
-	
+
 	if (this.game.math.distance(this.x, this.y, this.player.x, this.player.y) < 75){
 		this.player.waterUp();
-        
+
         // play refill sound if player stands near hydrant with less than max water Level
         if (!this.refill.isPlaying && this.player.waterLevel < 100) {
             this.refill_start.play('', 0, .75, false);
@@ -33,7 +33,7 @@ Hydrant.prototype.update = function(){
             this.refill.stop();
             this.refill_done.play('', 0, .75, false);
         }
-        
+
 	} else if (this.refill.isPlaying) { //stop refill sound if player walks away from hydrant, and play refill not done sound
         this.refill.stop();
         this.refill_notdone.play('', 0, .75, false);
