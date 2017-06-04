@@ -28,6 +28,7 @@ ThrownObject.prototype.update = function() {
 
 	if(this.collideWithBuildingEnable === true){
 		if(this.game.physics.arcade.overlap(this, this.building)){
+            // play molotov explosion sound
             if (!this.molotov.isPlaying) {
                 this.molotov.play('', 0, 1, false);
             }
