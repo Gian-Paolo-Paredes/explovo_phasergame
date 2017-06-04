@@ -3,6 +3,7 @@ function Rioter(game, spriteObject, positionX, positionY){
    this.spriteDiagonal = distanceBetween(this.x, this.y, this.x+this.width, this.y+this.height); //do this before setting anchor
    this.anchor.set(0.5);
    game.physics.enable(this);
+   this.body.setSize(this.width-4, this.height-4, 2, 2);
 
 
 
@@ -167,10 +168,12 @@ Rioter.prototype.freeze = function(boolean){
 };
 
 Rioter.prototype.fireAtBuilding = function(game, building){
-   if(this.canFire === true){
-      this.canFire = false;
-      tObject = new ThrownObject(game, {key: "moltav", frame: 0}, this.centerX, this.centerY);
-      tObject.throwAtBuilding(building, 20);
+   if(!building.isDead){
+      if(this.canFire === true){
+        this.canFire = false;
+         tObject = new ThrownObject(game, {key: "moltav", frame: 0}, this.centerX, this.centerY);
+         tObject.throwAtBuilding(building, 20);
+      }
    }
 };
 
