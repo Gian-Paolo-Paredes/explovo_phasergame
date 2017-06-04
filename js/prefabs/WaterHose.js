@@ -1,6 +1,6 @@
 // WaterHose
 // Creates and attaches an emitter that generates water particles
-// Extends Phaser.Emitter and takes
+// WaterHose(game, object to attach to, x offset, y offset)
 var WaterHose = function(game,attachments,x,y){
 	console.log('create hose');
 // Create emitter
@@ -103,6 +103,7 @@ WaterHose.prototype.update = function() {
     }
 };
 
+// Sound functions
 WaterHose.prototype.playSound = function() {
     // Play spray sound on mouse press
     if (this.attachment.waterLevel > 0) {
@@ -124,3 +125,7 @@ WaterHose.prototype.stopSound = function() {
     }
 };
 
+// Collision function
+WaterHose.prototype.buildingCollision = function(particle,building){
+    particle.kill();
+}

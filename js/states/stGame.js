@@ -44,10 +44,10 @@ stGame.prototype = {
    this.buildingGroup.add(this.building2);
    //this.hydrant1 = new Hydrant(this.game,300,1000,this.player);
 
-   this.building3 = new Building(this.game,165,217,600,3,'Test_Building1');
-   this.buildingGroup.add(this.building3);
-  this.building4 = new Building(this.game,1000,107,600,4,'Test_Building1');
-   this.buildingGroup.add(this.building4);
+//   this.building3 = new Building(this.game,165,217,600,3,'Test_Building1');
+ ////  this.buildingGroup.add(this.building3);
+ // this.building4 = new Building(this.game,1000,107,600,4,'Test_Building1');
+  // this.buildingGroup.add(this.building4);
 
   // this.building5 = new Building(this.game,386,249,600,5,'Test_Building1');
   // this.buildingGroup.add(this.building5);
@@ -107,13 +107,6 @@ game = this.game; //temp solution until I can figure out a better way to refernc
    this.waterUI = new WaterUI(this.game,this.player,70,60);
    this.fireUI = new FireUI(this.game,this.buildingGroup,765,355);
 
-	// Kill particle function
-	hitBuilding = function(particle,building){
-		particle.kill();
-	};
-
-
-
    },//end_create
 
    update: function(){
@@ -122,6 +115,7 @@ game = this.game; //temp solution until I can figure out a better way to refernc
       this.state.start("stGameOver");
    }
 
+  //console.log(rToA(this.game.physics.arcade.angleBetweenCenters(this.player,this.building2)));
    // start UI update functions
    MM.update(this.game);
 	this.waterUI.update();
@@ -129,7 +123,7 @@ game = this.game; //temp solution until I can figure out a better way to refernc
 
 	// - Collisions -
 	// Buildings
-	this.game.physics.arcade.collide(this.emitter, this.buildingGroup,hitBuilding); // emitter with buildings
+	this.game.physics.arcade.collide(this.emitter, this.buildingGroup,this.emitter.buildingCollision); // emitter with buildings
 	this.game.physics.arcade.collide(this.player, this.buildingGroup); // player with buildings
 
 	// Fires

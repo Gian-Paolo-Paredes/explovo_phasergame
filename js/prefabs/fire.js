@@ -1,11 +1,19 @@
 // -- Generic Fire
+// Accepts game, x and y position, and specific angle of creation
+// 0, 90, 180, 270
 var Fire = function(game, x, y, angle){
 	
 	// Creation Code
-	Phaser.Sprite.call(this, game, x, y, 'fire'); // call sprite
+	this.sprite = Phaser.Sprite.call(this, game, x, y, 'fires'); // call sprite
+	this.animations.add('fires'); // using the entire atlas
+	this.animations.play('fires',15,true); // play at 15 fps with looping
+	this.width = 40; // adjusting size of fires
+	this.height = 48;
 	game.physics.enable(this, Phaser.Physics.ARCADE); // enable physics
-	this.angle = angle;
+	this.angle = angle; // set angle to provided angle
 	this.body.immovable = true;
+
+	// Angle for specific cases
 	switch(angle){
 		case 0:
 			this.anchor.setTo(0,1); // anchor to bottom left

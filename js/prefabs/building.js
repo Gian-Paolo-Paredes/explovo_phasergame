@@ -25,11 +25,6 @@ Building.prototype = Object.create(Phaser.Sprite.prototype);
 Building.prototype.constructor = Building; // creation call
 
 Building.prototype.update = function(){
-	/*if(this.starterFire.isDown){
-		console.log('fire started');
-		this.startFire();
-	}*/
-
 	if (this.fireGroup.countLiving() > 0){
 		// movement of the fire indicator
 		this.indicator.rotation = this.saved.physics.arcade.angleBetween(this,this.indicator);
@@ -52,33 +47,31 @@ Building.prototype.update = function(){
 
 // startFire
 // Starts a fire on this building
-Building.prototype.startFire = function(){
-	// generate fire randomly over this sprite and add to fire group
-	var angle = this.game.rnd.integerInRange(0,3);
-	// get a random side of the building
-		switch(angle){
-			case 0: // 0
-				// accounting for 0.5 anchor
-				var xpos = (this.x - this.width/2) + this.game.rnd.integerInRange(0,this.width-48);
-				var ypos = (this.y - this.height/2);
-				var ang = 0;
-				break;
-			case 1: // 90
-				var xpos = (this.x - this.width/2) + this.width-4; // accounting for shadows
-				var ypos = (this.y - this.height/2) + this.game.rnd.integerInRange(0,this.height-48);
-				var ang = 90;
-				break;
-			case 2: // 180
-				var xpos = (this.x - this.width/2) + this.game.rnd.integerInRange(0,this.width-69);
-				var ypos = (this.y - this.height/2) + this.height - 4;
-				var ang = 180;
-				break;
-			case 3: // 270
-				var xpos = (this.x - this.width/2);
-				var ypos = (this.y - this.height/2) + this.game.rnd.integerInRange(0,this.height-69);
-				var ang = 270;
-				break;
-		}
+// Accepts a side in radians and generates a random fire
+Building.prototype.startFire = function(side){
+	// Get the side of the building that was lit
+	var angle = rToA(side);
+	if (angle >= -45 && angle <= 45){ // left
+		var xpos = (this.x - this.width/2);
+		var ypos = (this.y - this.height/2) + this.game.rnd.integerInRange(0,this.height-69);
+		var ang = 270;
+	}
+	else if( angle >= 46 && angle <= 135){ // top
+		var xpos = (this.x - this.width/2) + this.game.rnd.integerInRange(0,this.width-48);
+		var ypos = (this.y - this.height/2);
+		var ang = 0;
+	}
+	else if( angle >= -135 && angle <= -44){ // bottom
+		var xpos = (this.x - this.width/2) + this.game.rnd.integerInRange(0,this.width-69);
+		var ypos = (this.y - this.height/2) + this.height - 4;
+		var ang = 180;
+	}
+	else{ // right
+		var xpos = (this.x - this.width/2) + this.width-4; // accounting for shadows
+		var ypos = (this.y - this.height/2) + this.game.rnd.integerInRange(0,this.height-48);
+		var ang = 90;
+	}
+
 	// create a fire and add to group based on parameters
 	var fire = new Fire(this.game, xpos, ypos, ang);
 	this.game.world.moveUp(fire);
@@ -94,9 +87,3 @@ Building.prototype.startFire = function(){
 Building.prototype.damageFire = function(particle,fire){
 	fire.damage();
 }
-
-/*Building.prototype.render = function(){
-	this.fireGroup.forEach(function(fire){
-			this.game.debug.body(fire);
-		},this);
-};*/
