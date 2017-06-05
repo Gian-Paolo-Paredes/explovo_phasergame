@@ -1,7 +1,6 @@
 //Main this.game State
 var stGame = function(game) {
-
-   //Rioter_
+    //Rioter_
    var MM;
    var MM2;
    //_Rioter
@@ -17,13 +16,13 @@ stGame.prototype = {
    //--/ variable assignments
    console.log('game bg');
       //--/ tilemap variable
-      this.game.world.setBounds(0,0,1200,912); // initialize world bounds
+		this.game.world.setBounds(0,0,3200,2432); // initialize world bounds
         this.game.stage.backgroundColor = "#228B22";
-      this.game.add.tileSprite(0,0,1200,912,'bg');
-      /*  this.map = this.game.add.tilemap('tilemap');
-        this.map.addTilesetImage('asd', 'TileAtlas');
-        this.backgroundlayer = this.map.createLayer('BackgroundLayer');
-        this.groundLayer = this.map.createLayer('GroundLayer');*/
+		//this.game.add.tileSprite(0,0,1200,912,'bg');
+		this.map = this.game.add.tilemap('CityTilemap');
+        this.map.addTilesetImage('CityTileset64', 'CityTileset64');
+        this.backgroundLayer = this.map.createLayer('Background');
+        this.groundLayer = this.map.createLayer('ForeGround');
 
       // Create a new Player
      this.player = new Player(this.game,this.game.world.centerX, this.game.world.centerY, 'Player');
@@ -37,31 +36,160 @@ stGame.prototype = {
    // Create new buildings
    // manual creation for this test
    this.buildingGroup = this.game.add.group(); // generate building group
-   //this.buildingGroup.scale.setTo(0.8,0.8);
-   this.building1 = new Building(this.game,400,400,200,1,'building');
-   this.buildingGroup.add(this.building1);
-
-   this.building2 = new Building(this.game,1000,676,300,2,'Test_Building1');
-   this.buildingGroup.add(this.building2);
-   this.hydrant1 = new Hydrant(this.game,300,1000,this.player);
-
-   this.building3 = new Building(this.game,165,217,600,3,'Test_Building1');
-   this.buildingGroup.add(this.building3);
- this.building4 = new Building(this.game,1000,107,600,4,'Test_Building1');
-   this.buildingGroup.add(this.building4);
-
-   this.building5 = new Building(this.game,386,249,600,5,'Test_Building1');
-   this.buildingGroup.add(this.building5);
-   //this.building6 = new Building(this.game,418,591,600,6,'Test_Building1');
-   //this.buildingGroup.add(this.building6);
-
-   this.hydrantGroup = this.game.add.group(); // generate building group
-
-   this.hydrant2 = new Hydrant(this.game,830,700,this.player);
-   this.hydrantGroup.add(this.hydrant2);
-   this.hydrant3 = new Hydrant(this.game,615,100,this.player);
-
-   this.hydrantGroup.add(this.hydrant3);
+   this.building = new Building(this.game,131,191,200,this.game.rnd.integerInRange(1,5),'building1', 'buildingDestroyed1');
+	this.buildingGroup.add(this.building);
+   
+   this.building = new Building(this.game,830,156,200,this.game.rnd.integerInRange(1,5),'building5', 'buildingDestroyed5');
+   this.buildingGroup.add(this.building);
+   
+	for(var i = 0; i < 2; i++){
+		this.building = new Building(this.game,(621+(417*i)),191,200,this.game.rnd.integerInRange(1,5),'building1', 'buildingDestroyed1');
+		this.buildingGroup.add(this.building);
+	}
+	
+	for(var i = 0; i < 2; i++){
+		this.building = new Building(this.game,(2912+(200*i)),173,200,this.game.rnd.integerInRange(1,5),'building5', 'buildingDestroyed5');
+		this.buildingGroup.add(this.building);
+	}
+	
+	for(var i = 0; i < 2; i++){
+		this.building = new Building(this.game,(1518+(255*i)),191,200,this.game.rnd.integerInRange(1,5),'building1', 'buildingDestroyed1');
+		this.buildingGroup.add(this.building);
+	}
+	
+	for(var i = 0; i < 2; i++){
+		this.building = new Building(this.game,(2113+(325*i)),191,200,this.game.rnd.integerInRange(1,5),'building1', 'buildingDestroyed1');
+		this.buildingGroup.add(this.building);
+	}
+	
+	this.building = new Building(this.game,2671,1231,200,this.game.rnd.integerInRange(1,5),'building6', 'buildingDestroyed6');
+	this.buildingGroup.add(this.building);
+	
+	this.building = new Building(this.game,1622,1544,200,this.game.rnd.integerInRange(1,5),'fireStation', 'fireStationDestroyed');
+	this.buildingGroup.add(this.building);
+	
+	for(var i = 0; i < 2; i++){
+		this.building = new Building(this.game,1834 + i*100,(1441),200, this.game.rnd.integerInRange(1,5),'fTruck', 'fTruckDestroyed');
+		this.buildingGroup.add(this.building);
+	}
+	
+	for(var i = 0; i < 3; i++){
+		this.building = new Building(this.game,(988),(760 + i*260),200,this.game.rnd.integerInRange(1,5),'building2', 'buildingDestroyed2');
+		this.buildingGroup.add(this.building);
+	}
+	
+	this.building = new Building(this.game,637,826,200,this.game.rnd.integerInRange(1,5),'building1', 'buildingDestroyed1');
+	this.buildingGroup.add(this.building);
+	
+	this.building = new Building(this.game,637,1281,200,this.game.rnd.integerInRange(1,5),'building1', 'buildingDestroyed1');
+	this.buildingGroup.add(this.building);
+	
+	this.building = new Building(this.game,821,1662,200,this.game.rnd.integerInRange(1,5),'building3', 'buildingDestroyed3');
+	this.buildingGroup.add(this.building);
+	
+	this.building = new Building(this.game,125,823,200,this.game.rnd.integerInRange(1,5),'building4', 'buildingDestroyed4');
+	this.buildingGroup.add(this.building);
+	
+	for(var i = 0; i < 2; i++){
+		this.building = new Building(this.game,(635 + i*250),(2261),200,this.game.rnd.integerInRange(1,5),'building4', 'buildingDestroyed4');
+		this.buildingGroup.add(this.building);
+	}
+	
+	for(var i = 0; i < 2; i++){
+		this.building = new Building(this.game,(2424 + i*450),(2272),200,this.game.rnd.integerInRange(1,5),'building4', 'buildingDestroyed4');
+		this.buildingGroup.add(this.building);
+	}
+	
+	for(var i = 0; i < 2; i++){
+		this.building = new Building(this.game,(2650 + i*450),(2277),200,this.game.rnd.integerInRange(1,5),'building5', 'buildingDestroyed5');
+		this.buildingGroup.add(this.building);
+	}
+	
+	this.building = new Building(this.game,135,2290,200,this.game.rnd.integerInRange(1,5),'building1', 'buildingDestroyed1');
+	this.buildingGroup.add(this.building);
+   
+	for(var i = 0; i < 2; i++){
+		this.building = new Building(this.game,(1393+(225*i)),2289,200,this.game.rnd.integerInRange(1,5),'building1', 'buildingDestroyed1');
+		this.buildingGroup.add(this.building);
+	}
+	
+	this.building = new Building(this.game,1890,2300,200,this.game.rnd.integerInRange(1,5),'building2', 'buildingDestroyed2');
+	this.buildingGroup.add(this.building);
+	
+	for(var i = 0; i < 3; i++){
+		this.building = new Building(this.game,(93),(1201 + i*260),200,this.game.rnd.integerInRange(1,5),'building2', 'buildingDestroyed2');
+		this.buildingGroup.add(this.building);
+	}
+	
+	//Hydrants
+	this.hydrantGroup = this.game.add.group(); // generate hydrant group
+	
+	for(var i = 0; i < 8; i++){
+		this.hydrant = new Hydrant(this.game,125 + i*495,435,this.player);
+		this.hydrantGroup.add(this.hydrant);}
+	for(var i = 0; i < 2; i++){
+		this.hydrant = new Hydrant(this.game,2613 + i*149,200,this.player);
+		this.hydrantGroup.add(this.hydrant);}
+	for(var i = 0; i < 2; i++){
+		this.hydrant = new Hydrant(this.game,1205 + i*149,200,this.player);
+		this.hydrantGroup.add(this.hydrant);}
+	for(var i = 0; i < 2; i++){
+		this.hydrant = new Hydrant(this.game,310 + i*149,200,this.player);
+		this.hydrantGroup.add(this.hydrant);}
+	this.hydrant = new Hydrant(this.game,1137,896,this.player);
+	this.hydrantGroup.add(this.hydrant);
+	this.hydrant = new Hydrant(this.game,1137,1491,this.player);
+	this.hydrantGroup.add(this.hydrant);
+	this.hydrant = new Hydrant(this.game,1137,1845,this.player);
+	this.hydrantGroup.add(this.hydrant);
+	this.hydrant = new Hydrant(this.game,1415,650,this.player);
+	this.hydrantGroup.add(this.hydrant);
+	this.hydrant = new Hydrant(this.game,2033,650,this.player);
+	this.hydrantGroup.add(this.hydrant);
+	this.hydrant = new Hydrant(this.game,2033,1304,this.player);
+	this.hydrantGroup.add(this.hydrant);
+	this.hydrant = new Hydrant(this.game,1415,1304,this.player);
+	this.hydrantGroup.add(this.hydrant);
+	this.hydrant = new Hydrant(this.game,526,1473,this.player);
+	this.hydrantGroup.add(this.hydrant);
+	this.hydrant = new Hydrant(this.game,526,1840,this.player);
+	this.hydrantGroup.add(this.hydrant);
+	this.hydrant = new Hydrant(this.game,126,1910,this.player);
+	this.hydrantGroup.add(this.hydrant);
+	this.hydrant = new Hydrant(this.game,126,2057,this.player);
+	this.hydrantGroup.add(this.hydrant);
+	this.hydrant = new Hydrant(this.game,310,2290,this.player);
+	this.hydrantGroup.add(this.hydrant);
+	this.hydrant = new Hydrant(this.game,455,2290,this.player);
+	this.hydrantGroup.add(this.hydrant);
+	this.hydrant = new Hydrant(this.game,768,2058,this.player);
+	this.hydrantGroup.add(this.hydrant);
+	this.hydrant = new Hydrant(this.game,1078,2290,this.player);
+	this.hydrantGroup.add(this.hydrant);
+	this.hydrant = new Hydrant(this.game,1225,2290,this.player);
+	this.hydrantGroup.add(this.hydrant);
+	this.hydrant = new Hydrant(this.game,1420,1845,this.player);
+	this.hydrantGroup.add(this.hydrant);
+	this.hydrant = new Hydrant(this.game,1568,2059,this.player);
+	this.hydrantGroup.add(this.hydrant);
+	this.hydrant = new Hydrant(this.game,2100,2290,this.player);
+	this.hydrantGroup.add(this.hydrant);
+	this.hydrant = new Hydrant(this.game,2250,2290,this.player);
+	this.hydrantGroup.add(this.hydrant);
+	this.hydrant = new Hydrant(this.game,2786,586,this.player);
+	this.hydrantGroup.add(this.hydrant);
+	this.hydrant = new Hydrant(this.game,2315,1447,this.player);
+	this.hydrantGroup.add(this.hydrant);
+	this.hydrant = new Hydrant(this.game,2496,2057,this.player);
+	this.hydrantGroup.add(this.hydrant);
+	this.hydrant = new Hydrant(this.game,3007,2057,this.player);
+	this.hydrantGroup.add(this.hydrant);
+	this.hydrant = new Hydrant(this.game,2688,1911,this.player);
+	this.hydrantGroup.add(this.hydrant);
+	this.hydrant = new Hydrant(this.game,311,1015,this.player);
+	this.hydrantGroup.add(this.hydrant);
+	this.hydrant = new Hydrant(this.game,312,1600,this.player);
+	this.hydrantGroup.add(this.hydrant);
 
    this.G = this.game.input.keyboard.addKey(Phaser.Keyboard.G);
 
@@ -75,14 +203,13 @@ stGame.prototype = {
       MM.addMob(rioter);
       this.game.add.existing(rioter);
    }
+   
+   building2 = this.buildingGroup.getRandom();
    MM.positionAllOffscreenRandomly(this.game);
+   MM.setAllGoal(this.building.centerX, this.building.centerY, 0.4);
+   console.log("BUILDING LOC: ", building2.x, building2.y);
 
-   MM.setAllGoal(this.building2.centerX, this.building2.centerY, 0.4);
-
-
-building2 = this.building2;
-
-game = this.game; //temp solution until I can figure out a better way to refernce game
+   game = this.game; //temp solution until I can figure out a better way to refernce game
    var throwAtBuilding2 = function(mob){
       //mob.freeze();
       mob.fireAtBuilding(game, building2);
@@ -106,6 +233,8 @@ game = this.game; //temp solution until I can figure out a better way to refernc
 
 
    // Create UI
+   this.pointer = this.game.add.sprite(0, 0, 'crosshair');
+   this.pointer.anchor.set(0.5,0.5);
    this.waterUI = new WaterUI(this.game,this.player,70,60);
    this.fireUI = new FireUI(this.game,this.buildingGroup,765,355);
      
@@ -140,6 +269,10 @@ game = this.game; //temp solution until I can figure out a better way to refernc
 	this.buildingGroup.forEach(function(building){
 		this.game.physics.arcade.overlap(this.emitter,building.fireGroup,building.damageFire); // emitter with fire
 	},this);
+	
+	//cursor
+	this.pointer.x = this.game.camera.x + this.game.input.x -0;
+	this.pointer.y = this.game.camera.y + this.game.input.y -0;
 
    },//end_update
 

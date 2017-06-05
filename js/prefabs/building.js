@@ -1,6 +1,6 @@
 // -- Generic Building
 
-var Building = function(game, x, y, health, fires, key, src){
+var Building = function(game, x, y, health, fires, key, keyDestroyed, src){
 
 	//var onFire = game.add.sprite(game.world.centerX, 300,'Flame');
    	//this.onFIre.animations.add('FlameOn', Phaser.Animation.generateFrameNames('FlameOn', 1, 6), 5, true);
@@ -21,6 +21,7 @@ var Building = function(game, x, y, health, fires, key, src){
 	// Creation Code
 	Phaser.Sprite.call(this, game, x, y, key, src); // call sprite
 	game.physics.enable(this, Phaser.Physics.ARCADE); // enable physics
+	this.keyDestroyed = keyDestroyed;
 	this.body.immovable = true; // dsable movement
 	this.body.moves = false;
 	this.anchor.set(0.5,0.5); // set anchor to center
@@ -67,7 +68,7 @@ Building.prototype.update = function(){
 	else{
 		this.isDead = true;
 		this.fireGroup.removeAll(true);
-		this.loadTexture('buildingDestroyed',0);
+		this.loadTexture(this.keyDestroyed);
 	}
 	// Debug code
 	/*this.fireGroup.forEach(function(fire){

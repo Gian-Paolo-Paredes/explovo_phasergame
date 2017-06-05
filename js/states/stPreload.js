@@ -40,6 +40,27 @@ stPreload.prototype = {
         this.load.image('rioter','Rioter.png');
         this.load.image('foam','WFParticle.png')
         this.load.image('indi', 'fireIndicator.png');
+		
+		//Buildings
+		this.load.image('building1','Building1.png');
+		this.load.image('building2','Building2.png');
+		this.load.image('building3','Building3.png');
+		this.load.image('building4','Building4.png');
+		this.load.image('building5','Building5.png');
+		this.load.image('building6','Building6.png');
+		this.load.image('fireStation','FIREstation.png');
+		this.load.image('buildingDestroyed1','BuildingDestroyed1.png');
+		this.load.image('buildingDestroyed2','BuildingDestroyed2.png');
+		this.load.image('buildingDestroyed3','BuildingDestroyed3.png');
+		this.load.image('buildingDestroyed4','BuildingDestroyed4.png');
+		this.load.image('buildingDestroyed5','BuildingDestroyed5.png');
+		this.load.image('buildingDestroyed6','BuildingDestroyed6.png');
+		this.load.image('fireStationDestroyed','FIREstationDestroyed.png');
+		this.load.image('fTruck','FTruck.png');
+		this.load.image('fTruckDestroyed','FTruckDestroyed.png');
+		
+		//crosshair
+		this.load.image('crosshair','crosshair.png');
 
         //  this.load.atlas('StartButtons', 'buttonsheet.png', 'buttonsheet.json');
 
@@ -55,11 +76,10 @@ stPreload.prototype = {
         this.load.atlas('NextButtons', 'ContinueButtons.png', 'ContinueButtons.json');
         this.game.load.audio("whirling", 'audio/newstransition.mp3');
 
-        this.game.load.tilemap('tilemap', 'tiles/MapTile.json', null, Phaser.Tilemap.TILED_JSON);
-        this.game.load.image('TileAtlas', 'tiles/TileAtlas.png');
-
-        this.load.path="assets/tilemap/";
-        this.game.load.image('bg','tiledmap.png');
+        //Tilemap
+		this.load.path = "assets/img/tiles/"
+        this.game.load.tilemap('CityTilemap', 'CityTilemap.json', null, Phaser.Tilemap.TILED_JSON);
+        this.game.load.image('CityTileset64', 'CityTileset64.png');
 
         //load assets from atlas (if applicable)
 
