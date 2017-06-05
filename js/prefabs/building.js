@@ -1,7 +1,23 @@
 // -- Generic Building
 
 var Building = function(game, x, y, health, fires, key, src){
+
+	//var onFire = game.add.sprite(game.world.centerX, 300,'Flame');
+   	//this.onFIre.animations.add('FlameOn', Phaser.Animation.generateFrameNames('FlameOn', 1, 6), 5, true);
+	//onFire.animations.add('FlameOn');
+
+   // onFire.animations.play('FlameOn', 24, true);
+
+    //  Bob the octopus up and down with a tween
+   // game.add.tween(octopus).to({ y: 300 }, 2000, Phaser.Easing.Quadratic.InOut, true, 0, 1000, true);
+
+
+
+    //var octopus = game.add.sprite(300, 200, 'octopus');
+
+	this.onFireCount=0;
 	this.saved = game;
+  
 	// Creation Code
 	Phaser.Sprite.call(this, game, x, y, key, src); // call sprite
 	game.physics.enable(this, Phaser.Physics.ARCADE); // enable physics
@@ -9,8 +25,10 @@ var Building = function(game, x, y, health, fires, key, src){
 	this.body.moves = false;
 	this.anchor.set(0.5,0.5); // set anchor to center
 	this.game.add.existing(this);
-	this.isDead = false;
 
+	//this.count = game.add.text(740,35, 'X ' + this.fireCount,{fontSize: '25px',fill:'yellow'});
+	//this.count.fixedToCamera=true;
+	this.isDead = false;
 
 	// Parameters
 	this.health = health; // default hp set
@@ -59,6 +77,15 @@ Building.prototype.update = function(){
 
 // startFire
 // Starts a fire on this building
+
+//var boom = this.game.add.sprite(this.x + this.game.rnd.integerInRange(0,this.width-100),this.y + this.game.rnd.integerInRange(0,this.height-100),'Explosion');
+	//boom.scale.setTo(0.5,0.5);
+	//boom.animations.add('BOOM');
+	//boom.animations.play('Boom',5,true);
+
+
+
+	//fire.anchor.setTo(0.5,0.5);
 // Accepts a side in radians and generates a random fire
 Building.prototype.startFire = function(side){
 	// Get the side of the building that was lit
@@ -86,8 +113,15 @@ Building.prototype.startFire = function(side){
 
 	// create a fire and add to group based on parameters
 	var fire = new Fire(this.game, xpos, ypos, ang);
+  fire.scale.setTo(0.5,0.5);
+	fire.animations.add('FlameOn');
+  fire.animations.play('FlameOn', 10, true);
 	this.game.world.moveUp(fire);
-	this.fireGroup.add(fire);
+  
+  this.game.add.existing(fire);
+  this.onFireCount =+1;
+
+  this.fireGroup.add(fire);
 	if(this.fireGroup.countLiving() == 1){
 		// fire indicator
 		this.indicator = this.saved.add.sprite(this.saved.camera.target.x,this.saved.camera.target.y,'indi');

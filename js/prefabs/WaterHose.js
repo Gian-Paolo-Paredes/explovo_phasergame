@@ -1,6 +1,8 @@
 // WaterHose
 // Creates and attaches an emitter that generates water particles
-// WaterHose(game, object to attach to, x offset, y offset)
+// Extends Phaser.Emitter and takes 
+var ArrowOn=false;
+
 var WaterHose = function(game,attachments,x,y){
 	console.log('create hose');
 // Create emitter
@@ -88,6 +90,24 @@ WaterHose.prototype.update = function() {
 		// emit particles until out of water
 		if(this.attachment.waterLevel > 0) {
 			this.emitParticle();
+			this.attachment.waterLevel -= 0.2; // water flow rate, needs changing soon
+
+		if(this.attachment.waterLevel<50){
+			this.ArrowOn=true;
+			l("U need watter");
+			this.waterarrow = new WaterArrow(this.game,615,100,this.player);
+		}else{
+			this.ArrowOn=false;
+		}
+		if(this.ArrowOn=false){
+			this.waterarrow.kill
+		}
+
+		//	 }else{
+		//	 	this.waterarrow.kill();
+		//	 }
+		}
+   }
 			this.attachment.waterLevel -= 0.2; // water flow rate, needs changing soon 
         }
     }

@@ -38,4 +38,19 @@ Hydrant.prototype.update = function(){
         this.refill.stop();
         this.refill_notdone.play('', 0, .75, false);
     }
+
+if(this.waterLevel>50){
+		l("U need watter");
+			this.waterarrow = new WaterArrow(this.game,x,y-40,this.player);
+	}
+};
+
+Hydrant.prototype.Indicator = function(){
+	if (this.waterLevel < 50){
+		l("U need watter");
+			this.waterarrow = new WaterArrow(this.game,x,y-40,this.player);
+	}
+	if(this.waterLevel>50){
+		this.waterarrow.kill();
+	}
 };

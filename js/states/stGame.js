@@ -15,22 +15,23 @@ stGame.prototype = {
    },//end_preload
    create: function() {
    //--/ variable assignments
-	console.log('game bg');
+   console.log('game bg');
       //--/ tilemap variable
-		this.game.world.setBounds(0,0,1200,912); // initialize world bounds
+      this.game.world.setBounds(0,0,1200,912); // initialize world bounds
         this.game.stage.backgroundColor = "#228B22";
-		this.game.add.tileSprite(0,0,1200,912,'bg');
+      this.game.add.tileSprite(0,0,1200,912,'bg');
       /*  this.map = this.game.add.tilemap('tilemap');
         this.map.addTilesetImage('asd', 'TileAtlas');
         this.backgroundlayer = this.map.createLayer('BackgroundLayer');
         this.groundLayer = this.map.createLayer('GroundLayer');*/
 
       // Create a new Player
-      this.player = new Player(this.game,this.game.world.centerX, this.game.world.centerY, 'Player');
+     this.player = new Player(this.game,this.game.world.centerX, this.game.world.centerY, 'Player');
      this.game.camera.follow(this.player,4,0.1,0.1);  // set camera to player
 
 	  // Attach hose to player object
       this.emitter = new WaterHose(this.game, this.player, 30,15);
+
       this.world.moveDown(this.emitter);
 
    // Create new buildings
@@ -59,6 +60,7 @@ stGame.prototype = {
    this.hydrant2 = new Hydrant(this.game,830,700,this.player);
    this.hydrantGroup.add(this.hydrant2);
    this.hydrant3 = new Hydrant(this.game,615,100,this.player);
+
    this.hydrantGroup.add(this.hydrant3);
 
    this.G = this.game.input.keyboard.addKey(Phaser.Keyboard.G);
@@ -106,6 +108,11 @@ game = this.game; //temp solution until I can figure out a better way to refernc
    // Create UI
    this.waterUI = new WaterUI(this.game,this.player,70,60);
    this.fireUI = new FireUI(this.game,this.buildingGroup,765,355);
+     
+     this.end = damageFire = function(particle,building){
+      particle.kill();
+      building.damageFire();
+   }
 
    },//end_create
 
@@ -113,7 +120,10 @@ game = this.game; //temp solution until I can figure out a better way to refernc
 
    if (this.G.isDown){
       this.state.start("stGameOver");
+
+ 
    }
+
 
   //console.log(rToA(this.game.physics.arcade.angleBetweenCenters(this.player,this.building2)));
    // start UI update functions
