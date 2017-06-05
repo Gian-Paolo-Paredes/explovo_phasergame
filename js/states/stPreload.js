@@ -22,7 +22,7 @@ stPreload.prototype = {
 	this.load.image('hydrant','FireHydrant.png');
         this.load.image('waterArrow', 'WaterArrow.png');
         this.load.image('fireArrow', 'FireArrow.png');
-        this.load.images(["Player", "Particle", "Test_Building1", "Test_Building2"], ["Firefighter1.png", "WaFParticle.png", "proto_Build12.png", "Building1-FinalBurn.png"]);
+       
         this.load.image('fireCount', 'FireCounter.png')
         this.load.image('BLANK', 'Blank.png')
 
@@ -41,6 +41,7 @@ stPreload.prototype = {
 
         this.load.atlas('Flame','Fires.png','FiresAtlas.json');
         this.load.atlas('Explosion','Exlposion.png','Explosion.json');
+         this.load.atlas('TitleAnimation',"TitleAnimation.png","TitleAnimation.json");
 
 
         this.load.atlas('NextButtons', 'ContinueButtons.png', 'ContinueButtons.json');
