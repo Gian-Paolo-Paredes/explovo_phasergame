@@ -106,10 +106,10 @@ WaterHose.prototype.update = function() {
 		//	 }else{
 		//	 	this.waterarrow.kill();
 		//	 }
-		}
+		
    }
 			this.attachment.waterLevel -= 0.2; // water flow rate, needs changing soon 
-        }
+        
     }
     // stop water spray sound and play water end sound when waterLevel is 0
     if (this.attachment.waterLevel <= 0 && this.water_spray.isPlaying) {
