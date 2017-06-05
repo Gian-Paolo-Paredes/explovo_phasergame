@@ -35,7 +35,7 @@ stDirections.prototype = {
     },//end_out
     startGame: function() {
 
-        this.state.start("stContext1");
+        this.state.start("stGame");
 
     }//end_startGame
 };

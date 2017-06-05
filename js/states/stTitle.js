@@ -30,7 +30,7 @@ stTitle.prototype = {
     startGame: function() {
 
 
-    this.state.start("stDirections");
+    this.state.start("stContext1");
 
 
     }//end_startGame
