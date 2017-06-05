@@ -14,7 +14,7 @@ stContext1.prototype = {
        l("Directions_create");
        sfx= this.game.add.audio("whirling");
 
-       sfx.play();
+       sfx.play('',0,.2,false);
         // add in start button 
         rotate=0;
         
@@ -47,7 +47,8 @@ stContext1.prototype = {
     },//end_out
     startGame: function() {
 
-        this.state.start("stDirections");
+
+    this.state.start("stDirections");
 
     }//end_startGame
 };

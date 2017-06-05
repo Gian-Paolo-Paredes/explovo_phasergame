@@ -36,6 +36,6 @@ stDirections.prototype = {
     startGame: function() {
 
         this.state.start("stGame");
-
+      
     }//end_startGame
 };

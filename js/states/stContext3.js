@@ -14,7 +14,7 @@ stContext3.prototype = {
        l("Directions_create");
        sfx= this.game.add.audio("whirling");
 
-       sfx.play();
+       sfx.play('',0,.2,false);
         // add in start button 
         rotate=0;
         
