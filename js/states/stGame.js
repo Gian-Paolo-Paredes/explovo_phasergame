@@ -30,7 +30,6 @@ stGame.prototype = {
 
 	  // Attach hose to player object
       this.emitter = new WaterHose(this.game, this.player, 30,15);
-
       this.world.moveDown(this.emitter);
 
    // Create new buildings
@@ -238,10 +237,10 @@ stGame.prototype = {
    this.waterUI = new WaterUI(this.game,this.player,70,60);
    this.fireUI = new FireUI(this.game,this.buildingGroup,765,355);
      
-     this.end = damageFire = function(particle,building){
-      particle.kill();
-      building.damageFire();
-   }
+	this.end = damageFire = function(particle,building){
+		particle.kill();
+		building.damageFire();
+	}
 
    },//end_create
 

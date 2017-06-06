@@ -35,7 +35,7 @@ stDirections.prototype = {
     },//end_out
     startGame: function() {
 
-        this.state.start("stGame");
+        this.state.start("stTutorialLevel");
       
     }//end_startGame
 };

@@ -148,7 +148,7 @@ WaterHose.prototype.stopSound = function() {
 // Creates 'foam' over the collision target
 WaterHose.prototype.buildingCollision = function(particle,building){
     // Generate a new emitter
-    var foamEmitter = game.add.emitter(particle.x,particle.y,3);
+    var foamEmitter = building.game.add.emitter(particle.x,particle.y,3);
     foamEmitter.makeParticles('foam'); // create foam particle
     foamEmitter.forEach(function(particle){ // disable gravity for each
         particle.body.allowGravity = false;

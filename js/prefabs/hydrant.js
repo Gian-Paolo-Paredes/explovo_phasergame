@@ -6,6 +6,8 @@ var Hydrant = function(game,x,y,player){
 	this.body.immovable = true;
 	this.body.moves = false;
 	this.anchor.set(0.5,0.5);
+	this.body.setSize(32, 23, 19, 18);
+	this.scale.setTo(0.7, 0.7);
 	//this.body.setCircle(10);
 	this.game.add.existing(this);
 

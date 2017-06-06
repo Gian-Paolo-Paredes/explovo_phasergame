@@ -3,6 +3,7 @@ window.onload = function() {
 	game.state.add("stBoot", stBoot);
 	game.state.add("stPreloader", stPreload);
 	game.state.add("stDirections", stDirections);
+	game.state.add("stTutorialLevel", stTutorialLevel);
 	game.state.add("stContext1", stContext1);
 	game.state.add("stContext2", stContext2);
 	game.state.add("stContext3", stContext3);
