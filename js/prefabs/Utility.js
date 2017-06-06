@@ -40,6 +40,30 @@ function randomOfArray(array, numberOfElementsToGet){
    return returnArray;
 }
 
+function randomPointOffscreen(game, offset){
+   leftX = game.x - offset;
+   rightX = game.width + offset;
+   leftY = game.y - offset;
+   rightY = game.height + offset;
+   switch(randInt(3, 0)){
+      case 0:
+         this.x = leftX;
+         this.y = randInt(leftY, rightY);
+         break;
+      case 1:
+         this.x = rightX;
+         this.y = randInt(leftY, rightY);
+         break;
+      case 2:
+         this.x = randInt(leftX, rightX);
+         this.y = leftY;
+         break;
+      case 3:
+         this.x = randInt(leftX, rightX);
+         this.y = rightY;
+   }
+}
+
 // converts radians to degrees
 function rToA(radians){
     return radians * (180/Math.PI);

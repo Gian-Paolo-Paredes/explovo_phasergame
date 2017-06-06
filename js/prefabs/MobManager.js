@@ -10,6 +10,10 @@ function MobManager(defaultCohesionDistance, defaultSeparationDistance, defaultH
    // enable collisions between members of this MobManager. This should rarely, if ever, be changed during runtime
    this.doCollideMobs = true;
 
+   this.creationTime = (new Date()).getTime();
+
+   this.events = [];
+
 }
 MobManager.prototype.constructor = MobManager;
 // adds an already existing mob to MobManager
@@ -67,6 +71,13 @@ MobManager.prototype.setAllGoal = function(goalX, goalY, goalWeight){
       mob.setGoalPoint(goalX, goalY, goalWeight);
    });
 };
+
+MobManager.prototype.setAllBuilding = function(building){
+   this.mobList.forEach(function(mob){
+      mob.setOwnBuilding(building);
+   });
+};
+
 // kills all mobs out of view of the camera, assumes anchor is at center
 MobManager.prototype.killAllOutOfView = function(game){
    cameraX = game.camera.x;
@@ -104,6 +115,17 @@ MobManager.prototype.addAllTriggerOnCollision = function(objectToCollideWith, ca
 
 // update method for MobManager, since this is not a phaser object, this method MUST be called within the update loop of its state
 MobManager.prototype.update = function(game){
+   //include MobManager as parameter to callback
+   time = (new Date()).getTime();
+   createTime = this.creationTime;
+   for(var x=events.length-1; x>=0; x--){
+      event = events[x];
+      if(time > createTime + event.millisecs){
+         event.cb(this);
+         events.splice(x, 1);
+      }
+   }
+
    var mobList = this.mobList;
    doCollideMobs = this.doCollideMobs;
 
@@ -227,6 +249,11 @@ MobManager.prototype.freezeAll = function(){
       mob.freeze();
    });
 };
+
+MobManager.prototype.addEvent = function(callbackForMobManager, elapsedSecondsAfterCallingThisFunction){
+   this.events.push({millisecs: elapsedSecondsAfterCallingThisFunction*1000, cb: callbackForMobManager});
+};
+
 // returns a random array of mobs
 MobManager.prototype.getRandomSubset = function(minQuantity, maxQuntity){
    maxQuantity = typeof maxQuantity !== 'undefined' ? maxQuantity : minQuantity;

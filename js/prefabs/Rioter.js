@@ -4,6 +4,7 @@ function Rioter(game, spriteObject, positionX, positionY){
    this.anchor.set(0.5);
    game.physics.enable(this);
    this.body.setSize(this.width-4, this.height-4, 2, 2);
+   this.building = null;
 
 
 
@@ -177,12 +178,27 @@ Rioter.prototype.fireAtBuilding = function(game, building){
    }
 };
 
+Rioter.prototype.fireAtOwnBuilding = function(game){
+   building = this.building;
+   if(!building.isDead){
+      if(this.canFire === true){
+        this.canFire = false;
+         tObject = new ThrownObject(game, {key: "assets", frame: 'molotov'}, this.centerX, this.centerY);
+         tObject.throwAtBuilding(building, 20);
+      }
+   }
+};
+
+Rioter.prototype.setOwnBuilding = function(building){
+   this.building = building;
+};
+
 Rioter.prototype.positionOffscreenRandomly = function(game){
    leftX = game.camera.x - mob.spriteDiagonal;
    rightX = game.camera.x + game.camera.width + mob.spriteDiagonal;
    leftY = game.camera.y - mob.spriteDiagonal;
    rightY = game.camera.y + game.camera.height + mob.spriteDiagonal;
-   switch(randInt(0, 3)){
+   switch(randInt(3, 0)){
       case 0:
          this.x = leftX;
          this.y = randInt(leftY, rightY);
