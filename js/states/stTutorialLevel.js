@@ -18,11 +18,12 @@ stTutorialLevel.prototype = {
 		this.buildingGroup = this.game.add.group(); // generate building group
 		this.hydrantGroup = this.game.add.group(); // generate hydrant group
 		
-		
-		
+		// add and play music (MUSIC IS WEIRD BECAUSE PAUSES)
+		//this.bg_music = this.game.add.audio('game_music');
+		//this.bg_music.play('', 0, 1, true);
 		
 		//Create UI
-		this.pointer = this.game.add.sprite(0, 0, 'crosshair');
+		this.pointer = this.game.add.sprite(0, 0, 'assets', 'crosshair');
 		this.pointer.anchor.set(0.5,0.5);
 		this.pointer.visible = false;
 		
@@ -102,7 +103,7 @@ stTutorialLevel.prototype = {
 		this.button.destroy();
 		
 		// Create a new Player
-		this.player = new Player(this.game,600, 300, 'Player');
+		this.player = new Player(this.game,600, 300, 'assets', 'firefighter');
 		this.game.camera.follow(this.player,4,0.1,0.1);  // set camera to player
 		this.pointer.visible = true;
 		
@@ -277,7 +278,7 @@ stTutorialLevel.prototype = {
 	tutorial07: function() {
 		this.button.destroy();
 		this.instructor.visible = true;
-		rioter = new Rioter(this.game, {key: "rioter", frame: 0}, 600, 400);
+		rioter = new Rioter(this.game, {key: 'assets', frame: 'rioter'}, 600, 400);
 		MM.addMob(rioter);
 		this.game.add.existing(rioter);
 		
