@@ -28,7 +28,7 @@ var WaterHose = function(game,attachments,x,y){
     this.onEmit = new Phaser.Signal();
 
 	// Create particles
-	this.makeParticles('Particle',0,250,true,false);
+	this.makeParticles('water',0,250,true,false);
 	this.forEach(function(particle){
 		particle.enableBody = true;
 		particle.body.allowGravity = false;
@@ -91,25 +91,23 @@ WaterHose.prototype.update = function() {
 		if(this.attachment.waterLevel > 0) {
 			this.emitParticle();
 			this.attachment.waterLevel -= 0.2; // water flow rate, needs changing soon
+			
+			if(this.attachment.waterLevel<50){
+				this.ArrowOn=true;
+				l("U need watter");
+				this.waterarrow = new WaterArrow(this.game,615,100,this.player);
+			}else{
+				this.ArrowOn=false;
+			}
+			if(this.ArrowOn=false){
+				this.waterarrow.kill
+			}
 
-		if(this.attachment.waterLevel<50){
-			this.ArrowOn=true;
-			l("U need watter");
-			this.waterarrow = new WaterArrow(this.game,615,100,this.player);
-		}else{
-			this.ArrowOn=false;
-		}
-		if(this.ArrowOn=false){
-			this.waterarrow.kill
-		}
-
-		//	 }else{
-		//	 	this.waterarrow.kill();
-		//	 }
-		
+			//	 }else{
+			//	 	this.waterarrow.kill();
+			//	 }
+			
    }
-			this.attachment.waterLevel -= 0.2; // water flow rate, needs changing soon 
-        
     }
     // stop water spray sound and play water end sound when waterLevel is 0
     if (this.attachment.waterLevel <= 0 && this.water_spray.isPlaying) {

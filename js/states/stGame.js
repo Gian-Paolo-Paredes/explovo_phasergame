@@ -24,13 +24,20 @@ stGame.prototype = {
         this.backgroundLayer = this.map.createLayer('Background');
         this.groundLayer = this.map.createLayer('ForeGround');
 
+		// leave this here for layering purposes
+		// Phaser layers based on instantiation order
+		// creating this group here and adding hydrants to it will guarantee the player is above it
+		this.hydrantGroup = this.game.add.group(); // generate hydrant group
+	
+
       // Create a new Player
-     this.player = new Player(this.game,this.game.world.centerX, this.game.world.centerY, 'Player');
-     this.game.camera.follow(this.player,4,0.1,0.1);  // set camera to player
+   	  this.player = new Player(this.game,this.game.world.centerX, this.game.world.centerY, 'assets' , 'firefighter');
+	  this.game.camera.focusOnXY(this.player.x,this.player.y);
+      this.game.camera.follow(this.player,4,0.1,0.1);  // set camera to player
 
 	  // Attach hose to player object
-      this.emitter = new WaterHose(this.game, this.player, 30,15);
-      this.world.moveDown(this.emitter);
+      this.emitter = new WaterHose(this.game, this.player, 30, 15);
+      this.world.moveDown(this.emitter); // emitter below player
 
    // Create new buildings
    // manual creation for this test
@@ -121,8 +128,6 @@ stGame.prototype = {
 	}
 	
 	//Hydrants
-	this.hydrantGroup = this.game.add.group(); // generate hydrant group
-	
 	for(var i = 0; i < 8; i++){
 		this.hydrant = new Hydrant(this.game,125 + i*495,435,this.player);
 		this.hydrantGroup.add(this.hydrant);}
@@ -198,7 +203,7 @@ stGame.prototype = {
 
    //create rioters and add to MobManager
    for(i=0; i<19; i++){
-      rioter = new Rioter(this.game, {key: "rioter", frame: 0}, this.game.rnd.integerInRange(0, this.game.width), this.game.rnd.integerInRange(0, this.game.height));
+      rioter = new Rioter(this.game, {key: 'assets', frame: 'rioter'}, this.game.rnd.integerInRange(0, this.game.width), this.game.rnd.integerInRange(0, this.game.height));
       MM.addMob(rioter);
       this.game.add.existing(rioter);
    }
@@ -232,15 +237,15 @@ stGame.prototype = {
 
 
    // Create UI
-   this.pointer = this.game.add.sprite(0, 0, 'crosshair');
+   this.pointer = this.game.add.sprite(0, 0, 'assets','crosshair');
    this.pointer.anchor.set(0.5,0.5);
    this.waterUI = new WaterUI(this.game,this.player,70,60);
    this.fireUI = new FireUI(this.game,this.buildingGroup,765,355);
      
-	this.end = damageFire = function(particle,building){
-		particle.kill();
-		building.damageFire();
-	}
+     this.end = damageFire = function(particle,building){
+      particle.kill();
+      building.damageFire();
+   }
 
    },//end_create
 

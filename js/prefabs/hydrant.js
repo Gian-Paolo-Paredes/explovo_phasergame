@@ -1,13 +1,13 @@
 // Fire Hydrant
 var Hydrant = function(game,x,y,player){
+	this.game = game;
 	this.player = player;
-	Phaser.Sprite.call(this,game,x,y,'hydrant');
+	Phaser.Sprite.call(this,game,x,y,'assets','FireHydrant1');
 	game.physics.enable(this,Phaser.Physics.ARCADE);
 	this.body.immovable = true;
 	this.body.moves = false;
 	this.anchor.set(0.5,0.5);
-	this.body.setSize(32, 23, 19, 18);
-	this.scale.setTo(0.7, 0.7);
+	this.body.setSize(25,25,25,15);// square hitbox is a bit better
 	//this.body.setCircle(10);
 	this.game.add.existing(this);
 
@@ -23,7 +23,7 @@ Hydrant.prototype.constructor = Hydrant;
 
 Hydrant.prototype.update = function(){
 	this.game.physics.arcade.collide(this,this.player);
-
+	
 	if (this.game.math.distance(this.x, this.y, this.player.x, this.player.y) < 75){
 		this.player.waterUp();
 

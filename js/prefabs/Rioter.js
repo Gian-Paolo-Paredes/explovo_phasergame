@@ -171,7 +171,7 @@ Rioter.prototype.fireAtBuilding = function(game, building){
    if(!building.isDead){
       if(this.canFire === true){
         this.canFire = false;
-         tObject = new ThrownObject(game, {key: "moltav", frame: 0}, this.centerX, this.centerY);
+         tObject = new ThrownObject(game, {key: "assets", frame: 'molotov'}, this.centerX, this.centerY);
          tObject.throwAtBuilding(building, 20);
       }
    }

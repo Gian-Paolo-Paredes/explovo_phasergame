@@ -2,7 +2,7 @@
 var WaterArrow = function(game,x,y,player){
 
 	this.player = player;
-	Phaser.Sprite.call(this,game,x,y,'BLANK');
+	Phaser.Sprite.call(this,game,x,y,'assets','Blank');
 	//var Arrow =Phaser.Sprite.call(this,game,x,y-60,'waterArrow');
 	game.physics.enable(this,Phaser.Physics.ARCADE);
 	this.body.immovable = true;
@@ -45,9 +45,9 @@ WaterArrow.prototype.update = function(){
 WaterArrow.prototype.makeArrow = function(){
 	//this.player = player;
 	this.waterArrows =+1;
-	var Arrow = this.game.add.sprite(this.x-30,this.y-60,'waterArrow');
-	var Arrow2 = this.game.add.sprite(this.x-100,this.y-60,'waterArrow');
-	var Arrow3 = this.game.add.sprite(this.x-300,this.y-60,'waterArrow');
+	var Arrow = this.game.add.sprite(this.x-30,this.y-60,'assets','WaterArrow');
+	var Arrow2 = this.game.add.sprite(this.x-100,this.y-60,'assets','WaterArrow');
+	var Arrow3 = this.game.add.sprite(this.x-300,this.y-60,'assets','WaterArrow');
 	this.game.add.existing(Arrow);
 	this.ArrowGroup.add(Arrow);
 	this.ArrowGroup.add(Arrow2);

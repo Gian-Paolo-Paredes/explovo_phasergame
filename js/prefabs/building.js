@@ -1,5 +1,5 @@
 // -- Generic Building
-
+// Get fire count with this.fireGroup.countLiving()
 var Building = function(game, x, y, health, fires, key, keyDestroyed, src){
 
 	//var onFire = game.add.sprite(game.world.centerX, 300,'Flame');
@@ -11,13 +11,10 @@ var Building = function(game, x, y, health, fires, key, keyDestroyed, src){
     //  Bob the octopus up and down with a tween
    // game.add.tween(octopus).to({ y: 300 }, 2000, Phaser.Easing.Quadratic.InOut, true, 0, 1000, true);
 
-
-
     //var octopus = game.add.sprite(300, 200, 'octopus');
 
-	this.onFireCount=0;
 	this.saved = game;
-  
+
 	// Creation Code
 	Phaser.Sprite.call(this, game, x, y, key, src); // call sprite
 	game.physics.enable(this, Phaser.Physics.ARCADE); // enable physics
@@ -83,9 +80,6 @@ Building.prototype.update = function(){
 	//boom.scale.setTo(0.5,0.5);
 	//boom.animations.add('BOOM');
 	//boom.animations.play('Boom',5,true);
-
-
-
 	//fire.anchor.setTo(0.5,0.5);
 // Accepts a side in radians and generates a random fire
 Building.prototype.startFire = function(side){
@@ -114,18 +108,11 @@ Building.prototype.startFire = function(side){
 
 	// create a fire and add to group based on parameters
 	var fire = new Fire(this.game, xpos, ypos, ang);
-  fire.scale.setTo(0.5,0.5);
-	fire.animations.add('FlameOn');
-  fire.animations.play('FlameOn', 10, true);
 	this.game.world.moveUp(fire);
-  
-  this.game.add.existing(fire);
-  this.onFireCount =+1;
-
-  this.fireGroup.add(fire);
+  	this.fireGroup.add(fire);
 	if(this.fireGroup.countLiving() == 1){
 		// fire indicator
-		this.indicator = this.saved.add.sprite(this.saved.camera.target.x,this.saved.camera.target.y,'indi');
+		this.indicator = this.saved.add.sprite(this.saved.camera.target.x,this.saved.camera.target.y,'assets','fireIndicator');
 		this.indicator.anchor.setTo(0.5,0.5);
 	}
 	// sound goes here
