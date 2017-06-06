@@ -10,6 +10,7 @@ stPreload.prototype = {
         this.load.path = "assets/img/screens/"; // 
         this.load.image('TitleScreen', 'riotfighter-titlescreen.png'); // title screen
         this.load.image('DirectPage','DirectionsPage.png'); // instructions
+		this.load.image('TutorialBG', "TutorialBG.png"); // tutorial background
         
         this.load.image('News1', "News1.png"); // newspaper 1
         this.load.image('News2', "News2.png"); // newspaper 2
@@ -28,6 +29,9 @@ stPreload.prototype = {
         // -- misc assets, last minute assets
         this.load.path = "assets/img/raw images/";
         // particles are incompatible with texture atlas 
+		this.load.image('CityOSPortrait', "PLACEHOLDER_CityOSPortrait.png");
+		this.load.image('RioterPortrait', "PLACEHOLDER_RioterPortrait.png");
+		this.load.image('textBox', 'TextBox.png');
         this.load.image('water','WaFParticle.png');
         this.load.image('foam', 'WFParticle.png');
 		

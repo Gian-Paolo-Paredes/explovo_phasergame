@@ -24,7 +24,7 @@ ThrownObject.prototype.update = function() {
 	this.rotation += 0.1;
 
 	if(this.collideWithBuildingEnable === true){
-		if(this.game.physics.arcade.overlap(this, this.building)){
+		if(this.game.physics.arcade.collide(this, this.building)){
 			this.building.startFire(this.game.physics.arcade.angleBetweenCenters(this,this.building));
 			this.destroy();
 		}
