@@ -4,42 +4,32 @@ var stPreload = function(game) {
 };
 stPreload.prototype = {
     preload: function(){
-        l("preloader_preload");
         //---/ load all assets
-        //load non-atlas assets
 
-        this.load.images(["Player", "Particle", "Test_Building1", "Test_Building2"], ["Firefighter1.png", "WaFParticle.png", "proto_Build12.png", "Building1-FinalBurn.png"]);
-
-        this.load.image('WaterBar','CMPM120(WaterUI-257X84px).png');
-        this.load.image('WaterLevel','CMPM120(WaterLevelUI197x35px).png');
-        this.load.image('FireBar','CityLife.png');
-        this.load.image('FireLevel','(FireLevel-29x277).png');
-        this.load.image('TitleScreen', 'riotfighter-titlescreen.png');
-
-	this.load.image('building','proto_Build1.png');
-        this.load.image('buildingDestroyed','Building1-FinalBurn.png');
-	this.load.image('fire','FireSprite1.png');
-	this.load.image('hydrant','FireHydrant.png');
+        //  -- load screens
+        this.load.path = "assets/img/screens/"; // 
+        this.load.image('TitleScreen', 'riotfighter-titlescreen.png'); // title screen
+        this.load.image('DirectPage','DirectionsPage.png'); // instructions
         
-        this.load.image('building','proto_Build1.png');
-        this.load.image('fire','Fire3.png');
-        this.load.image('buildingDestroyed','Building1-FinalBurn.png');
-        this.load.image('hydrant','FireHydrant.png');
-      this.load.image('waterArrow', 'WaterArrow.png');
-        this.load.image('fireArrow', 'FireArrow.png');
-       
-        this.load.image('fireCount', 'FireCounter.png');
-        this.load.image('BLANK', 'Blank.png');
-      
-        this.load.image('DirectPage','DirectionsPage.png');
-        this.load.image('News1', "News1.png");
-        this.load.image('News2', "News2.png");
-        this.load.image('News3', "News3.png");
+        this.load.image('News1', "News1.png"); // newspaper 1
+        this.load.image('News2', "News2.png"); // newspaper 2
+        this.load.image('News3', "News3.png"); // newspaper 3
+        this.load.image('GameOverPage',"GameOverScreen.png"); // game over screen
 
-        this.load.image('moltav','Moltav.png');
-        this.load.image('rioter','Rioter.png');
-        this.load.image('foam','WFParticle.png')
-        this.load.image('indi', 'fireIndicator.png');
+        // --  load asset sheets
+        this.load.path = "assets/img/sheets/"; 
+        this.load.atlas('Explosion','Exlposion.png','json/Explosion.json'); // molotov explosion
+        this.load.atlas('StartButtons', 'buttonsheet.png', 'json/buttonsheet.json'); // buttons
+        this.load.atlas('fires','Fires.png','json/FiresAtlas.json'); // animated fire asset
+        this.load.atlas('TitleAnimation',"TitleAnimation.png","json/TitleAnimation.json"); // title screen animation
+        this.load.atlas('NextButtons', 'ContinueButtons.png', 'json/ContinueButtons.json'); // continue button
+        this.load.atlas('assets','normalAssets.png','json/normalAssets.json'); // all remaining assets
+
+        // -- misc assets, last minute assets
+        this.load.path = "assets/img/raw images/";
+        // particles are incompatible with texture atlas 
+        this.load.image('water','WaFParticle.png');
+        this.load.image('foam', 'WFParticle.png');
 		
 		//Buildings
 		this.load.image('building1','Building1.png');
@@ -59,29 +49,10 @@ stPreload.prototype = {
 		this.load.image('fTruck','FTruck.png');
 		this.load.image('fTruckDestroyed','FTruckDestroyed.png');
 		
-		//crosshair
-		this.load.image('crosshair','crosshair.png');
-
-        //  this.load.atlas('StartButtons', 'buttonsheet.png', 'buttonsheet.json');
-
-        this.load.image('GameOverPage',"GameOverScreen.png");
-
-        this.load.atlas('StartButtons', 'buttonsheet.png', 'buttonsheet.json');
-
-
-        this.load.atlas('fires','Fires.png','FiresAtlas.json');
-              this.load.atlas('Explosion','Exlposion.png','Explosion.json');
-         this.load.atlas('TitleAnimation',"TitleAnimation.png","TitleAnimation.json");
-
-        this.load.atlas('NextButtons', 'ContinueButtons.png', 'ContinueButtons.json');
-        this.game.load.audio("whirling", 'audio/newstransition.mp3');
-
         //Tilemap
 		this.load.path = "assets/img/tiles/"
         this.game.load.tilemap('CityTilemap', 'CityTilemap.json', null, Phaser.Tilemap.TILED_JSON);
         this.game.load.image('CityTileset64', 'CityTileset64.png');
-
-        //load assets from atlas (if applicable)
 
         //load audio assets
         this.load.path = "assets/audio/"
@@ -95,7 +66,9 @@ stPreload.prototype = {
         this.load.audio('refill', 'refill.mp3');
         this.load.audio('refill_done', 'refill_done.mp3');
         this.load.audio('refill_notdone', 'refill_notdone.mp3');
-        this.load.audio('fireSizzle','sizzle.wav')
+        this.load.audio('fireSizzle','sizzle.wav');
+        this.game.load.audio("whirling", 'newstransition.mp3');
+
     
     },//end_preload
     create: function(){
