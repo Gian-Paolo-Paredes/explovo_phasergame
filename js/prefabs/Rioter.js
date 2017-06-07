@@ -9,7 +9,7 @@ function Rioter(game, spriteObject, positionX, positionY){
    this.killOffscreen = false;
 
    this.creationTime = (new Date()).getTime();
-   this.events = [];
+   this._events = [];
 
    // values which should be here but can be changed as required
    this.maxVelocity = 60;
@@ -95,11 +95,11 @@ Rioter.prototype.setFlockingDistances = function(cDist, sDist, hDist){
 Rioter.prototype.update = function(){
 
    time = (new Date()).getTime();
-   for(var w=this.events.length-1; w>=0; w--){
-      event = this.events[w];
+   for(var w=this._events.length-1; w>=0; w--){
+      event = this._events[w];
       if(time > this.creationTime + event.millisecs){
          event.cb(this);
-         this.events.splice(w, 1);
+         this._events.splice(w, 1);
       }
    }
 
@@ -149,7 +149,7 @@ Rioter.prototype.update = function(){
       this.body.velocity.y = 0;
    }
 
-   // perform callbacks for enttry and collision events
+   // perform callbacks for enttry and collision _events
    for(var x in this.triggerEvents){
       event = this.triggerEvents[x];
       if(this.x>event.leftX && this.x<event.rightX){
@@ -206,7 +206,7 @@ Rioter.prototype.setOwnBuilding = function(building){
 };
 
 Rioter.prototype.addEvent = function(callbackForMobManager, elapsedSecondsAfterCallingThisFunction){
-   this.events.push({millisecs: elapsedSecondsAfterCallingThisFunction*1000, cb: callbackForMobManager});
+   this._events.push({millisecs: elapsedSecondsAfterCallingThisFunction*1000, cb: callbackForMobManager});
 };
 
 Rioter.prototype.positionOffscreenRandomly = function(game){

@@ -47,7 +47,6 @@ function randomPointOffscreen(game, offset){
    var rightY = game.height + offset;
    var y = -50;
    var x = -50;
-   l("x: " + x + ", y: " + y);
    switch(randInt(3, 0)){
       case 0:
          x = leftX;
@@ -65,7 +64,6 @@ function randomPointOffscreen(game, offset){
          x = randInt(leftX, rightX);
          y = rightY;
    }
-   l("x: " + x + ", y: " + y);
    return {x: x, y: y};
 }
 

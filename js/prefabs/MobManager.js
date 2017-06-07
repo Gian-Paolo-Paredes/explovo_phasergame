@@ -21,7 +21,6 @@ function MobManager(defaultCohesionDistance, defaultSeparationDistance, defaultH
 MobManager.prototype.constructor = MobManager;
 // adds an already existing mob to MobManager
 MobManager.prototype.addMob = function(mob){
-   l("mob Added");
    if(mob.cohesionDistance === null){
       mob.cohesionDistance = this.defaultCohesionDistance;
    }
@@ -134,7 +133,6 @@ MobManager.prototype.update = function(game){
    }
 
    if(this.killOffscreen === true){
-      l("kill requested through update");
       this.killAllOutOfView(game);
    }
 

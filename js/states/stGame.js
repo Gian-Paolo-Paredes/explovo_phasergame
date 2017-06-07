@@ -256,7 +256,6 @@ stGame.prototype = {
 this.game.time.events.repeat(3000, 50, newBuildingAttack, this); // every 3 seconds run function newBuildingAttack; repeat 10 times then stop
 
 function newBuildingAttack(){
-   l("newBuildingAttack was called");
 
    var setGoalOffscreen = function(mob){
       point = randomPointOffscreen(game, 50);
@@ -267,8 +266,8 @@ function newBuildingAttack(){
       building = randomOfArray(this.buildingGroup.children, 1)[0][0];
       for(i=0; i<randInt(4, 2); i++){ //creates 2-4 rioters to pursue building
          var rioter = new Rioter(this.game, {key: 'assets', frame: 'rioter'}, this.game.rnd.integerInRange(0, this.game.width), this.game.rnd.integerInRange(0, this.game.height));
-         l(rioter);
-         console.dir(this.RM);
+         //l(rioter);
+         //console.dir(this.RM);
          this.RM.addMob(rioter);
          this.game.add.existing(rioter);
 
@@ -332,7 +331,9 @@ var throwAtBuilding = function(mob){
 
 
 
-
+      this.RM.update(this.game);
+      this.RM.killAllOutOfView(this.game);
+      l("Mobs in RM: " + this.RM.mobList.length);
 
 
    //MM.update(this.game);
