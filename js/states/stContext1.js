@@ -6,12 +6,12 @@ var stContext1 = function(game) {
 };
 stContext1.prototype = {
     preload: function(){
-        l("Directions_preload");
+        l("Context1_preload");
         // add in background
         
     },//end_preload
     create: function(){
-       l("Directions_create");
+       l("Context1_create");
        sfx= this.game.add.audio("whirling");
 
        sfx.play('',0,.2,false);
@@ -38,17 +38,12 @@ stContext1.prototype = {
    
     },
     over: function() {
-        l("over");
-
+        //l("over");
     },//end_over
     out: function() {
-        l("out");
-        
+        //l("out");
     },//end_out
     startGame: function() {
-
-
-    this.state.start("stDirections");
-
+		this.state.start("stDirections");
     }//end_startGame
 };
