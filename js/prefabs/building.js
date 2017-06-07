@@ -102,10 +102,7 @@ Building.prototype.startFire = function(side){
 		this.indicator = this.game.add.sprite(this.game.camera.target.x,this.game.camera.target.y,'assets','fireIndicator');
 		this.indicator.anchor.setTo(0.5,0.5);
 	}
-	// sound goes here
-    if (!fire.fire_sound.isPlaying) {
-        fire.fire_sound.play('', 0, .07, true);
-    }
+
 };
 
 Building.prototype.damageFire = function(particle,fire){
