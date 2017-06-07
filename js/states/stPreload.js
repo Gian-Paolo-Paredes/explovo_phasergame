@@ -30,11 +30,12 @@ stPreload.prototype = {
         // -- misc assets, last minute assets
         this.load.path = "assets/img/raw images/";
         // particles are incompatible with texture atlas 
-		this.load.image('CityOSPortrait', "PLACEHOLDER_CityOSPortrait.png");
-		this.load.image('RioterPortrait', "PLACEHOLDER_RioterPortrait.png");
-		this.load.image('textBox', 'TextBox.png');
         this.load.image('water','WaFParticle.png');
         this.load.image('foam', 'WFParticle.png');
+        // placeholder tutorial level assets
+        this.load.image('CityOSPortrait', "PLACEHOLDER_CityOSPortrait.png");
+		this.load.image('RioterPortrait', "PLACEHOLDER_RioterPortrait.png");
+		this.load.image('textBox', 'TextBox.png');
 		
 		//Buildings
 		this.load.image('building1','Building1.png');
