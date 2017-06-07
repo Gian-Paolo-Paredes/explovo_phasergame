@@ -220,7 +220,7 @@ stTutorialLevel.prototype = {
 		this.instructor.visible = true;
 		
 		//Create a building
-		this.building = new Building(this.game,326,300,200,0,'building1', 'buildingDestroyed1');
+		this.building = new Building(this.game,326,300,200,0,'Building01');
 		this.buildingGroup.add(this.building);
 		
 		this.bg = this.game.add.image(0, 0, 'TutorialBG');
