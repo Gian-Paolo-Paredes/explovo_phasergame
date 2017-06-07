@@ -14,10 +14,13 @@ function MobManager(defaultCohesionDistance, defaultSeparationDistance, defaultH
 
    this.events = [];
 
+   this.killOffscreen = false;
+
 }
 MobManager.prototype.constructor = MobManager;
 // adds an already existing mob to MobManager
 MobManager.prototype.addMob = function(mob){
+   l("mob Added");
    if(mob.cohesionDistance === null){
       mob.cohesionDistance = this.defaultCohesionDistance;
    }
@@ -118,12 +121,17 @@ MobManager.prototype.update = function(game){
    //include MobManager as parameter to callback
    time = (new Date()).getTime();
    createTime = this.creationTime;
-   for(var x=events.length-1; x>=0; x--){
-      event = events[x];
+   for(var x=this.events.length-1; x>=0; x--){
+      event = this.events[x];
       if(time > createTime + event.millisecs){
          event.cb(this);
-         events.splice(x, 1);
+         this.events.splice(x, 1);
       }
+   }
+
+   if(this.killOffscreen === true){
+      l("kill requested through update");
+      this.killAllOutOfView(game);
    }
 
    var mobList = this.mobList;
@@ -248,6 +256,12 @@ MobManager.prototype.freezeAll = function(){
    this.mobList.forEach(function(mob){
       mob.freeze();
    });
+};
+
+MobManager.prototype.killOnEmpty = function(){
+   if(this.mobList.length<=0){
+      delete this;
+   }
 };
 
 MobManager.prototype.addEvent = function(callbackForMobManager, elapsedSecondsAfterCallingThisFunction){

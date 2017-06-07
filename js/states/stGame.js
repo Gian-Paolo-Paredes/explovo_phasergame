@@ -1,17 +1,24 @@
 //Main this.game State
 var stGame = function(game) {
     //Rioter_
-   var MM;
-   var MM2;
-   var RiotManagers = [];
+   //var MM;
+   //var MM2;
+
+
+   var RiotManagers;
+   var buildingGroup;
+   var hydrantGroup;
+   var player;
+
    //_Rioter
 };
 stGame.prototype = {
    preload: function(){
       this.game.time.advancedTiming = true;
       //Rioter_
-      MM = new MobManager(100, 50, 100, 1, 1.5, 1);
+      //MM = new MobManager(100, 50, 100, 1, 1.5, 1);
       //_Rioter
+      this.RiotManagers = [];
    },//end_preload
    create: function() {
    //--/ variable assignments
@@ -43,90 +50,95 @@ stGame.prototype = {
    // Create new buildings
    // manual creation for this test
    this.buildingGroup = this.game.add.group(); // generate building group
-   this.building = new Building(this.game,131,191,200,this.game.rnd.integerInRange(1,5),'building1', 'buildingDestroyed1');
+   this.building = new Building(this.game,131,191,200, createBuildingFires,'building1', 'buildingDestroyed1');
 	this.buildingGroup.add(this.building);
 
-   this.building = new Building(this.game,830,156,200,this.game.rnd.integerInRange(1,5),'building5', 'buildingDestroyed5');
+   this.building = new Building(this.game,830,156,200,createBuildingFires(),'building5', 'buildingDestroyed5');
    this.buildingGroup.add(this.building);
 
 	for(var i = 0; i < 2; i++){
-		this.building = new Building(this.game,(621+(417*i)),191,200,this.game.rnd.integerInRange(1,5),'building1', 'buildingDestroyed1');
+		this.building = new Building(this.game,(621+(417*i)),191,200,createBuildingFires(),'building1', 'buildingDestroyed1');
 		this.buildingGroup.add(this.building);
 	}
 
 	for(var i = 0; i < 2; i++){
-		this.building = new Building(this.game,(2912+(200*i)),173,200,this.game.rnd.integerInRange(1,5),'building5', 'buildingDestroyed5');
+		this.building = new Building(this.game,(2912+(200*i)),173,200,createBuildingFires(),'building5', 'buildingDestroyed5');
 		this.buildingGroup.add(this.building);
 	}
 
 	for(var i = 0; i < 2; i++){
-		this.building = new Building(this.game,(1518+(255*i)),191,200,this.game.rnd.integerInRange(1,5),'building1', 'buildingDestroyed1');
+		this.building = new Building(this.game,(1518+(255*i)),191,200,createBuildingFires(),'building1', 'buildingDestroyed1');
 		this.buildingGroup.add(this.building);
 	}
 
 	for(var i = 0; i < 2; i++){
-		this.building = new Building(this.game,(2113+(325*i)),191,200,this.game.rnd.integerInRange(1,5),'building1', 'buildingDestroyed1');
+		this.building = new Building(this.game,(2113+(325*i)),191,200,createBuildingFires(),'building1', 'buildingDestroyed1');
 		this.buildingGroup.add(this.building);
 	}
 
-	this.building = new Building(this.game,2671,1231,200,this.game.rnd.integerInRange(1,5),'building6', 'buildingDestroyed6');
+	this.building = new Building(this.game,2671,1231,200,createBuildingFires(),'building6', 'buildingDestroyed6');
 	this.buildingGroup.add(this.building);
 
-	this.building = new Building(this.game,1622,1544,200,this.game.rnd.integerInRange(1,5),'fireStation', 'fireStationDestroyed');
+	this.building = new Building(this.game,1622,1544,200,createBuildingFires(),'fireStation', 'fireStationDestroyed');
 	this.buildingGroup.add(this.building);
 
 	for(var i = 0; i < 2; i++){
-		this.building = new Building(this.game,1834 + i*100,(1441),200, this.game.rnd.integerInRange(1,5),'fTruck', 'fTruckDestroyed');
+		this.building = new Building(this.game,1834 + i*100,(1441),200, createBuildingFires(),'fTruck', 'fTruckDestroyed');
 		this.buildingGroup.add(this.building);
 	}
 
 	for(var i = 0; i < 3; i++){
-		this.building = new Building(this.game,(988),(760 + i*260),200,this.game.rnd.integerInRange(1,5),'building2', 'buildingDestroyed2');
+		this.building = new Building(this.game,(988),(760 + i*260),200,createBuildingFires(),'building2', 'buildingDestroyed2');
 		this.buildingGroup.add(this.building);
 	}
 
-	this.building = new Building(this.game,637,826,200,this.game.rnd.integerInRange(1,5),'building1', 'buildingDestroyed1');
+	this.building = new Building(this.game,637,826,200,createBuildingFires(),'building1', 'buildingDestroyed1');
 	this.buildingGroup.add(this.building);
 
-	this.building = new Building(this.game,637,1281,200,this.game.rnd.integerInRange(1,5),'building1', 'buildingDestroyed1');
+	this.building = new Building(this.game,637,1281,200,createBuildingFires(),'building1', 'buildingDestroyed1');
 	this.buildingGroup.add(this.building);
 
-	this.building = new Building(this.game,821,1662,200,this.game.rnd.integerInRange(1,5),'building3', 'buildingDestroyed3');
+	this.building = new Building(this.game,821,1662,200,createBuildingFires(),'building3', 'buildingDestroyed3');
 	this.buildingGroup.add(this.building);
 
-	this.building = new Building(this.game,125,823,200,this.game.rnd.integerInRange(1,5),'building4', 'buildingDestroyed4');
+	this.building = new Building(this.game,125,823,200,createBuildingFires(),'building4', 'buildingDestroyed4');
 	this.buildingGroup.add(this.building);
 
 	for(var i = 0; i < 2; i++){
-		this.building = new Building(this.game,(635 + i*250),(2261),200,this.game.rnd.integerInRange(1,5),'building4', 'buildingDestroyed4');
-		this.buildingGroup.add(this.building);
-	}
-
-	for(var i = 0; i < 2; i++){
-		this.building = new Building(this.game,(2424 + i*450),(2272),200,this.game.rnd.integerInRange(1,5),'building4', 'buildingDestroyed4');
+		this.building = new Building(this.game,(635 + i*250),(2261),200,createBuildingFires(),'building4', 'buildingDestroyed4');
 		this.buildingGroup.add(this.building);
 	}
 
 	for(var i = 0; i < 2; i++){
-		this.building = new Building(this.game,(2650 + i*450),(2277),200,this.game.rnd.integerInRange(1,5),'building5', 'buildingDestroyed5');
+		this.building = new Building(this.game,(2424 + i*450),(2272),200,createBuildingFires(),'building4', 'buildingDestroyed4');
 		this.buildingGroup.add(this.building);
 	}
 
-	this.building = new Building(this.game,135,2290,200,this.game.rnd.integerInRange(1,5),'building1', 'buildingDestroyed1');
+	for(var i = 0; i < 2; i++){
+		this.building = new Building(this.game,(2650 + i*450),(2277),200,createBuildingFires(),'building5', 'buildingDestroyed5');
+		this.buildingGroup.add(this.building);
+	}
+
+	this.building = new Building(this.game,135,2290,200,createBuildingFires(),'building1', 'buildingDestroyed1');
 	this.buildingGroup.add(this.building);
 
 	for(var i = 0; i < 2; i++){
-		this.building = new Building(this.game,(1393+(225*i)),2289,200,this.game.rnd.integerInRange(1,5),'building1', 'buildingDestroyed1');
+		this.building = new Building(this.game,(1393+(225*i)),2289,200,createBuildingFires(),'building1', 'buildingDestroyed1');
 		this.buildingGroup.add(this.building);
 	}
 
-	this.building = new Building(this.game,1890,2300,200,this.game.rnd.integerInRange(1,5),'building2', 'buildingDestroyed2');
+	this.building = new Building(this.game,1890,2300,200,createBuildingFires(),'building2', 'buildingDestroyed2');
 	this.buildingGroup.add(this.building);
 
 	for(var i = 0; i < 3; i++){
-		this.building = new Building(this.game,(93),(1201 + i*260),200,this.game.rnd.integerInRange(1,5),'building2', 'buildingDestroyed2');
+		this.building = new Building(this.game,(93),(1201 + i*260),200,createBuildingFires(),'building2', 'buildingDestroyed2');
 		this.buildingGroup.add(this.building);
 	}
+
+   function createBuildingFires(){
+      //return randInt(5, 1);
+      return 0;
+   }
 
 	//Hydrants
 	for(var i = 0; i < 8; i++){
@@ -200,9 +212,10 @@ stGame.prototype = {
 
    // add and play music
    this.bg_music = this.game.add.audio('game_music');
-   this.bg_music.play('', 0, 1, true);
+   //this.bg_music.play('', 0, 1, true); UNMUTE LATER
 
    //create rioters and add to MobManager
+/*
    for(i=0; i<19; i++){
       rioter = new Rioter(this.game, {key: 'assets', frame: 'rioter'}, this.game.rnd.integerInRange(0, this.game.width), this.game.rnd.integerInRange(0, this.game.height));
       MM.addMob(rioter);
@@ -220,7 +233,7 @@ stGame.prototype = {
       mob.fireAtBuilding(game, building2);
       mob.setGoalPoint(game.world.centerX, game.world.centerY, 0.5);
       //tObject = new ThrownObject(game, {key: "moltav", frame: 0}, mob.centerX, mob.centerY);
-   };
+   };*/
 
    var onSprayIncreaseGoalweight = function(mob){
       //mob.freeze();
@@ -239,25 +252,44 @@ stGame.prototype = {
    MM.addAllTriggerOnCollision(this.buildingGroup, null, false);
 */
 
+this.game.time.events.repeat(3000, 50, newBuildingAttack, this); // every 5 seconds run function newBuildingAttack; repeat 10 times then stop
 
 
+function newBuildingAttack(){
+   l("newBuildingAttack was called");
 
-building = randomOfArray(buildingGroup.children, 1);
-MM = new MobManager(100, 50, 100, 1, 1.5, 1);
-for(i=0; i<randInt(4, 2); i++){ //creates 2-4 rioters to pursue building
-   rioter = new Rioter(this.game, {key: 'assets', frame: 'rioter'}, this.game.rnd.integerInRange(0, this.game.width), this.game.rnd.integerInRange(0, this.game.height));
-   MM.addMob(rioter);
-   this.game.add.existing(rioter);
+   var setGoalOffscreen = function(MM){
+      l(game);
+      point = randomPointOffscreen(game, 50);
+      MM.setAllGoal(point.x, point.y, 0.8); // randomly head to offscreen point with weight 0.8
+      MM.killAllOutOfView(game);
+   };
+
+      building = randomOfArray(this.buildingGroup.children, 1)[0][0];
+      MM = new MobManager(100, 50, 100, 1, 1.5, 1);
+      for(i=0; i<randInt(4, 2); i++){ //creates 2-4 rioters to pursue building
+         rioter = new Rioter(this.game, {key: 'assets', frame: 'rioter'}, this.game.rnd.integerInRange(0, this.game.width), this.game.rnd.integerInRange(0, this.game.height));
+         MM.addMob(rioter);
+         this.game.add.existing(rioter);
+      }
+      MM.addAllTriggerOnEntry(building.x-(building.width/2)-60, building.y - (building.height/2)- 60, building.width+120, building.height + 120, throwAtBuilding);
+      //This is for top left corner handle --> MM.addAllTriggerOnEntry(building2.x-60, building2.y - 60, building2.width+120, building2.height + 120, throwAtBuilding2);
+      // The less movable an object is, the further down the list it should be
+      MM.addAllTriggerOnCollision(this.emitter, onSprayIncreaseGoalweight, false);
+      MM.addAllTriggerOnCollision(this.player);
+      MM.addAllTriggerOnCollision(this.hydrantGroup, null, false);
+      MM.addAllTriggerOnCollision(this.buildingGroup, null, false);
+      MM.setAllBuilding(building);
+      MM.positionAllOffscreenRandomly(this.game);
+      l(building);
+      MM.setAllGoal(building.centerX, building.centerY, 0.4);
+      MM.addEvent(setGoalOffscreen, 40); // 40 seconds after creation, set goal of all rioters to offscreen
+      MM.addEvent(setGoalOffscreen, 60); // 60 seconds after creation, set goal of all rioters to offscreen, goal to prevent stuck state
+      MM.addEvent(setGoalOffscreen, 100); // 100 seconds after creation, set goal of all rioters to offscreen, goal to prevent stuck state
+      RiotManagers.push(MM);
+
+
 }
-MM.addAllTriggerOnEntry(building.x-(building.width/2)-60, building.y - (building.height/2)- 60, building.width+120, building.height + 120, throwAtBuilding);
-//This is for top left corner handle --> MM.addAllTriggerOnEntry(building2.x-60, building2.y - 60, building2.width+120, building2.height + 120, throwAtBuilding2);
-// The less movable an object is, the further down the list it should be
-MM.addAllTriggerOnCollision(this.emitter, onSprayIncreaseGoalweight, false);
-MM.addAllTriggerOnCollision(this.player);
-MM.addAllTriggerOnCollision(this.hydrantGroup, null, false);
-MM.addAllTriggerOnCollision(this.buildingGroup, null, false);
-MM.setAllBuilding(building);
-RiotManagers.push(MM);
 
 
 
@@ -292,21 +324,34 @@ var throwAtBuilding = function(mob){
 
       game = this.game;
 
-   if (this.G.isDown){
-      this.state.start("stGameOver");
 
 
-   }
 
+
+
+
+
+   RiotManagers = this.RiotManagers;
    for(var x=RiotManagers.length-1; x>=0; x--){ //from back to front, array is reindexed on removal due to destroy
       RM = RiotManagers[x];
-      RM.update(game);
+      RM.update(this.game);
+      l("update called on RM");
+      if(RM.mobList.length<=0){
+         RiotManagers.splice(x, 1);
+         RM.killOnEmpty();
+      }
+   }
+
+   //MM.update(this.game);
+
+
+   if (this.G.isDown){
+      this.state.start("stGameOver");
    }
 
 
   //console.log(rToA(this.game.physics.arcade.angleBetweenCenters(this.player,this.building2)));
    // start UI update functions
-   MM.update(this.game);
 	this.waterUI.update();
 	this.fireUI.update();
 
@@ -325,6 +370,9 @@ var throwAtBuilding = function(mob){
 	this.pointer.y = this.game.camera.y + this.game.input.y -0;
 
    },//end_update
+
+
+
 
  /*  render: function() {
 	   this.buildingGroup.forEach(function(building){
