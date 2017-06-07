@@ -69,7 +69,7 @@ Building.prototype.update = function(){
 // Starts a fire on this building
 
 // Accepts a side in radians and generates a random fire
-Building.prototype.startFire = function(side){
+Building.prototype.startFire = function(side){    
 	// Get the side of the building that was lit
 	var angle = rToA(side);
 	if (angle >= -45 && angle <= 45){ // left
@@ -102,7 +102,7 @@ Building.prototype.startFire = function(side){
 		this.indicator = this.game.add.sprite(this.game.camera.target.x,this.game.camera.target.y,'assets','fireIndicator');
 		this.indicator.anchor.setTo(0.5,0.5);
 	}
-	// sound goes here
+
 };
 
 Building.prototype.damageFire = function(particle,fire){
