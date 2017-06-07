@@ -1,16 +1,24 @@
 // -- Generic Building
-
-var Building = function(game, x, y, health, fires, key, src){
-	this.saved = game;
+// Get fire count with this.fireGroup.countLiving()
+// Buildings should be named building01-01, building01-02, etc subject to change
+// Example - "MemeFactory-01.png" for alive "MemeFactory-02.png" for dead
+// May extend for animations if necessary
+var Building = function(game, x, y, health, fires, src){
+	// initalization
+	this.game = game;
+	this.src = src + '-01';
+	this.srcDestroyed = src + '-02';
 	// Creation Code
-	Phaser.Sprite.call(this, game, x, y, key, src); // call sprite
+	Phaser.Sprite.call(this, game, x, y, 'buildings', this.src); // call sprite
 	game.physics.enable(this, Phaser.Physics.ARCADE); // enable physics
 	this.body.immovable = true; // dsable movement
 	this.body.moves = false;
 	this.anchor.set(0.5,0.5); // set anchor to center
 	this.game.add.existing(this);
-	this.isDead = false;
 
+	//this.count = game.add.text(740,35, 'X ' + this.fireCount,{fontSize: '25px',fill:'yellow'});
+	//this.count.fixedToCamera=true;
+	this.isDead = false;
 
 	// Parameters
 	this.health = health; // default hp set
@@ -32,9 +40,9 @@ Building.prototype.update = function(){
 	// Indicator management
 	if (this.fireGroup.countLiving() > 0){
 		// movement of the fire indicator
-		this.indicator.rotation = this.saved.physics.arcade.angleBetween(this,this.indicator);
-		this.indicator.x = this.saved.camera.target.x;
-		this.indicator.y = this.saved.camera.target.y;
+		this.indicator.rotation = this.game.physics.arcade.angleBetween(this,this.indicator);
+		this.indicator.x = this.game.camera.target.x;
+		this.indicator.y = this.game.camera.target.y;
 	}
 	else{
 		if(this.indicator!==undefined){
@@ -49,8 +57,7 @@ Building.prototype.update = function(){
 	else{
 		this.isDead = true;
 		this.fireGroup.removeAll(true);
-		this.loadTexture('buildingDestroyed',0);
-        
+		this.loadTexture('buildings', this.srcDestroyed);
 	}
 	// Debug code
 	/*this.fireGroup.forEach(function(fire){
@@ -60,6 +67,7 @@ Building.prototype.update = function(){
 
 // startFire
 // Starts a fire on this building
+
 // Accepts a side in radians and generates a random fire
 Building.prototype.startFire = function(side){    
 	// Get the side of the building that was lit
@@ -88,10 +96,10 @@ Building.prototype.startFire = function(side){
 	// create a fire and add to group based on parameters
 	var fire = new Fire(this.game, xpos, ypos, ang);
 	this.game.world.moveUp(fire);
-	this.fireGroup.add(fire);
+  	this.fireGroup.add(fire);
 	if(this.fireGroup.countLiving() == 1){
 		// fire indicator
-		this.indicator = this.saved.add.sprite(this.saved.camera.target.x,this.saved.camera.target.y,'indi');
+		this.indicator = this.game.add.sprite(this.game.camera.target.x,this.game.camera.target.y,'assets','fireIndicator');
 		this.indicator.anchor.setTo(0.5,0.5);
 	}
 	// sound goes here
