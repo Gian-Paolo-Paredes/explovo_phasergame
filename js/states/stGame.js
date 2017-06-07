@@ -5,7 +5,7 @@ var stGame = function(game) {
    //var MM2;
 
 
-   var RiotManagers;
+   var RM;
    var buildingGroup;
    var hydrantGroup;
    var player;
@@ -18,7 +18,8 @@ stGame.prototype = {
       //Rioter_
       //MM = new MobManager(100, 50, 100, 1, 1.5, 1);
       //_Rioter
-      this.RiotManagers = [];
+      this.RM = new MobManager(100, 50, 100, 1, 1.5, 1);
+
    },//end_preload
    create: function() {
    //--/ variable assignments
@@ -252,41 +253,42 @@ stGame.prototype = {
    MM.addAllTriggerOnCollision(this.buildingGroup, null, false);
 */
 
-this.game.time.events.repeat(3000, 50, newBuildingAttack, this); // every 5 seconds run function newBuildingAttack; repeat 10 times then stop
-
+this.game.time.events.repeat(3000, 50, newBuildingAttack, this); // every 3 seconds run function newBuildingAttack; repeat 10 times then stop
 
 function newBuildingAttack(){
    l("newBuildingAttack was called");
 
-   var setGoalOffscreen = function(MM){
-      l(game);
+   var setGoalOffscreen = function(mob){
       point = randomPointOffscreen(game, 50);
-      MM.setAllGoal(point.x, point.y, 0.8); // randomly head to offscreen point with weight 0.8
-      MM.killAllOutOfView(game);
+      mob.setGoalPoint(point.x, point.y, 0.8); // randomly head to offscreen point with weight 0.8
+      mob.killOffscreen = true;
    };
 
       building = randomOfArray(this.buildingGroup.children, 1)[0][0];
-      MM = new MobManager(100, 50, 100, 1, 1.5, 1);
       for(i=0; i<randInt(4, 2); i++){ //creates 2-4 rioters to pursue building
-         rioter = new Rioter(this.game, {key: 'assets', frame: 'rioter'}, this.game.rnd.integerInRange(0, this.game.width), this.game.rnd.integerInRange(0, this.game.height));
-         MM.addMob(rioter);
+         var rioter = new Rioter(this.game, {key: 'assets', frame: 'rioter'}, this.game.rnd.integerInRange(0, this.game.width), this.game.rnd.integerInRange(0, this.game.height));
+         l(rioter);
+         console.dir(this.RM);
+         this.RM.addMob(rioter);
          this.game.add.existing(rioter);
+
+         rioter.positionOffscreenRandomly(game);
+         rioter.setOwnBuilding(building);
+         rioter.setGoalPoint(building.centerX, building.centerY, 0.4);
+         rioter.addEvent(setGoalOffscreen, 40); // 40 seconds after creation, set goal of rioter to offscreen
+         rioter.addEvent(setGoalOffscreen, 60); // 60 seconds after creation, set goal of rioter to offscreen, goal to prevent stuck state
+         rioter.addEvent(setGoalOffscreen, 100); // 100 seconds after creation, set goal of rioter to offscreen, goal to prevent stuck state
+
+         // The less movable an object is, the further down the list it should be
+         rioter.triggerOnEntry(building.x-(building.width/2)-60, building.y - (building.height/2)- 60, building.width+120, building.height + 120, throwAtBuilding);
+         //This is for top left corner handle --> rioter.triggerOnEntry(building2.x-60, building2.y - 60, building2.width+120, building2.height + 120, throwAtBuilding2);
+         rioter.triggerOnCollision(this.emitter, onSprayIncreaseGoalweight, false);
+         rioter.triggerOnCollision(this.player);
+         rioter.triggerOnCollision(this.hydrantGroup, null, false);
+         rioter.triggerOnCollision(this.buildingGroup, null, false);
+
       }
-      MM.addAllTriggerOnEntry(building.x-(building.width/2)-60, building.y - (building.height/2)- 60, building.width+120, building.height + 120, throwAtBuilding);
-      //This is for top left corner handle --> MM.addAllTriggerOnEntry(building2.x-60, building2.y - 60, building2.width+120, building2.height + 120, throwAtBuilding2);
-      // The less movable an object is, the further down the list it should be
-      MM.addAllTriggerOnCollision(this.emitter, onSprayIncreaseGoalweight, false);
-      MM.addAllTriggerOnCollision(this.player);
-      MM.addAllTriggerOnCollision(this.hydrantGroup, null, false);
-      MM.addAllTriggerOnCollision(this.buildingGroup, null, false);
-      MM.setAllBuilding(building);
-      MM.positionAllOffscreenRandomly(this.game);
-      l(building);
-      MM.setAllGoal(building.centerX, building.centerY, 0.4);
-      MM.addEvent(setGoalOffscreen, 40); // 40 seconds after creation, set goal of all rioters to offscreen
-      MM.addEvent(setGoalOffscreen, 60); // 60 seconds after creation, set goal of all rioters to offscreen, goal to prevent stuck state
-      MM.addEvent(setGoalOffscreen, 100); // 100 seconds after creation, set goal of all rioters to offscreen, goal to prevent stuck state
-      RiotManagers.push(MM);
+
 
 
 }
@@ -331,16 +333,7 @@ var throwAtBuilding = function(mob){
 
 
 
-   RiotManagers = this.RiotManagers;
-   for(var x=RiotManagers.length-1; x>=0; x--){ //from back to front, array is reindexed on removal due to destroy
-      RM = RiotManagers[x];
-      RM.update(this.game);
-      l("update called on RM");
-      if(RM.mobList.length<=0){
-         RiotManagers.splice(x, 1);
-         RM.killOnEmpty();
-      }
-   }
+
 
    //MM.update(this.game);
 

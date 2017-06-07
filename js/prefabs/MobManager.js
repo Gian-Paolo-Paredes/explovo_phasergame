@@ -1,5 +1,6 @@
 function MobManager(defaultCohesionDistance, defaultSeparationDistance, defaultHeadingDistance, defaultCohesionWeight, defaultSeparationWeight, defaultHeadingWeight){
    this.mobList = [];
+   this.RM = null;
    this.defaultCohesionDistance = defaultCohesionDistance;
    this.defaultSeparationDistance = defaultSeparationDistance;
    this.defaultHeadingDistance = defaultHeadingDistance;
@@ -82,7 +83,7 @@ MobManager.prototype.setAllBuilding = function(building){
 };
 
 // kills all mobs out of view of the camera, assumes anchor is at center
-MobManager.prototype.killAllOutOfView = function(game){
+MobManager.prototype.killAllOutOfView = function(game){ // kills only mobs with killOffscreen set to true
    cameraX = game.camera.x;
    cameraY = game.camera.y;
    cameraW = game.camera.width;
@@ -91,12 +92,15 @@ MobManager.prototype.killAllOutOfView = function(game){
    for(var x=mobList.length-1; x>=0; x--){ //from back to front, array is reindexed on removal due to destroy
       mob = mobList[x];
       //assumption: sprite's anchor is 0.5, 0.5
-      if(((mob.x + mob.spriteDiagonal/2)<cameraX) || ((mob.x - mob.spriteDiagonal/2)>(cameraX+cameraW)) || ((mob.y + mob.spriteDiagonal/2)<cameraY) || ((mob.y - mob.spriteDiagonal/2)>(cameraY+cameraH))){
-            mob.destroy();
-            this.mobList.splice(x, 1);
+      if(mob.killOffscreen === true){
+         if(((mob.x + mob.spriteDiagonal/2)<cameraX) || ((mob.x - mob.spriteDiagonal/2)>(cameraX+cameraW)) || ((mob.y + mob.spriteDiagonal/2)<cameraY) || ((mob.y - mob.spriteDiagonal/2)>(cameraY+cameraH))){
+               mob.destroy();
+               this.mobList.splice(x, 1);
+         }
       }
    }
 };
+
 // to each mob add a callback that occurs if it enters the area defined by the other parameters
 MobManager.prototype.addAllTriggerOnEntry = function(leftCornerX, leftCornerY, width, height, callback){
    this.mobList.forEach(function(mob){
