@@ -42,7 +42,7 @@ stDirections.prototype = {
     },//end_out
     startTutorial: function() {
 
-        this.state.start("stTutorialLevel");
+        this.state.start("stGame");
       
     },//end_startTutorial
 	skipTutorial: function() {
