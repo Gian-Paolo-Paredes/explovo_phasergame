@@ -25,6 +25,7 @@ stPreload.prototype = {
         this.load.atlas('TitleAnimation',"TitleAnimation.png","json/TitleAnimation.json"); // title screen animation
         this.load.atlas('NextButtons', 'ContinueButtons.png', 'json/ContinueButtons.json'); // continue button
         this.load.atlas('assets','normalAssets.png','json/normalAssets.json'); // all remaining assets
+        this.load.atlas('buildings',"buildings.png",'json/buildings.json');
 
         // -- misc assets, last minute assets
         this.load.path = "assets/img/raw images/";
