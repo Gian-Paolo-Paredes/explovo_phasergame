@@ -263,15 +263,24 @@ function newBuildingAttack(){
       mob.killOffscreen = true;
    };
 
-      building = randomOfArray(this.buildingGroup.children, 1)[0][0];
-      for(i=0; i<randInt(4, 2); i++){ //creates 2-4 rioters to pursue building
+      var unburntBuildings = [];
+      for(var u = 0; u<this.buildingGroup.children.length; u++){
+         if(this.buildingGroup.children[u].isDead === false){
+            unburntBuildings.push(this.buildingGroup.children[u]);
+         }
+      }
+      building = randomOfArray(unburntBuildings, 1)[0][0];
+      for(i=0; i<randInt(6, 3); i++){ //creates 2-4 rioters to pursue building
          var rioter = new Rioter(this.game, {key: 'assets', frame: 'rioter'}, this.game.rnd.integerInRange(0, this.game.width), this.game.rnd.integerInRange(0, this.game.height));
          //l(rioter);
          //console.dir(this.RM);
          this.RM.addMob(rioter);
          this.game.add.existing(rioter);
 
-         rioter.positionOffscreenRandomly(game);
+         //do{ // infinite loop
+            rioter.positionOffscreenRandomly(game);
+         //}while(game.physics.arcade.overlap(rioter, this.buildingGroup)===true);
+
          rioter.setOwnBuilding(building);
          rioter.setGoalPoint(building.centerX, building.centerY, 0.4);
          rioter.addEvent(setGoalOffscreen, 40); // 40 seconds after creation, set goal of rioter to offscreen

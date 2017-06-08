@@ -232,3 +232,9 @@ Rioter.prototype.positionOffscreenRandomly = function(game){
          this.y = rightY;
    }
 };
+
+Rioter.prototype.positionOffworldRandomly = function(game){
+   var point = randomPointOffscreen;
+   this.x = point.x;
+   this.y = point.y;
+};
