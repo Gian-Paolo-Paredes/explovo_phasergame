@@ -33,12 +33,6 @@ stGame.prototype = {
         this.backgroundLayer = this.map.createLayer('Background');
         this.groundLayer = this.map.createLayer('ForeGround');
 
-		// leave this here for layering purposes
-		// Phaser layers based on instantiation order
-		// creating this group here and adding hydrants to it will guarantee the player is above it
-		this.hydrantGroup = this.game.add.group(); // generate hydrant group
-
-
       // Create a new Player
    	  this.player = new Player(this.game,this.game.world.centerX, this.game.world.centerY, 'assets' , 'firefighter');
 	  this.game.camera.focusOnXY(this.player.x,this.player.y);
@@ -48,172 +42,15 @@ stGame.prototype = {
       this.emitter = new WaterHose(this.game, this.player, 30, 15);
       this.world.moveDown(this.emitter); // emitter below player
 
-   // Create new buildings
-   // manual creation for this test
-   this.buildingGroup = this.game.add.group(); // generate building group
-   this.building = new Building(this.game,131,191,200, createBuildingFires,'building1', 'buildingDestroyed1');
-	this.buildingGroup.add(this.building);
 
-   this.building = new Building(this.game,830,156,200,createBuildingFires(),'building5', 'buildingDestroyed5');
-   this.buildingGroup.add(this.building);
 
-	for(var i = 0; i < 2; i++){
-		this.building = new Building(this.game,(621+(417*i)),191,200,createBuildingFires(),'building1', 'buildingDestroyed1');
-		this.buildingGroup.add(this.building);
-	}
+   // Create environment
+	this.hydrantGroup = new stGameHydrantGroup(this.game,this.player); // Hydrants
+	this.buildingGroup = new stGameBuildingGroup(this.game); // Buildings
 
-	for(var i = 0; i < 2; i++){
-		this.building = new Building(this.game,(2912+(200*i)),173,200,createBuildingFires(),'building5', 'buildingDestroyed5');
-		this.buildingGroup.add(this.building);
-	}
-
-	for(var i = 0; i < 2; i++){
-		this.building = new Building(this.game,(1518+(255*i)),191,200,createBuildingFires(),'building1', 'buildingDestroyed1');
-		this.buildingGroup.add(this.building);
-	}
-
-	for(var i = 0; i < 2; i++){
-		this.building = new Building(this.game,(2113+(325*i)),191,200,createBuildingFires(),'building1', 'buildingDestroyed1');
-		this.buildingGroup.add(this.building);
-	}
-
-	this.building = new Building(this.game,2671,1231,200,createBuildingFires(),'building6', 'buildingDestroyed6');
-	this.buildingGroup.add(this.building);
-
-	this.building = new Building(this.game,1622,1544,200,createBuildingFires(),'fireStation', 'fireStationDestroyed');
-	this.buildingGroup.add(this.building);
-
-	for(var i = 0; i < 2; i++){
-		this.building = new Building(this.game,1834 + i*100,(1441),200, createBuildingFires(),'fTruck', 'fTruckDestroyed');
-		this.buildingGroup.add(this.building);
-	}
-
-	for(var i = 0; i < 3; i++){
-		this.building = new Building(this.game,(988),(760 + i*260),200,createBuildingFires(),'building2', 'buildingDestroyed2');
-		this.buildingGroup.add(this.building);
-	}
-
-	this.building = new Building(this.game,637,826,200,createBuildingFires(),'building1', 'buildingDestroyed1');
-	this.buildingGroup.add(this.building);
-
-	this.building = new Building(this.game,637,1281,200,createBuildingFires(),'building1', 'buildingDestroyed1');
-	this.buildingGroup.add(this.building);
-
-	this.building = new Building(this.game,821,1662,200,createBuildingFires(),'building3', 'buildingDestroyed3');
-	this.buildingGroup.add(this.building);
-
-	this.building = new Building(this.game,125,823,200,createBuildingFires(),'building4', 'buildingDestroyed4');
-	this.buildingGroup.add(this.building);
-
-	for(var i = 0; i < 2; i++){
-		this.building = new Building(this.game,(635 + i*250),(2261),200,createBuildingFires(),'building4', 'buildingDestroyed4');
-		this.buildingGroup.add(this.building);
-	}
-
-	for(var i = 0; i < 2; i++){
-		this.building = new Building(this.game,(2424 + i*450),(2272),200,createBuildingFires(),'building4', 'buildingDestroyed4');
-		this.buildingGroup.add(this.building);
-	}
-
-	for(var i = 0; i < 2; i++){
-		this.building = new Building(this.game,(2650 + i*450),(2277),200,createBuildingFires(),'building5', 'buildingDestroyed5');
-		this.buildingGroup.add(this.building);
-	}
-
-	this.building = new Building(this.game,135,2290,200,createBuildingFires(),'building1', 'buildingDestroyed1');
-	this.buildingGroup.add(this.building);
-
-	for(var i = 0; i < 2; i++){
-		this.building = new Building(this.game,(1393+(225*i)),2289,200,createBuildingFires(),'building1', 'buildingDestroyed1');
-		this.buildingGroup.add(this.building);
-	}
-
-	this.building = new Building(this.game,1890,2300,200,createBuildingFires(),'building2', 'buildingDestroyed2');
-	this.buildingGroup.add(this.building);
-
-	for(var i = 0; i < 3; i++){
-		this.building = new Building(this.game,(93),(1201 + i*260),200,createBuildingFires(),'building2', 'buildingDestroyed2');
-		this.buildingGroup.add(this.building);
-	}
-
-   function createBuildingFires(){
-      //return randInt(5, 1);
-      return 0;
-   }
-
-	//Hydrants
-	for(var i = 0; i < 8; i++){
-		this.hydrant = new Hydrant(this.game,125 + i*495,435,this.player);
-		this.hydrantGroup.add(this.hydrant);}
-	for(var i = 0; i < 2; i++){
-		this.hydrant = new Hydrant(this.game,2613 + i*149,200,this.player);
-		this.hydrantGroup.add(this.hydrant);}
-	for(var i = 0; i < 2; i++){
-		this.hydrant = new Hydrant(this.game,1205 + i*149,200,this.player);
-		this.hydrantGroup.add(this.hydrant);}
-	for(var i = 0; i < 2; i++){
-		this.hydrant = new Hydrant(this.game,310 + i*149,200,this.player);
-		this.hydrantGroup.add(this.hydrant);}
-	this.hydrant = new Hydrant(this.game,1137,896,this.player);
-	this.hydrantGroup.add(this.hydrant);
-	this.hydrant = new Hydrant(this.game,1137,1491,this.player);
-	this.hydrantGroup.add(this.hydrant);
-	this.hydrant = new Hydrant(this.game,1137,1845,this.player);
-	this.hydrantGroup.add(this.hydrant);
-	this.hydrant = new Hydrant(this.game,1415,650,this.player);
-	this.hydrantGroup.add(this.hydrant);
-	this.hydrant = new Hydrant(this.game,2033,650,this.player);
-	this.hydrantGroup.add(this.hydrant);
-	this.hydrant = new Hydrant(this.game,2033,1304,this.player);
-	this.hydrantGroup.add(this.hydrant);
-	this.hydrant = new Hydrant(this.game,1415,1304,this.player);
-	this.hydrantGroup.add(this.hydrant);
-	this.hydrant = new Hydrant(this.game,526,1473,this.player);
-	this.hydrantGroup.add(this.hydrant);
-	this.hydrant = new Hydrant(this.game,526,1840,this.player);
-	this.hydrantGroup.add(this.hydrant);
-	this.hydrant = new Hydrant(this.game,126,1910,this.player);
-	this.hydrantGroup.add(this.hydrant);
-	this.hydrant = new Hydrant(this.game,126,2057,this.player);
-	this.hydrantGroup.add(this.hydrant);
-	this.hydrant = new Hydrant(this.game,310,2290,this.player);
-	this.hydrantGroup.add(this.hydrant);
-	this.hydrant = new Hydrant(this.game,455,2290,this.player);
-	this.hydrantGroup.add(this.hydrant);
-	this.hydrant = new Hydrant(this.game,768,2058,this.player);
-	this.hydrantGroup.add(this.hydrant);
-	this.hydrant = new Hydrant(this.game,1078,2290,this.player);
-	this.hydrantGroup.add(this.hydrant);
-	this.hydrant = new Hydrant(this.game,1225,2290,this.player);
-	this.hydrantGroup.add(this.hydrant);
-	this.hydrant = new Hydrant(this.game,1420,1845,this.player);
-	this.hydrantGroup.add(this.hydrant);
-	this.hydrant = new Hydrant(this.game,1568,2059,this.player);
-	this.hydrantGroup.add(this.hydrant);
-	this.hydrant = new Hydrant(this.game,2100,2290,this.player);
-	this.hydrantGroup.add(this.hydrant);
-	this.hydrant = new Hydrant(this.game,2250,2290,this.player);
-	this.hydrantGroup.add(this.hydrant);
-	this.hydrant = new Hydrant(this.game,2786,586,this.player);
-	this.hydrantGroup.add(this.hydrant);
-	this.hydrant = new Hydrant(this.game,2315,1447,this.player);
-	this.hydrantGroup.add(this.hydrant);
-	this.hydrant = new Hydrant(this.game,2496,2057,this.player);
-	this.hydrantGroup.add(this.hydrant);
-	this.hydrant = new Hydrant(this.game,3007,2057,this.player);
-	this.hydrantGroup.add(this.hydrant);
-	this.hydrant = new Hydrant(this.game,2688,1911,this.player);
-	this.hydrantGroup.add(this.hydrant);
-	this.hydrant = new Hydrant(this.game,311,1015,this.player);
-	this.hydrantGroup.add(this.hydrant);
-	this.hydrant = new Hydrant(this.game,312,1600,this.player);
-	this.hydrantGroup.add(this.hydrant);
-
-   this.G = this.game.input.keyboard.addKey(Phaser.Keyboard.G);
-
-   // add and play music
+   // Start music
    this.bg_music = this.game.add.audio('game_music');
-   //this.bg_music.play('', 0, 1, true); UNMUTE LATER
+   this.bg_music.play('', 0, 1, true);
 
    //create rioters and add to MobManager
 /*
@@ -225,10 +62,25 @@ stGame.prototype = {
 
    building2 = this.buildingGroup.getRandom();
    MM.positionAllOffscreenRandomly(this.game);
-   MM.setAllGoal(this.building.centerX, this.building.centerY, 0.4);
+   MM.setAllGoal(building2.centerX, building2.centerY, 0.4);
    console.log("BUILDING LOC: ", building2.x, building2.y);
 
-   game = this.game; //temp solution until I can figure out a better way to refernce game
+
+   // Create UI
+   this.pointer = this.game.add.sprite(0, 0, 'assets','crosshair');
+   this.pointer.anchor.set(0.5,0.5);
+   this.waterUI = new WaterUI(this.game,this.player,70,60);
+   this.fireUI = new FireUI(this.game,this.buildingGroup,765,355);
+
+     this.end = damageFire = function(particle,building){
+      particle.kill();
+      building.damageFire();
+   }
+   // Debug Keys*/
+	this.G = this.game.input.keyboard.addKey(Phaser.Keyboard.G);
+/*
+	// Functions
+	  game = this.game; //temp solution until I can figure out a better way to refernce game
    var throwAtBuilding2 = function(mob){
       //mob.freeze();
       mob.fireAtBuilding(game, building2);
@@ -253,12 +105,12 @@ stGame.prototype = {
    MM.addAllTriggerOnCollision(this.buildingGroup, null, false);
 */
 
-this.game.time.events.repeat(3000, 50, newBuildingAttack, this); // every 3 seconds run function newBuildingAttack; repeat 10 times then stop
+this.game.time.events.repeat(5000, 50, newBuildingAttack, this); // every 3 seconds run function newBuildingAttack; repeat 10 times then stop
 
 function newBuildingAttack(){
 
    var setGoalOffscreen = function(mob){
-      point = randomPointOffscreen(game, 50);
+      var point = randomPointOffscreen(game, 50);
       mob.setGoalPoint(point.x, point.y, 0.8); // randomly head to offscreen point with weight 0.8
       mob.killOffscreen = true;
    };
@@ -269,8 +121,13 @@ function newBuildingAttack(){
             unburntBuildings.push(this.buildingGroup.children[u]);
          }
       }
-      building = randomOfArray(unburntBuildings, 1)[0][0];
-      for(i=0; i<randInt(6, 3); i++){ //creates 2-4 rioters to pursue building
+      var building;
+      if(unburntBuildings.length <= 0){
+         building = randomOfArray(this.buildingGroup.children, 1)[0][0];
+      }else{
+         building = randomOfArray(unburntBuildings, 1)[0][0];
+      }
+      for(i=0; i<randInt(5, 2); i++){ //creates 2-4 rioters to pursue building
          var rioter = new Rioter(this.game, {key: 'assets', frame: 'rioter'}, this.game.rnd.integerInRange(0, this.game.width), this.game.rnd.integerInRange(0, this.game.height));
          //l(rioter);
          //console.dir(this.RM);
@@ -342,7 +199,7 @@ var throwAtBuilding = function(mob){
 
       this.RM.update(this.game);
       this.RM.killAllOutOfView(this.game);
-      l("Mobs in RM: " + this.RM.mobList.length);
+      //l("Mobs in RM: " + this.RM.mobList.length);
 
 
    //MM.update(this.game);
@@ -352,8 +209,10 @@ var throwAtBuilding = function(mob){
       this.state.start("stGameOver");
    }
 
+   if(this.buildingGroup.numberOfLiving() <= 0){
+      this.state.start("stGameOver");
+   }
 
-  //console.log(rToA(this.game.physics.arcade.angleBetweenCenters(this.player,this.building2)));
    // start UI update functions
 	this.waterUI.update();
 	this.fireUI.update();
